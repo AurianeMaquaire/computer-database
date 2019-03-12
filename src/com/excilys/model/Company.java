@@ -5,6 +5,12 @@ public class Company {
 	private Long id;
 	private String name;
 	
+	public Company(Long id, String name) {
+		super();
+		this.id = id;
+		this.name = name;
+	}
+	
 	// Getters
 	public Long getId() {
 		return this.id;
@@ -19,6 +25,11 @@ public class Company {
 	}
 	public void setName(String pName) {
 		this.name = pName;
+	}
+
+	@Override
+	public String toString() {
+		return "Company [id=" + id + ", name=" + name + "]";
 	}
 	
 	
