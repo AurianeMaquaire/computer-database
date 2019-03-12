@@ -5,6 +5,10 @@ public class Company {
 	private Long id;
 	private String name;
 	
+	public Company() {
+		super();
+	}
+	
 	public Company(Long id, String name) {
 		super();
 		this.id = id;

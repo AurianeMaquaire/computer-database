@@ -10,6 +10,10 @@ public class Computer {
 	private Timestamp discontinued;
 	private Long company_id;
 	
+	public Computer() {
+		super();
+	}
+	
 	public Computer(Long id, String name, Timestamp introduced, Timestamp discontinued, Long company_id) {
 		super();
 		this.id = id;
