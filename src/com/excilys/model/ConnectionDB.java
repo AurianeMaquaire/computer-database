@@ -43,12 +43,15 @@ public class ConnectionDB {
 		try {
 			Statement statement = conn.createStatement();
 			ResultSet res;
-			res = statement.executeQuery("SELECT * FROM computer");
+			res = statement.executeQuery("SELECT cn.id, cn.name, ct.id, ct.name, "
+					+ "ct.introduced, ct.discontinued FROM computer AS ct "
+					+ "LEFT JOIN company AS cn ON ct.id = cn.id");
 						
 			while (res.next()) {
-				Computer comp = new Computer(res.getLong("id"), res.getString("name"),
+				Company company = new Company(res.getLong("cn.id"), res.getString("cn.name"));
+				Computer comp = new Computer(res.getLong("ct.id"), res.getString("ct.name"),
 						res.getTimestamp("introduced"), res.getTimestamp("discontinued"), 
-						res.getLong("company_id"));
+						company);
 				computers.add(comp);
 			}
 		} catch (SQLException e) {
@@ -66,7 +69,7 @@ public class ConnectionDB {
 		try {
 			Statement statement = conn.createStatement();
 			ResultSet res;
-			res = statement.executeQuery("SELECT * FROM company");
+			res = statement.executeQuery("SELECT company.id, company.name FROM company");
 						
 			while (res.next()) {
 				Company comp = new Company(res.getLong("id"), res.getString("name"));
@@ -83,18 +86,21 @@ public class ConnectionDB {
 	 * @param id l'identifiant de l'ordinateur
 	 * @return un ordinateur
 	 */
-	public Computer showComputer (int id) {
+	public Computer showComputer (Long id) {
 		Computer computer = null;
 		try {
 			Statement statement = conn.createStatement();
 			ResultSet res;
-			res = statement.executeQuery("SELECT * FROM computer WHERE id = " + id);
+			res = statement.executeQuery("SELECT cn.id, cn.name, ct.id, ct.name, "
+					+ "ct.introduced, ct.discontinued FROM computer AS ct "
+					+ "LEFT JOIN company AS cn ON ct.id = cn.id WHERE ct.id = " + id);
 						
 			if (res.next()) {
-				Computer comp = new Computer(res.getLong("id"), res.getString("name"),
+				Company company = new Company(res.getLong("cn.id"), res.getString("cn.name"));
+				Computer tmp = new Computer(res.getLong("ct.id"), res.getString("ct.name"),
 						res.getTimestamp("introduced"), res.getTimestamp("discontinued"), 
-						res.getLong("company_id"));
-				computer = comp;
+						company);
+				computer = tmp;
 			} else {
 				System.out.println("This computer doesn't exixst");
 			}
@@ -106,21 +112,71 @@ public class ConnectionDB {
 	}
 	
 	/**
-	 * Crée un ordianteur dans la base de données
+	 * Renvoie les informations sur une compagnie à partir de l'id
+	 * @param id l'identifiant de la compagnie
+	 * @return une compagnie
+	 */
+	public Company showCompany (Long id) {
+		Company company = null;
+		try {
+			Statement statement = conn.createStatement();
+			ResultSet res;
+			res = statement.executeQuery("SELECT id, name FROM company "
+					+ "WHERE id = '" + id + "'");
+						
+			if (res.next()) {
+				company = new Company(res.getLong("id"), res.getString("name"));
+			} else {
+				System.out.println("This company doesn't exixst");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return company;
+	}
+	
+	/**
+	 * Renvoie les informations sur une compagnie à partir du nom
+	 * @param name le nom de la compagnie
+	 * @return une compagnie
+	 */
+	public Company showCompany (String name) {
+		Company company = null;
+		try {
+			Statement statement = conn.createStatement();
+			ResultSet res;
+			res = statement.executeQuery("SELECT id, name FROM company "
+					+ "WHERE name = '" + name + "'");
+						
+			if (res.next()) {
+				company = new Company(res.getLong("id"), res.getString("name"));
+			} else {
+				System.out.println("This company doesn't exixst");
+			}
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return company;
+	}
+	
+	/**
+	 * Crée un ordinateur dans la base de données
 	 * @param name le nom de l'ordinateur
 	 * @param introduced la date à laquelle il a été mit sur le marché
 	 * @param discontinued la date à laquelle il a été enlevé du marché
 	 * @param company_id l'identifiant de la compagnie
 	 */
-	public void createComputer (String name, Timestamp introduced, Timestamp discontinued, Long company_id) {
+	public void createComputer (String name, Timestamp introduced, Timestamp discontinued, Company company) {
 		try {
 			PreparedStatement statement = conn.prepareStatement("INSERT INTO computer "
 					+ "(name, introduced, discontinued, company_id)"
-					+ "VALUES ('?', '?', '?', '?')");
+					+ "VALUES (?, ?, ?, ?)");
 			statement.setString(1, name);
 			statement.setTimestamp(2, introduced);
 			statement.setTimestamp(3, discontinued);
-			statement.setLong(4, company_id);
+			statement.setLong(4, company.getId());
 			
 			statement.executeUpdate();
 			
@@ -137,16 +193,14 @@ public class ConnectionDB {
 	 * @param discontinued la date à laquelle il a été enlevé du marché
 	 * @param company_id l'identifiant de la compagnie
 	 */
-	public void updateComputer (Long id, String name, Timestamp introduced, Timestamp discontinued, Long company_id) {
+	public void updateComputer (Long id, String name, Timestamp discontinued) {
 		try {
 			PreparedStatement statement = conn.prepareStatement("UPDATE computer "
-					+ "SET name='?', introduced='?', discontinued='?', company_id='?' "
-					+ "WHERE id = '?'");
+					+ "SET name=?, discontinued=? "
+					+ "WHERE id = ?");
 			statement.setString(1, name);
-			statement.setTimestamp(2, introduced);
-			statement.setTimestamp(3, discontinued);
-			statement.setLong(4, company_id);
-			statement.setLong(5, id);
+			statement.setTimestamp(2, discontinued);
+			statement.setLong(3, id);
 
 			statement.executeUpdate();
 			
@@ -162,7 +216,7 @@ public class ConnectionDB {
 	public void deleteComputer (Long id) {
 		try {
 			PreparedStatement statement = conn.prepareStatement("DELETE FROM computer "
-					+ "WHERE id = '?'");
+					+ "WHERE id = ?");
 			statement.setLong(1, id);
 
 			statement.executeUpdate();
