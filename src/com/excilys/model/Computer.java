@@ -1,9 +1,11 @@
 package com.excilys.model;
 
 import java.sql.Timestamp;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Computer {
 	
+	AtomicLong incr = new AtomicLong(560);
 	private Long id;
 	private String name;
 	private Timestamp introduced;
@@ -17,6 +19,15 @@ public class Computer {
 	public Computer(Long id, String name, Timestamp introduced, Timestamp discontinued, Company company) {
 		super();
 		this.id = id;
+		this.name = name;
+		this.introduced = introduced;
+		this.discontinued = discontinued;
+		this.company = company;
+	}
+	
+	public Computer(String name, Timestamp introduced, Timestamp discontinued, Company company) {
+		super();
+		this.id = incr.getAndIncrement();
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;

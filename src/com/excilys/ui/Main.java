@@ -1,16 +1,13 @@
 package com.excilys.ui;
 
-
-import com.excilys.view.View;
+import com.excilys.controller.Controller;
 
 public class Main {
 	
-
 	
 	public static void main(String[] args) {
 		
-		new View();
-		
+		new Controller();
 		
 	}
 	

@@ -1,6 +1,6 @@
 package com.excilys.view;
 
-import java.sql.SQLException;
+import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -8,21 +8,25 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Scanner;
 
-import com.excilys.model.*;
+import com.excilys.dao.CompanyDAO;
+import com.excilys.dao.ComputerDAO;
+import com.excilys.dao.DAO;
+import com.excilys.model.Company;
+import com.excilys.model.Computer;
+import com.excilys.persistence.ConnectionDAO;
 
 public class View {
 	
-	static ConnectionDB conn = null;
+	static Connection conn = null;
+	static DAO<Computer> computerDao = null;
+	static DAO<Company> companyDao = null;
 	
 	public View() {
 		super();
-		try {
-			View.conn = new ConnectionDB();
-			console();
-			
-		} catch (ClassNotFoundException | SQLException e) {
-			e.printStackTrace();
-		}
+		conn = ConnectionDAO.getInstance();
+		computerDao = new ComputerDAO();
+		companyDao = new CompanyDAO();
+		console();
 	}
 	
 	/**
@@ -40,6 +44,7 @@ public class View {
 		System.out.println("4 : créer un ordinateur");
 		System.out.println("5 : mettre un jour un ordinateur");
 		System.out.println("6 : supprimer un ordinateur");
+		System.out.println("7 : quitter");
 		
 		int nbChoisi = 0;
 		Scanner scanner = new Scanner(System.in);
@@ -77,7 +82,7 @@ public class View {
 			
 			System.out.println("Nom de la compagnie:");
 			String company_name = scanner.next();
-			Company company = conn.showCompany(company_name);
+			Company company = companyDao.find(company_name);
 			
 			creerOrdinateur(nomOrdi, tsIntroduced, null, company);
 			console();
@@ -87,14 +92,14 @@ public class View {
 			System.out.println("Id de l'ordinateur à mettre à jour:");
 			idOrdi = scanner.nextLong();
 			
-			Computer computer = conn.showComputer(idOrdi);
+			Computer computer = computerDao.find(idOrdi);
 			System.out.println(computer);
 			
 			System.out.println("Nouveau nom de l'ordinateur:");
 			nomOrdi = scanner.next();
 			
 			mettreAJourOrdinateur(idOrdi, nomOrdi, computer.getDiscontinued());
-			computer = conn.showComputer(idOrdi);
+			computer = computerDao.find(idOrdi);
 			System.out.println(computer);
 			
 			console();
@@ -108,8 +113,12 @@ public class View {
 			console();
 			break;
 			
+		case 7:
+			break;
+			
 		default:
 			System.out.println("Erreur, nombre non valide");
+			console();
 		}
 		
 		scanner.close();
@@ -119,7 +128,7 @@ public class View {
 	 * Affiche la liste des ordinateurs
 	 */
 	public static void afficherListeComputers() {
-		ArrayList<Computer> computers = conn.listComputers();
+		ArrayList<Computer> computers = computerDao.list();
 		System.out.println("Affichage de la liste des ordinateurs");
 		for(Computer c : computers) {
 			System.out.println(c);
@@ -130,7 +139,7 @@ public class View {
 	 * Affiche la liste des compagnies
 	 */
 	public static void afficherListeCompanies() {
-		ArrayList<Company> companies = conn.listCompanies();
+		ArrayList<Company> companies = companyDao.list();
 		System.out.println("Affichage de la liste des companies");
 		for(Company c : companies) {
 			System.out.println(c);
@@ -142,19 +151,20 @@ public class View {
 	 * @param id l'identifiant de l'ordinateur
 	 */
 	public static void afficherDetailsOrdinateur(Long id) {
-		Computer computer = conn.showComputer(id);
+		Computer computer = computerDao.find(id);
 		System.out.println(computer);
 	}
 
 	/**
 	 * Crée un ordinateur
 	 * @param name le nom de l'ordinateur
-	 * @param introduced la date à laquelle il a été vendu
-	 * @param discontinued la date à laquelle il n'est plus vendu
+	 * @param introduced la date de début
+	 * @param discontinued la date de fin
 	 * @param company la compagnie à laquelle il appartient
 	 */
 	public static void creerOrdinateur(String name, Timestamp introduced, Timestamp discontinued, Company company) {
-		conn.createComputer(name, introduced, discontinued, company);
+		Computer computer = new Computer(name, introduced, discontinued, company);
+		computerDao.create(computer);
 		System.out.println("L'ordinateur " + name + " a bien été crée");
 	}
 
@@ -165,7 +175,10 @@ public class View {
 	 * @param discontinued le timestamp à mettre à jour
 	 */
 	public static void mettreAJourOrdinateur(Long id, String name, Timestamp discontinued) {
-		conn.updateComputer(id, name, discontinued);
+		Computer computer = computerDao.find(id);
+		computer.setName(name);
+		computer.setDiscontinued(discontinued);
+		computerDao.update(computer);
 		System.out.println("L'ordinateur " + id + " a bien été mit à jour");
 	}
 
@@ -174,7 +187,8 @@ public class View {
 	 * @param id l'identifiant de l'ordinateur
 	 */
 	public static void supprimerOrdinateur(Long id) {
-		conn.deleteComputer(id);
+		Computer computer = computerDao.find(id);
+		computerDao.delete(computer);
 		System.out.println("L'ordinateur " + id + " a bien été supprimé");
 	}
 	
