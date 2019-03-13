@@ -38,6 +38,11 @@ public class ComputerDAO extends DAO<Computer> {
 	}
 
 	@Override
+	public Computer find(String name) {
+		return null;
+	}
+	
+	@Override
 	public Computer create(Computer obj) {
 		Computer computer = null;
 		try {
@@ -93,7 +98,7 @@ public class ComputerDAO extends DAO<Computer> {
 	}
 
 	@Override
-	public ArrayList<Computer> list() {
+	public ArrayList<Computer> listAll() {
 		ArrayList<Computer> computers = new ArrayList<Computer>();
 		try {
 			Statement statement = connect.createStatement();
@@ -116,8 +121,27 @@ public class ComputerDAO extends DAO<Computer> {
 	}
 
 	@Override
-	public Computer find(String name) {
-		return null;
+	public ArrayList<Computer> list(Long idDebut, Long idFin) {
+		ArrayList<Computer> computers = new ArrayList<Computer>();
+		try {
+			Statement statement = connect.createStatement();
+			ResultSet res;
+			res = statement.executeQuery("SELECT cn.id, cn.name, ct.id, ct.name, "
+					+ "ct.introduced, ct.discontinued FROM computer AS ct "
+					+ "LEFT JOIN company AS cn ON ct.id = cn.id "
+					+ "WHERE ct.id>=" + idDebut + " AND ct.id<=" + idFin);
+						
+			while (res.next()) {
+				Company company = new Company(res.getLong("cn.id"), res.getString("cn.name"));
+				Computer comp = new Computer(res.getLong("ct.id"), res.getString("ct.name"),
+						res.getTimestamp("introduced"), res.getTimestamp("discontinued"), 
+						company);
+				computers.add(comp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return computers;
 	}
 
 }

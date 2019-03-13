@@ -71,12 +71,31 @@ public class CompanyDAO extends DAO<Company> {
 	}
 
 	@Override
-	public ArrayList<Company> list() {
+	public ArrayList<Company> listAll() {
 		ArrayList<Company> companies = new ArrayList<Company>();
 		try {
 			Statement statement = connect.createStatement();
 			ResultSet res;
 			res = statement.executeQuery("SELECT company.id, company.name FROM company");
+						
+			while (res.next()) {
+				Company comp = new Company(res.getLong("id"), res.getString("name"));
+				companies.add(comp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return companies;
+	}
+
+	@Override
+	public ArrayList<Company> list(Long idDebut, Long idFin) {
+		ArrayList<Company> companies = new ArrayList<Company>();
+		try {
+			Statement statement = connect.createStatement();
+			ResultSet res;
+			res = statement.executeQuery("SELECT company.id, company.name FROM company "
+						+ "WHERE id>=" + idDebut + " AND id<=" + idFin);
 						
 			while (res.next()) {
 				Company comp = new Company(res.getLong("id"), res.getString("name"));

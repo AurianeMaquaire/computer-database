@@ -29,6 +29,7 @@ public class View {
 		console();
 	}
 	
+	
 	/**
 	 * Interagit avec l'utilisateur via la console
 	 */
@@ -38,13 +39,17 @@ public class View {
 			return;
 		}
 		
+		
+		System.out.println("");
 		System.out.println("1 : afficher la liste des ordinateurs");
 		System.out.println("2 : afficher la liste des compagnies");
 		System.out.println("3 : afficher des détails sur un ordinateur");
 		System.out.println("4 : créer un ordinateur");
 		System.out.println("5 : mettre un jour un ordinateur");
 		System.out.println("6 : supprimer un ordinateur");
-		System.out.println("7 : quitter");
+		System.out.println("7 : afficher la liste des ordinateurs 20 par 20");
+		System.out.println("8 : afficher la liste des compagnies 20 par 20");
+		System.out.println("9 : quitter");
 		
 		int nbChoisi = 0;
 		Scanner scanner = new Scanner(System.in);
@@ -114,6 +119,23 @@ public class View {
 			break;
 			
 		case 7:
+			System.out.println("Id de début:");
+			idOrdi = scanner.nextLong();
+			
+			afficherListePagesComputers(idOrdi);
+			console();
+			break;
+
+		case 8:
+			System.out.println("Id de début:");
+			Long idComp = scanner.nextLong();
+			
+			afficherListePagesCompanies(idComp);
+			console();
+			break;
+			
+		case 9:
+			System.out.println("Application fermée");
 			break;
 			
 		default:
@@ -128,8 +150,20 @@ public class View {
 	 * Affiche la liste des ordinateurs
 	 */
 	public static void afficherListeComputers() {
-		ArrayList<Computer> computers = computerDao.list();
+		ArrayList<Computer> computers = computerDao.listAll();
 		System.out.println("Affichage de la liste des ordinateurs");
+		for(Computer c : computers) {
+			System.out.println(c);
+		}
+	}
+	
+	/**
+	 * Affiche la liste des ordinateurs par pages
+	 */
+	public static void afficherListePagesComputers(Long idDebut) {
+		Long idFin = idDebut + 19;
+		ArrayList<Computer> computers = computerDao.list(idDebut, idFin);
+		System.out.println("Affichage de la liste des ordinateurs de " + idDebut + " à " + idFin);
 		for(Computer c : computers) {
 			System.out.println(c);
 		}
@@ -139,8 +173,20 @@ public class View {
 	 * Affiche la liste des compagnies
 	 */
 	public static void afficherListeCompanies() {
-		ArrayList<Company> companies = companyDao.list();
+		ArrayList<Company> companies = companyDao.listAll();
 		System.out.println("Affichage de la liste des companies");
+		for(Company c : companies) {
+			System.out.println(c);
+		}
+	}
+	
+	/**
+	 * Affiche la liste des compagnies par pages
+	 */
+	public static void afficherListePagesCompanies(Long idDebut) {
+		Long idFin = idDebut + 19;
+		ArrayList<Company> companies = companyDao.list(idDebut, idFin);
+		System.out.println("Affichage de la liste des compagnies de " + idDebut + " à " + idFin);
 		for(Company c : companies) {
 			System.out.println(c);
 		}
