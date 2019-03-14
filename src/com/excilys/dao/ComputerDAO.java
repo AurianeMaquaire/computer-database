@@ -10,15 +10,16 @@ import com.excilys.model.Company;
 import com.excilys.model.Computer;
 
 public class ComputerDAO extends DAO<Computer> {
+	
+	int nbComputers = 0;
 
 	@Override
 	public Computer find(long id) {
 		Computer computer = null;
-		try {
-			Statement statement = connect.createStatement();
-			ResultSet res;
-			res = statement.executeQuery("SELECT cn.id, cn.name, ct.id, ct.name, "
-					+ "ct.introduced, ct.discontinued FROM computer AS ct "
+		try (Statement statement = connect.createStatement()) {
+			
+			ResultSet res = statement.executeQuery("SELECT cn.id, cn.name, ct.id, "
+					+ "ct.name, ct.introduced, ct.discontinued FROM computer AS ct "
 					+ "LEFT JOIN company AS cn ON ct.id = cn.id WHERE ct.id = " + id);
 						
 			if (res.next()) {
@@ -45,10 +46,10 @@ public class ComputerDAO extends DAO<Computer> {
 	@Override
 	public Computer create(Computer obj) {
 		Computer computer = null;
-		try {
-			PreparedStatement statement = connect.prepareStatement("INSERT INTO computer "
-					+ "(name, introduced, discontinued, company_id)"
-					+ "VALUES (?, ?, ?, ?)");
+		try (PreparedStatement statement = connect.prepareStatement("INSERT INTO computer "
+				+ "(name, introduced, discontinued, company_id)"
+				+ "VALUES (?, ?, ?, ?)")) {
+			
 			statement.setString(1, obj.getName());
 			statement.setTimestamp(2, obj.getIntroduced());
 			statement.setTimestamp(3, obj.getDiscontinued());
@@ -56,6 +57,7 @@ public class ComputerDAO extends DAO<Computer> {
 			
 			statement.executeUpdate();
 			computer = obj;
+			nbComputers = nbComputers + 1;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -66,13 +68,11 @@ public class ComputerDAO extends DAO<Computer> {
 	@Override
 	public Computer update(Computer obj) {
 		Computer computer = null;
-		try {
-			PreparedStatement statement = connect.prepareStatement("UPDATE computer "
-					+ "SET name=?, discontinued=? "
-					+ "WHERE id = ?");
+		try (PreparedStatement statement = connect.prepareStatement("UPDATE computer "
+				+ "SET name=? WHERE id = ?")) {
+			
 			statement.setString(1, obj.getName());
-			statement.setTimestamp(2, obj.getDiscontinued());
-			statement.setLong(3, obj.getCompany().getId());
+			statement.setLong(2, obj.getId());
 
 			statement.executeUpdate();
 			computer = obj;
@@ -85,12 +85,13 @@ public class ComputerDAO extends DAO<Computer> {
 
 	@Override
 	public void delete(Computer obj) {
-		try {
-			PreparedStatement statement = connect.prepareStatement("DELETE FROM computer "
-					+ "WHERE id = ?");
+		try (PreparedStatement statement = connect.prepareStatement("DELETE FROM computer "
+				+ "WHERE id = ?")) {
+			
 			statement.setLong(1, obj.getId());
 
 			statement.executeUpdate();
+			nbComputers = nbComputers -1;
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -100,11 +101,10 @@ public class ComputerDAO extends DAO<Computer> {
 	@Override
 	public ArrayList<Computer> listAll() {
 		ArrayList<Computer> computers = new ArrayList<Computer>();
-		try {
-			Statement statement = connect.createStatement();
-			ResultSet res;
-			res = statement.executeQuery("SELECT cn.id, cn.name, ct.id, ct.name, "
-					+ "ct.introduced, ct.discontinued FROM computer AS ct "
+		try (Statement statement = connect.createStatement()) {
+			
+			ResultSet res = statement.executeQuery("SELECT cn.id, cn.name, ct.id, "
+					+ "ct.name, ct.introduced, ct.discontinued FROM computer AS ct "
 					+ "LEFT JOIN company AS cn ON ct.id = cn.id");
 						
 			while (res.next()) {
@@ -113,6 +113,7 @@ public class ComputerDAO extends DAO<Computer> {
 						res.getTimestamp("introduced"), res.getTimestamp("discontinued"), 
 						company);
 				computers.add(comp);
+				nbComputers = nbComputers + 1;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -122,12 +123,12 @@ public class ComputerDAO extends DAO<Computer> {
 
 	@Override
 	public ArrayList<Computer> list(Long idDebut, Long idFin) {
+		//if (idFin > nbComputers - 20) return null;
 		ArrayList<Computer> computers = new ArrayList<Computer>();
-		try {
-			Statement statement = connect.createStatement();
-			ResultSet res;
-			res = statement.executeQuery("SELECT cn.id, cn.name, ct.id, ct.name, "
-					+ "ct.introduced, ct.discontinued FROM computer AS ct "
+		try (Statement statement = connect.createStatement()) {
+			
+			ResultSet res = statement.executeQuery("SELECT cn.id, cn.name, ct.id, "
+					+ "ct.name, ct.introduced, ct.discontinued FROM computer AS ct "
 					+ "LEFT JOIN company AS cn ON ct.id = cn.id "
 					+ "WHERE ct.id>=" + idDebut + " AND ct.id<=" + idFin);
 						
@@ -142,6 +143,22 @@ public class ComputerDAO extends DAO<Computer> {
 			e.printStackTrace();
 		}
 		return computers;
+	}
+
+	@Override
+	public Long length() {
+		Long len = 0L;
+		try (Statement statement = connect.createStatement()) {
+			
+			ResultSet res = statement.executeQuery("SELECT COUNT(*) AS len FROM computer");
+						
+			res.next();
+			len = res.getLong("len");
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return len;
 	}
 
 }

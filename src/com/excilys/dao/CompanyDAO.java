@@ -8,14 +8,15 @@ import java.util.ArrayList;
 import com.excilys.model.Company;
 
 public class CompanyDAO extends DAO<Company> {
+	
+	int nbCompanies = 0;
 
 	@Override
 	public Company find(long id) {
 		Company company = null;
-		try {
-			Statement statement = connect.createStatement();
-			ResultSet res;
-			res = statement.executeQuery("SELECT id, name FROM company "
+		try (Statement statement = connect.createStatement()) {
+			
+			ResultSet res = statement.executeQuery("SELECT id, name FROM company "
 					+ "WHERE id = '" + id + "'");
 						
 			if (res.next()) {
@@ -37,10 +38,9 @@ public class CompanyDAO extends DAO<Company> {
 	 */
 	public Company find (String name) {
 		Company company = null;
-		try {
-			Statement statement = connect.createStatement();
-			ResultSet res;
-			res = statement.executeQuery("SELECT id, name FROM company "
+		try (Statement statement = connect.createStatement()) {
+			
+			ResultSet res = statement.executeQuery("SELECT id, name FROM company "
 					+ "WHERE name = '" + name + "'");
 						
 			if (res.next()) {
@@ -73,10 +73,30 @@ public class CompanyDAO extends DAO<Company> {
 	@Override
 	public ArrayList<Company> listAll() {
 		ArrayList<Company> companies = new ArrayList<Company>();
-		try {
-			Statement statement = connect.createStatement();
-			ResultSet res;
-			res = statement.executeQuery("SELECT company.id, company.name FROM company");
+		try (Statement statement = connect.createStatement()) {
+			
+			ResultSet res = statement.executeQuery("SELECT company.id, company.name "
+					+ "FROM company");
+						
+			while (res.next()) {
+				Company comp = new Company(res.getLong("id"), res.getString("name"));
+				companies.add(comp);
+				nbCompanies = nbCompanies + 1;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return companies;
+	}
+
+	@Override
+	public ArrayList<Company> list(Long idDebut, Long idFin) {
+		//if (idFin > nbCompanies - 20) return null;
+		ArrayList<Company> companies = new ArrayList<Company>();
+		try (Statement statement = connect.createStatement()) {
+			
+			ResultSet res = statement.executeQuery("SELECT company.id, company.name "
+					+ "FROM company WHERE id>=" + idDebut + " AND id<=" + idFin);
 						
 			while (res.next()) {
 				Company comp = new Company(res.getLong("id"), res.getString("name"));
@@ -89,22 +109,19 @@ public class CompanyDAO extends DAO<Company> {
 	}
 
 	@Override
-	public ArrayList<Company> list(Long idDebut, Long idFin) {
-		ArrayList<Company> companies = new ArrayList<Company>();
-		try {
-			Statement statement = connect.createStatement();
-			ResultSet res;
-			res = statement.executeQuery("SELECT company.id, company.name FROM company "
-						+ "WHERE id>=" + idDebut + " AND id<=" + idFin);
+	public Long length() {
+		Long len = 0L;
+		try (Statement statement = connect.createStatement()) {
+			
+			ResultSet res = statement.executeQuery("SELECT COUNT(*) AS len FROM company");
 						
-			while (res.next()) {
-				Company comp = new Company(res.getLong("id"), res.getString("name"));
-				companies.add(comp);
-			}
+			res.next();
+			len = res.getLong("len");
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return companies;
+		return len;
 	}
 
 }

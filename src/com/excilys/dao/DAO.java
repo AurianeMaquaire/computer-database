@@ -55,6 +55,12 @@ public abstract class DAO<T> {
 	 * @return
 	 */
 	public abstract ArrayList<T> list (Long idDebut, Long idFin);
+	
+	/**
+	 * Renvoie le nombre d'objets 
+	 * @return
+	 */
+	public abstract Long length ();
 
 	
 }

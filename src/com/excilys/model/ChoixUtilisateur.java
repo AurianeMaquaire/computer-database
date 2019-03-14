@@ -1,0 +1,19 @@
+package com.excilys.model;
+
+public enum ChoixUtilisateur {
+	
+	AFFICHER_LISTE_ORDINATEURS(),
+	AFFICHER_PAGE_ORDINATEURS(),
+	AFFICHER_LISTE_COMPAGNIES(),
+	AFFICHER_PAGE_COMPAGNIES(),
+	AFFICHER_DETAILS_ORDINATEUR(),
+	CREER_ORDINATEUR(),
+	METTRE_A_JOUR_ORDINATEUR(),
+	SUPPRIMER_ORDINATEUR(),
+	QUITTER();
+	
+	
+	private ChoixUtilisateur () { }
+	
+	
+}

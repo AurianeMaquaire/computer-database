@@ -27,4 +27,14 @@ public class ConnectionDAO {
 		return connect;	
 	}
 	
+	public static void closeInstance(){
+		if(connect != null){
+			try {
+				connect.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}		
+	}
+	
 }

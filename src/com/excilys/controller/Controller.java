@@ -7,5 +7,4 @@ public class Controller {
 	public Controller() {
 		new View();
 	}
-
 }
