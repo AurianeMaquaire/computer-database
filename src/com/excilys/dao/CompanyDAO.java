@@ -5,9 +5,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.model.Company;
+import com.excilys.ui.Main;
 
 public class CompanyDAO extends DAO<Company> {
+	
+	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 	
 	int nbCompanies = 0;
 
@@ -27,6 +33,7 @@ public class CompanyDAO extends DAO<Company> {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.debug("Exception SQL", e);
 		}
 		return company;
 	}
@@ -51,6 +58,7 @@ public class CompanyDAO extends DAO<Company> {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.debug("Exception SQL", e);
 		}
 		return company;
 	}
@@ -85,6 +93,7 @@ public class CompanyDAO extends DAO<Company> {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.debug("Exception SQL", e);
 		}
 		return companies;
 	}
@@ -103,6 +112,7 @@ public class CompanyDAO extends DAO<Company> {
 				companies.add(comp);
 			}
 		} catch (SQLException e) {
+			logger.debug("Exception SQL", e);
 			e.printStackTrace();
 		}
 		return companies;
@@ -119,6 +129,7 @@ public class CompanyDAO extends DAO<Company> {
 			len = res.getLong("len");
 			
 		} catch (SQLException e) {
+			logger.debug("Exception SQL", e);
 			e.printStackTrace();
 		}
 		return len;

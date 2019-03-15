@@ -172,7 +172,7 @@ public class View {
 		Long interval = scanner.nextLong();
 		
 		Long idFin = idDebut + interval - 1;
-		Long max = computerDao.length();
+		Long max = companyDao.length();
 		if (idFin < max) {
 			idFin = idDebut + interval - 1;
 		} else if (idDebut > idFin) {

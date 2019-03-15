@@ -6,10 +6,16 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
+import com.excilys.ui.Main;
 
 public class ComputerDAO extends DAO<Computer> {
+	
+	private static final Logger logger = LoggerFactory.getLogger(Main.class);
 	
 	int nbComputers = 0;
 
@@ -34,6 +40,7 @@ public class ComputerDAO extends DAO<Computer> {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.debug("Exception SQL", e);
 		}
 		return computer;
 	}
@@ -61,6 +68,7 @@ public class ComputerDAO extends DAO<Computer> {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.debug("Exception SQL", e);
 		}
 		return computer;
 	}
@@ -79,6 +87,7 @@ public class ComputerDAO extends DAO<Computer> {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.debug("Exception SQL", e);
 		}
 		return computer;
 	}
@@ -95,6 +104,7 @@ public class ComputerDAO extends DAO<Computer> {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.debug("Exception SQL", e);
 		}
 	}
 
@@ -117,6 +127,7 @@ public class ComputerDAO extends DAO<Computer> {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.debug("Exception SQL", e);
 		}
 		return computers;
 	}
@@ -141,6 +152,7 @@ public class ComputerDAO extends DAO<Computer> {
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.debug("Exception SQL", e);
 		}
 		return computers;
 	}
@@ -157,6 +169,7 @@ public class ComputerDAO extends DAO<Computer> {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
+			logger.debug("Exception SQL", e);
 		}
 		return len;
 	}
