@@ -9,7 +9,7 @@ import com.excilys.controller.Controller;
 public class App {
 	
 	private static final Logger logger = LoggerFactory.getLogger(App.class);
-	
+
 	/**
 	 * Lancement du programme
 	 */

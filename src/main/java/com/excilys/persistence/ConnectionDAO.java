@@ -27,6 +27,9 @@ public class ConnectionDAO {
 		return connect;	
 	}
 	
+	/**
+	 * Ferme l'instance de connexion
+	 */
 	public static void closeInstance(){
 		if(connect != null){
 			try {
