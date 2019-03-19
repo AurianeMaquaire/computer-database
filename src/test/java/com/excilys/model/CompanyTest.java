@@ -1,31 +1,70 @@
 package com.excilys.model;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Before;
 import org.junit.Test;
 
+import junit.framework.TestCase;
 
-public class CompanyTest {
+
+public class CompanyTest extends TestCase {
+	
+	private static CompanyBuilder companyBuilder1 = new CompanyBuilder();
+	private static CompanyBuilder companyBuilder2 = new CompanyBuilder();
+	
+	static Company company1;
+	static Company company2;
 	
 	public CompanyTest() {
 		super();
 	}
 	
-	Company company;
-	
 	@Before
     public void setUp() {
-		company = new CompanyBuilder().withId(null)
-									  .withName(null)
-									  .build();
+		company1 = companyBuilder1.empty().build();
+		company2 = companyBuilder2.empty().build();
     }
 	
+	
 	@Test
-    public void testNull() {
-		assertNull(company.getId());
-		assertNull(company.getName());
+	public static void testCompany() {
+		assertEquals(company1, company1);
+		assertNotNull(company1);
 	}
 	
+	@Test
+	public static void testId() {
+		company1 = companyBuilder1.withId(2L).build();
+		company2 = companyBuilder2.withId(3L).build();
+		assertNotEquals(company1, company2);
+		
+		company1 = companyBuilder1.withId(1L).build();
+		company2 = companyBuilder2.withId(1L).build();
+		assertEquals(company1, company2);
+	}
+	
+	@Test
+	public static void testName() {
+		company1 = companyBuilder1.withName(null).build();
+		company2 = companyBuilder2.withName(null).build();
+		assertEquals(company1, company2);
+		
+		company1 = companyBuilder1.withName("c1").build();
+		company2 = companyBuilder2.withName(null).build();
+		assertNotEquals(company1, company2);
+		
+		company1 = companyBuilder1.withName(null).build();
+		company2 = companyBuilder2.withName("c2").build();
+		assertNotEquals(company1, company2);
+		
+		company1 = companyBuilder1.withName("c1").build();
+		company2 = companyBuilder2.withName("c2").build();
+		assertNotEquals(company1, company2);
+		
+		company1 = companyBuilder1.withName("c").build();
+		company2 = companyBuilder2.withName("c").build();
+		assertEquals(company1, company2);
+	}
 	
 }

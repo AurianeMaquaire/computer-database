@@ -128,7 +128,7 @@ public class View {
 	/**
 	 * Affiche la liste des ordinateurs par pages
 	 */
-	public static void afficherPageComputers() {
+	public void afficherPageComputers() {
 		System.out.println("Id de début:");
 		Long idDebut = scanner.nextLong();
 		System.out.println("Nombre d'ordinateurs à afficher:");
@@ -154,7 +154,7 @@ public class View {
 	/**
 	 * Affiche la liste des compagnies
 	 */
-	public static void afficherListeCompanies() {
+	public void afficherListeCompanies() {
 		ArrayList<Company> companies = companyDao.listAll();
 		System.out.println("Affichage de la liste des companies");
 		for(Company c : companies) {
@@ -165,7 +165,7 @@ public class View {
 	/**
 	 * Affiche la liste des compagnies par pages
 	 */
-	public static void afficherPageCompanies() {
+	public void afficherPageCompanies() {
 		System.out.println("Id de début:");
 		Long idDebut = scanner.nextLong();
 		System.out.println("Nombre de compagnies à afficher:");
@@ -192,7 +192,7 @@ public class View {
 	 * Affiche les détails d'un ordinateur
 	 * @param id l'identifiant de l'ordinateur
 	 */
-	public static void afficherDetailsOrdinateur() {
+	public void afficherDetailsOrdinateur() {
 		System.out.println("Id de l'ordinateur:");
 		Long idOrdi = scanner.nextLong();
 		Computer computer = computerDao.find(idOrdi);
@@ -206,7 +206,7 @@ public class View {
 	 * @param discontinued la date de fin
 	 * @param company la compagnie à laquelle il appartient
 	 */
-	public static void creerOrdinateur() {
+	public void creerOrdinateur() {
 		System.out.println("Nom de l'ordinateur à créer:");
 		String nomOrdi = scanner.next();
 		
@@ -226,7 +226,7 @@ public class View {
 	/**
 	 * Met à jour un ordinateur
 	 */
-	public static void mettreAJourOrdinateur() {
+	public void mettreAJourOrdinateur() {
 		System.out.println("Id de l'ordinateur à mettre à jour:");
 		Long idOrdi = scanner.nextLong();
 		
@@ -247,7 +247,7 @@ public class View {
 	/**
 	 * Supprime un ordinateur
 	 */
-	public static void supprimerOrdinateur() {
+	public void supprimerOrdinateur() {
 		System.out.println("Id de l'ordinateur à supprimer:");
 		Long idOrdi = scanner.nextLong();
 		

@@ -2,15 +2,26 @@ package com.excilys.model;
 
 public class CompanyBuilder {
 	
-	Long id;
-	String name;
+	private Long id;
+	private String name;
+	
+	
+	/**
+	 * Construit une compagnie vide
+	 * @return la compagnie
+	 */
+	public CompanyBuilder empty () {
+		this.id = 0L;
+		this.name = null;
+		return this;
+	}
 	
 	/**
 	 * Renvoie un CompanyBuilder
 	 * @param id l'identifiant de l'ordinateur
-	 * @return le companyBuilder
+	 * @return le CompanyBuilder
 	 */
-	CompanyBuilder withId (Long id) {
+	public CompanyBuilder withId (Long id) {
 		this.id = id;
 		return this;
 	}
@@ -18,9 +29,9 @@ public class CompanyBuilder {
 	/**
 	 * Renvoie un CompanyBuilder
 	 * @param name le nom de l'ordinateur
-	 * @return le companyBuilder
+	 * @return le CompanyBuilder
 	 */
-	CompanyBuilder withName (String name) {
+	public CompanyBuilder withName (String name) {
 		this.name = name;
 		return this;
 	}
@@ -29,9 +40,9 @@ public class CompanyBuilder {
 	 * Renvoie un CompanyBuilder
 	 * @param id l'identifiant de l'ordinateur
 	 * @param name le nom de l'ordinateur
-	 * @return le companyBuilder
+	 * @return le CompanyBuilder
 	 */
-	CompanyBuilder withIdAndName (Long id, String name) {
+	public CompanyBuilder withIdAndName (Long id, String name) {
 		this.id = id;
 		this.name = name;
 		return this;
@@ -41,10 +52,8 @@ public class CompanyBuilder {
 	 * Construit une compagnie 
 	 * @return la compagnie
 	 */
-	Company build () {
+	public Company build () {
 		return new Company(id, name);
 	}
-	
-	// Company c = new CompanyBuilder().withIdAndName(id, name).build();
 	
 }

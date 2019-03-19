@@ -52,6 +52,35 @@ public class Computer {
 		this.company = company;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (this.getClass() != obj.getClass()) return false;
+		
+		Computer computer = (Computer) obj;
+		
+		if (this.id != computer.id) return false;
+		
+		if (this.name == null && computer.name != null) return false;
+		if (this.name != null && computer.name == null) return false;
+		if (this.name != null && computer.name != null && !this.name.equals(computer.name)) return false;
+		
+		if (this.introduced == null && computer.introduced != null) return false;
+		if (this.introduced != null && computer.introduced == null) return false;
+		if (this.introduced != null && computer.introduced != null && !this.introduced.equals(computer.introduced)) return false;
+		
+		if (this.discontinued == null && computer.discontinued != null) return false;
+		if (this.discontinued != null && computer.discontinued == null) return false;
+		if (this.discontinued != null && computer.discontinued != null && !this.discontinued.equals(computer.discontinued)) return false;
+		
+		if (this.company == null && computer.company != null) return false;
+		if (this.company != null && computer.company == null) return false;
+		if (this.company != null && computer.company != null && !this.company.equals(computer.company)) return false;
+		
+		return true;
+	}
+	
 	/**
 	 * @return l'identifiant de l'ordinateur
 	 */

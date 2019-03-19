@@ -23,6 +23,23 @@ public class Company {
 		this.name = name;
 	}
 	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) return true;
+		if (obj == null) return false;
+		if (this.getClass() != obj.getClass()) return false;
+		
+		Company company = (Company) obj;
+		
+		if (this.id != company.id) return false;
+		
+		if (this.name == null && company.name != null) return false;
+		if (this.name != null && company.name == null) return false;
+		if (this.name != null && company.name != null && !this.name.equals(company.name)) return false;
+		
+		return true;
+	}
+	
 	/**
 	 * @return l'identifiant de la compagnie
 	 */

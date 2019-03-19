@@ -1,10 +1,10 @@
-package com.excilys.computer_db;
+package com.excilys.main;
 
+import com.excilys.controller.Controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.excilys.controller.Controller;
 
 public class App {
 	
@@ -20,5 +20,5 @@ public class App {
 		new Controller();
 		
 	}
-	
+
 }

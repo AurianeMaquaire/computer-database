@@ -16,7 +16,7 @@ public class ComputerDAO extends DAO<Computer> {
 	
 	private static final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);
 	
-	int nbComputers = 0;
+	private int nbComputers = 0;
 
 	@Override
 	public Computer find(long id) {
