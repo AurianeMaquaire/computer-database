@@ -1,6 +1,8 @@
 package com.excilys.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.sql.Timestamp;
 
@@ -8,9 +10,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-import junit.framework.TestCase;
-
-public class ComputerTest extends TestCase {
+public class ComputerTest {
 	
 	private static ComputerBuilder computerBuilder1 = new ComputerBuilder();
 	private static ComputerBuilder computerBuilder2 = new ComputerBuilder();
@@ -29,13 +29,13 @@ public class ComputerTest extends TestCase {
     }
 	
 	@Test
-    public static void testComputer() {
+    public void testComputer() {
 		assertEquals(computer1, computer1);
 		assertNotNull(computer1);
 	}
 	
 	@Test
-    public static void testId() {
+    public void testId() {
 		computer1 = computerBuilder1.withId(2L).build();
 		computer2 = computerBuilder2.withId(3L).build();
 		Assert.assertNotEquals(computer1, computer2);
@@ -46,7 +46,7 @@ public class ComputerTest extends TestCase {
 	}
 	
 	@Test
-    public static void testName() {
+    public void testName() {
 		computer1 = computerBuilder1.withName(null).build();
 		computer2 = computerBuilder2.withName(null).build();
 		assertEquals(computer1, computer2);
@@ -69,7 +69,7 @@ public class ComputerTest extends TestCase {
 	}
 	
 	@Test
-    public static void testIntroduced() {
+    public void testIntroduced() {
 		computer1 = computerBuilder1.withIntroduced(null).build();
 		computer2 = computerBuilder2.withIntroduced(null).build();
 		assertEquals(computer1, computer2);
@@ -96,7 +96,7 @@ public class ComputerTest extends TestCase {
 	}
 	
 	@Test
-    public static void testDiscontinued() {
+    public void testDiscontinued() {
 		computer1 = computerBuilder1.withDiscontinued(null).build();
 		computer2 = computerBuilder2.withDiscontinued(null).build();
 		assertEquals(computer1, computer2);
@@ -123,7 +123,7 @@ public class ComputerTest extends TestCase {
 	}
 	
 	@Test
-    public static void testCompany() {
+    public void testCompany() {
 		computer1 = computerBuilder1.withCompany(null).build();
 		computer2 = computerBuilder2.withCompany(null).build();
 		assertEquals(computer1, computer2);

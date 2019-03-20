@@ -16,26 +16,27 @@ public class ComputerMapper {
 	private static Logger logger = LoggerFactory.getLogger(CompanyMapper.class);
 
 	public static Computer resultSetToComputer (ResultSet resultSet) {
-
 		ComputerBuilder computerBuilder = new ComputerBuilder();
 		Computer computer = computerBuilder.empty().build();
-
 		try {
-			Long id = resultSet.getLong(1);
-			String name = resultSet.getString(2);
-			Timestamp introduced = resultSet.getTimestamp(3);
-			Timestamp discontinued = resultSet.getTimestamp(4);
-			Long companyId = resultSet.getLong(5);
-			String companyName = resultSet.getString(6);
-			Company company = new Company(companyId, companyName);
-			computer = computerBuilder.withId(id)
-					.withName(name)
-					.withIntroduced(introduced)
-					.withDiscontinued(discontinued)
-					.withCompany(company)
-					.build();
+			if (resultSet.next()) {
+				Long id = resultSet.getLong("computerId");
+				String name = resultSet.getString("computerName");
+				Timestamp introduced = resultSet.getTimestamp("computerIntroduced");
+				Timestamp discontinued = resultSet.getTimestamp("computerDiscontinued");
+				Long companyId = resultSet.getLong("companyId");
+				String companyName = resultSet.getString("companyName");
+				Company company = new Company(companyId, companyName);
+				computer = computerBuilder.withId(id)
+						.withName(name)
+						.withIntroduced(introduced)
+						.withDiscontinued(discontinued)
+						.withCompany(company)
+						.build();
+			}
+
 		} catch (SQLException e) {
-			e.printStackTrace();
+			e.getCause().printStackTrace();
 			logger.error("SQLException", e);
 		}
 

@@ -1,14 +1,14 @@
 package com.excilys.model;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.Before;
 import org.junit.Test;
 
-import junit.framework.TestCase;
 
-
-public class CompanyTest extends TestCase {
+public class CompanyTest {
 	
 	private static CompanyBuilder companyBuilder1 = new CompanyBuilder();
 	private static CompanyBuilder companyBuilder2 = new CompanyBuilder();
@@ -28,13 +28,13 @@ public class CompanyTest extends TestCase {
 	
 	
 	@Test
-	public static void testCompany() {
+	public void testCompany() {
 		assertEquals(company1, company1);
 		assertNotNull(company1);
 	}
 	
 	@Test
-	public static void testId() {
+	public void testId() {
 		company1 = companyBuilder1.withId(2L).build();
 		company2 = companyBuilder2.withId(3L).build();
 		assertNotEquals(company1, company2);
@@ -45,7 +45,7 @@ public class CompanyTest extends TestCase {
 	}
 	
 	@Test
-	public static void testName() {
+	public void testName() {
 		company1 = companyBuilder1.withName(null).build();
 		company2 = companyBuilder2.withName(null).build();
 		assertEquals(company1, company2);
