@@ -4,11 +4,11 @@ import java.sql.Timestamp;
 
 public class ComputerBuilder {
 	
-	private Long id;
-	private String name;
-	private Timestamp introduced;
-	private Timestamp discontinued;
-	private Company company;
+	private Long id = 0L;
+	private String name = null;
+	private Timestamp introduced = null;
+	private Timestamp discontinued = null;
+	private Company company = null;
 	
 	
 	/**

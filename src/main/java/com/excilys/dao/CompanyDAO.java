@@ -1,34 +1,42 @@
 package com.excilys.dao;
 
-import com.excilys.model.Company;
-
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class CompanyDAO extends DAO<Company> {
+import com.excilys.mapper.CompanyMapper;
+import com.excilys.model.Company;
+import com.excilys.persistence.ConnectionDAO;
+
+public class CompanyDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
-
-	private int nbCompanies = 0;
-
-	@Override
-	public Company find(long id) {
-		Company company = null;
-		try (Statement statement = connect.createStatement()) {
-
-			ResultSet res = statement.executeQuery("SELECT id, name FROM company "
-					+ "WHERE id = '" + id + "'");
-
-			if (res.next()) {
-				company = new Company(res.getLong("id"), res.getString("name"));
-			} else {
-				System.out.println("This company doesn't exixst");
-			}
+	
+	private final String SELECT_ALL = "SELECT id, name FROM company";
+	private final String SELECT_ID = SELECT_ALL + " WHERE id = ?";
+	private final String SELECT_NAME = SELECT_ALL + " WHERE name = ?";
+	private final String SELECT_LIST = SELECT_ALL + " WHERE id >= ? AND id <= ?";
+	private final String COUNT = "SELECT COUNT(*) AS len FROM company";
+	
+	/**
+	 * Renvoie les informations sur une compagnie à partir de l'identifiant
+	 * @param id l'identifiant de la compagnie
+	 * @return une compagnie
+	 */
+	public Optional<Company> find(long id) {
+		Optional<Company> company = Optional.empty();
+		try (PreparedStatement statement = ConnectionDAO.getInstance().prepareStatement(SELECT_ID)) {
+			
+			statement.setLong(1, id);
+			
+			ResultSet res = statement.executeQuery();
+			
+			company = CompanyMapper.resultSetToCompany(res);
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -42,19 +50,16 @@ public class CompanyDAO extends DAO<Company> {
 	 * @param name le nom de la compagnie
 	 * @return une compagnie
 	 */
-	public Company find (String name) {
-		Company company = null;
-		try (Statement statement = connect.createStatement()) {
-
-			ResultSet res = statement.executeQuery("SELECT id, name FROM company "
-					+ "WHERE name = '" + name + "'");
-
-			if (res.next()) {
-				company = new Company(res.getLong("id"), res.getString("name"));
-			} else {
-				System.out.println("This company doesn't exixst");
-			}
-
+	public Optional<Company> find (String name) {
+		Optional<Company> company = Optional.empty();
+		try (PreparedStatement statement = ConnectionDAO.getInstance().prepareStatement(SELECT_NAME)) {
+			
+			statement.setString(1, name);
+			
+			ResultSet res = statement.executeQuery();
+			
+			company = CompanyMapper.resultSetToCompany(res);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.debug("Exception SQL", e);
@@ -62,34 +67,14 @@ public class CompanyDAO extends DAO<Company> {
 		return company;
 	}
 
-	@Override
-	public Company create(Company obj) {
-		return null;
-	}
-
-	@Override
-	public Company update(Company obj) {
-		return null;
-	}
-
-	@Override
-	public void delete(Company obj) {
-		return;
-	}
-
-	@Override
 	public ArrayList<Company> listAll() {
 		ArrayList<Company> companies = new ArrayList<Company>();
-		try (Statement statement = connect.createStatement()) {
+		try (PreparedStatement statement = ConnectionDAO.getInstance().prepareStatement(SELECT_ALL)) {
 
-			ResultSet res = statement.executeQuery("SELECT company.id, company.name "
-					+ "FROM company");
-
-			while (res.next()) {
-				Company comp = new Company(res.getLong("id"), res.getString("name"));
-				companies.add(comp);
-				nbCompanies = nbCompanies + 1;
-			}
+			ResultSet res = statement.executeQuery();
+			
+			companies = CompanyMapper.resultSetToListCompany(res);
+			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.debug("Exception SQL", e);
@@ -97,19 +82,17 @@ public class CompanyDAO extends DAO<Company> {
 		return companies;
 	}
 
-	@Override
 	public ArrayList<Company> list(Long idDebut, Long idFin) {
-		//if (idFin > nbCompanies - 20) return null;
 		ArrayList<Company> companies = new ArrayList<Company>();
-		try (Statement statement = connect.createStatement()) {
-
-			ResultSet res = statement.executeQuery("SELECT company.id, company.name "
-					+ "FROM company WHERE id>=" + idDebut + " AND id<=" + idFin);
-
-			while (res.next()) {
-				Company comp = new Company(res.getLong("id"), res.getString("name"));
-				companies.add(comp);
-			}
+		try (PreparedStatement statement = ConnectionDAO.getInstance().prepareStatement(SELECT_LIST)) {
+			
+			statement.setLong(1, idDebut);
+			statement.setLong(2, idFin);
+			
+			ResultSet res = statement.executeQuery();
+			
+			companies = CompanyMapper.resultSetToListCompany(res);
+			
 		} catch (SQLException e) {
 			logger.debug("Exception SQL", e);
 			e.printStackTrace();
@@ -117,12 +100,11 @@ public class CompanyDAO extends DAO<Company> {
 		return companies;
 	}
 
-	@Override
 	public Long length() {
 		Long len = 0L;
-		try (Statement statement = connect.createStatement()) {
+		try (PreparedStatement statement = ConnectionDAO.getInstance().prepareStatement(COUNT)) {
 
-			ResultSet res = statement.executeQuery("SELECT COUNT(*) AS len FROM company");
+			ResultSet res = statement.executeQuery();
 
 			res.next();
 			len = res.getLong("len");

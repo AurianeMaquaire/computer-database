@@ -1,16 +1,15 @@
 package com.excilys.view;
 
-import java.sql.Connection;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Scanner;
 
 import com.excilys.dao.CompanyDAO;
 import com.excilys.dao.ComputerDAO;
-import com.excilys.dao.DAO;
 import com.excilys.model.ChoixUtilisateur;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
@@ -18,14 +17,13 @@ import com.excilys.persistence.ConnectionDAO;
 
 public class View {
 	
-	static Connection conn = null;
-	static DAO<Computer> computerDao = null;
-	static DAO<Company> companyDao = null;
+	static ComputerDAO computerDao = null;
+	static CompanyDAO companyDao = null;
 	static Scanner scanner;
+	int nbChoisi;
 	
 	public View() {
 		super();
-		conn = ConnectionDAO.getInstance();
 		computerDao = new ComputerDAO();
 		companyDao = new CompanyDAO();
 		scanner = new Scanner(System.in);
@@ -37,13 +35,8 @@ public class View {
 	 * Interagit avec l'utilisateur via la console
 	 */
 	public void console() {
-		
-		if (conn == null) {
-			return;
-		}
-		
 		menu();
-		int nbChoisi = scanner.nextInt();
+		nbChoisi = scanner.nextInt();
 		ChoixUtilisateur choix = ChoixUtilisateur.values()[8];
 		
 		if (nbChoisi > choix.ordinal()) {
@@ -102,15 +95,15 @@ public class View {
 	 */
 	private void menu() {
 		System.out.println("");
-		System.out.println("0 : afficher la liste des ordinateurs");
-		System.out.println("1 : afficher la liste des ordinateurs par pages");
-		System.out.println("2 : afficher la liste des compagnies");
-		System.out.println("3 : afficher la liste des compagnies par pages");
-		System.out.println("4 : afficher des détails sur un ordinateur");
-		System.out.println("5 : créer un ordinateur");
-		System.out.println("6 : mettre un jour un ordinateur");
-		System.out.println("7 : supprimer un ordinateur");
-		System.out.println("8 : quitter");
+		System.out.println("0 : Afficher la liste des ordinateurs");
+		System.out.println("1 : Afficher la liste des ordinateurs par pages");
+		System.out.println("2 : Afficher la liste des compagnies");
+		System.out.println("3 : Afficher la liste des compagnies par pages");
+		System.out.println("4 : Afficher des détails sur un ordinateur");
+		System.out.println("5 : Créer un ordinateur");
+		System.out.println("6 : Mettre un jour un ordinateur");
+		System.out.println("7 : Supprimer un ordinateur");
+		System.out.println("8 : Quitter");
 	}
 
 
@@ -156,7 +149,7 @@ public class View {
 	 */
 	public void afficherListeCompanies() {
 		ArrayList<Company> companies = companyDao.listAll();
-		System.out.println("Affichage de la liste des companies");
+		System.out.println("Affichage de la liste des compagnies");
 		for(Company c : companies) {
 			System.out.println(c);
 		}
@@ -195,8 +188,13 @@ public class View {
 	public void afficherDetailsOrdinateur() {
 		System.out.println("Id de l'ordinateur:");
 		Long idOrdi = scanner.nextLong();
-		Computer computer = computerDao.find(idOrdi);
-		System.out.println(computer);
+		Optional<Computer> computer = computerDao.find(idOrdi);
+		
+		if (computer.isPresent()) {
+			System.out.println(computer.get());
+		} else {
+			System.out.println("Cet ordinateur n'existe pas");
+		}
 	}
 
 	/**
@@ -216,11 +214,15 @@ public class View {
 		
 		System.out.println("Nom de la compagnie:");
 		String company_name = scanner.next();
-		Company company = companyDao.find(company_name);
+		Optional<Company> company = companyDao.find(company_name);
 		
-		Computer computer = new Computer(nomOrdi, tsIntroduced, null, company);
-		computerDao.create(computer);
-		System.out.println("L'ordinateur " + nomOrdi + " a bien été crée");
+		if(company.isPresent()) {
+			Computer computer = new Computer(nomOrdi, tsIntroduced, null, company.get());
+			computerDao.create(computer);
+			System.out.println("L'ordinateur " + nomOrdi + " a bien été crée");
+		} else {
+			System.out.println("Cette compagnie n'existe pas");
+		}
 	}
 
 	/**
@@ -230,18 +232,23 @@ public class View {
 		System.out.println("Id de l'ordinateur à mettre à jour:");
 		Long idOrdi = scanner.nextLong();
 		
-		Computer computer = computerDao.find(idOrdi);
-		System.out.println(computer);
-		
-		System.out.println("Nouveau nom de l'ordinateur:");
-		String nomOrdi = scanner.next();
-		
-		computer.setName(nomOrdi);
-		computerDao.update(computer);
-		
-		System.out.println("L'ordinateur " + idOrdi + " a bien été mit à jour");
-		computer = computerDao.find(idOrdi);
-		System.out.println(computer);
+		Optional<Computer> computer = computerDao.find(idOrdi);
+
+		if (computer.isPresent()) {
+			System.out.println(computer.get());
+			
+			System.out.println("Nouveau nom de l'ordinateur:");
+			String nomOrdi = scanner.next();
+			
+			computer.get().setName(nomOrdi);
+			computerDao.update(computer.get());
+			
+			System.out.println("L'ordinateur " + idOrdi + " a bien été mit à jour");
+			computer = computerDao.find(idOrdi);
+			System.out.println(computer.get());
+		} else {
+			System.out.println("Cet ordinateur n'existe pas");
+		}
 	}
 
 	/**
@@ -251,9 +258,13 @@ public class View {
 		System.out.println("Id de l'ordinateur à supprimer:");
 		Long idOrdi = scanner.nextLong();
 		
-		Computer computer = computerDao.find(idOrdi);
-		computerDao.delete(computer);
-		System.out.println("L'ordinateur " + idOrdi + " a bien été supprimé");
+		Optional<Computer> computer = computerDao.find(idOrdi);
+		if (computer.isPresent()) {
+			computerDao.delete(computer.get());
+			System.out.println("L'ordinateur " + idOrdi + " a bien été supprimé");
+		} else {
+			System.out.println("Cet ordinateur n'existe pas");
+		}
 	}
 	
 }

@@ -2,9 +2,15 @@ package com.excilys.model;
 
 public class CompanyBuilder {
 	
-	private Long id;
-	private String name;
+	private Long id = 0L;
+	private String name = null;
 	
+	/**
+	 * Constructeur sans argument
+	 */
+	public CompanyBuilder() {
+		super();
+	}
 	
 	/**
 	 * Construit une compagnie vide

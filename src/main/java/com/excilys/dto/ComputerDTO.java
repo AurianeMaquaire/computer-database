@@ -1,16 +1,15 @@
 package com.excilys.dto;
 
-import java.sql.Timestamp;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class ComputerDTO {
 	
 	AtomicLong incr = new AtomicLong(560);
-	private Long id;
+	private long id;
 	private String name;
-	private Timestamp introduced;
-	private Timestamp discontinued;
-	private CompanyDTO company;
+	private String introduced;
+	private String discontinued;
+	private long companyId;
 	
 	/**
 	 * Constructeur sans argument
@@ -27,13 +26,13 @@ public class ComputerDTO {
 	 * @param discontinued la date à laquelle il a été retiré du marché
 	 * @param company la compagnie de l'ordinateur
 	 */
-	public ComputerDTO(Long id, String name, Timestamp introduced, Timestamp discontinued, CompanyDTO company) {
+	public ComputerDTO(long id, String name, String introduced, String discontinued, long companyId) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.company = company;
+		this.companyId = companyId;
 	}
 	
 	/**
@@ -43,13 +42,13 @@ public class ComputerDTO {
 	 * @param discontinued la date à laquelle il a été retiré du marché
 	 * @param company la compagnie de l'ordinateur
 	 */
-	public ComputerDTO(String name, Timestamp introduced, Timestamp discontinued, CompanyDTO company) {
+	public ComputerDTO(String name, String introduced, String discontinued, long companyId) {
 		super();
 		this.id = incr.getAndIncrement();
 		this.name = name;
 		this.introduced = introduced;
 		this.discontinued = discontinued;
-		this.company = company;
+		this.companyId = companyId;
 	}
 	
 	
@@ -70,22 +69,22 @@ public class ComputerDTO {
 	/**
 	 * @return la date à laquelle il a été mit sur le marché
 	 */
-	public Timestamp getIntroduced() {
+	public String getIntroduced() {
 		return this.introduced;
 	}
 	
 	/**
 	 * @return la date à laquelle il a été retiré du marché
 	 */
-	public Timestamp getDiscontinued() {
+	public String getDiscontinued() {
 		return this.discontinued;
 	}
 	
 	/**
 	 * @return la compagnie de l'ordinateur
 	 */
-	public CompanyDTO getCompany() {
-		return this.company;
+	public long getCompanyId() {
+		return this.companyId;
 	}
 	
 	/**
@@ -105,28 +104,28 @@ public class ComputerDTO {
 	/**
 	 * @param pIntroduced la date à laquelle il a été mit sur le marché
 	 */
-	public void setIntroduced(Timestamp pIntroduced) {
+	public void setIntroduced(String pIntroduced) {
 		this.introduced = pIntroduced;
 	}
 	
 	/**
 	 * @param pDiscontinued la date à laquelle il a été retiré du marché
 	 */
-	public void setDiscontinued(Timestamp pDiscontinued) {
+	public void setDiscontinued(String pDiscontinued) {
 		this.discontinued = pDiscontinued;
 	}
 	
 	/**
 	 * @param pCompany la compagnie de l'ordinateur
 	 */
-	public void setCompany(CompanyDTO pCompany) {
-		this.company = pCompany;
+	public void setCompany(long pCompanyId) {
+		this.companyId = pCompanyId;
 	}
 
 	@Override
 	public String toString() {
 		return "ComputerDTO [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued=" + discontinued
-				+ ", companyDTO=" + company + "]";
+				+ ", companyId=" + companyId + "]";
 	}
 	
 	
