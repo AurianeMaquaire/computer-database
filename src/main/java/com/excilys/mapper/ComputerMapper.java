@@ -80,19 +80,28 @@ public class ComputerMapper {
 
 		return computers;
 	}
-	
-	public static ComputerDTO ComputerToComputerDTO (Computer computer) {
+
+	public static ComputerDTO computerToComputerDTO (Computer computer) {
 		Long id = computer.getId();
 		String name = computer.getName();
 		Timestamp introduced = computer.getIntroduced();
 		Timestamp discontinued = computer.getDiscontinued();
 		Long companyId = computer.getCompany().getId();
-		
-		SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-	    String introducedString = f.format(introduced);
-	    String discontinuedString = f.format(discontinued);
-		
-		return new ComputerDTO(id, name, introducedString, discontinuedString, companyId);
+		String companyName = computer.getCompany().getName();
+
+		String introducedString = null;
+		if (introduced != null) {
+			introducedString = new SimpleDateFormat("yyyy.MM.dd").format(introduced);
+			//introducedString = introduced.toString();
+		} 
+
+		String discontinuedString = null;
+		if (discontinued != null) {
+			discontinuedString = new SimpleDateFormat("yyyy.MM.dd").format(introduced);
+			//discontinuedString = discontinued.toString();
+		} 
+
+		return new ComputerDTO(id, name, introducedString, discontinuedString, companyId, companyName);
 	}
 
 }

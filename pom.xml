@@ -22,6 +22,7 @@
 		<logback>1.2.3</logback>
 		<mockito>2.23.0</mockito>
 		<servlet>4.0.1</servlet>
+		<jstl>1.2</jstl>
 	</properties>
 
 	<dependencies>
@@ -69,6 +70,13 @@
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${servlet}</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>jstl</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${jstl}</version>
 			<scope>provided</scope>
 		</dependency>
 

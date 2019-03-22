@@ -9,6 +9,7 @@ public class ConnectionDAO {
 	private static String url = "jdbc:mysql://localhost:3306/computer-database-db";
 	private static String user = "admincdb";
 	private static String password = "qwerty1234";
+	private static String driver = "com.mysql.cj.jdbc.Driver";
 	
 	private static Connection connect;
 	
@@ -19,8 +20,9 @@ public class ConnectionDAO {
 	public static Connection getInstance(){
 		if(connect == null){
 			try {
+				Class.forName(driver);
 				connect = DriverManager.getConnection(url, user, password);
-			} catch (SQLException e) {
+			} catch (SQLException | ClassNotFoundException e) {
 				e.printStackTrace();
 			}
 		}	

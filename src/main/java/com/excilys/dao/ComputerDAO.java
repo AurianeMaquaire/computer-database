@@ -24,7 +24,7 @@ public class ComputerDAO {
 	private final String INSERT = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
 	private final String UPDATE = "UPDATE computer SET name = ? WHERE id = ?";
 	private final String DELETE = "DELETE FROM computer WHERE id = ?";
-	private final String COUNT = "SELECT COUNT(*) AS len FROM computer";
+	private final String COUNT = "SELECT COUNT(id) AS len FROM computer";
 
 	public Optional<Computer> find(long id) {
 		Optional<Computer> computer = Optional.empty();
@@ -99,7 +99,6 @@ public class ComputerDAO {
 			ResultSet res = statement.executeQuery();
 			
 			computers = ComputerMapper.resultSetToListComputer(res);
-			
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.debug("Exception SQL", e);

@@ -21,7 +21,7 @@ public class CompanyDAO {
 	private final String SELECT_ID = SELECT_ALL + " WHERE id = ?";
 	private final String SELECT_NAME = SELECT_ALL + " WHERE name = ?";
 	private final String SELECT_LIST = SELECT_ALL + " WHERE id >= ? AND id <= ?";
-	private final String COUNT = "SELECT COUNT(*) AS len FROM company";
+	private final String COUNT = "SELECT COUNT(id) AS len FROM company";
 	
 	/**
 	 * Renvoie les informations sur une compagnie à partir de l'identifiant
