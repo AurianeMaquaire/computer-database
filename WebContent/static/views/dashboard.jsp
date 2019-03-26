@@ -102,21 +102,25 @@
 	</section>
 
 	<footer class="navbar-fixed-bottom">
+	
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="?currentPage=${Math.max(page.currentPage-1, 0)}"
+				<li><a href="?currentPage=${page.previous()}"
 					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 				</a></li>
+				
 				<li><a href="?currentPage=1">1</a></li>
 				<li><a href="?currentPage=2">2</a></li>
 				<li><a href="?currentPage=3">3</a></li>
 				<li><a href="?currentPage=4">4</a></li>
 				<li><a href="?currentPage=5">5</a></li>
-				<li><a href="?currentPage=${page.currentPage+1}"
+				
+				<li><a href="?currentPage=${page.next()}"
 					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 		</div>
+		
 		<div class="btn-group btn-group-sm pull-right" role="group">
 			<button type="button" class="btn btn-default">10</button>
 			<button type="button" class="btn btn-default">50</button>

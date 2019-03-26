@@ -15,7 +15,7 @@ public class Page<T> {
 		this.data = list;
 		this.currentPage = 0;
 		this.length = list.size();
-		this.pageSize = 10;
+		this.pageSize = 20;
 	}
 	
 	
@@ -56,13 +56,19 @@ public class Page<T> {
 	
 	
 	public int previous () {
-		this.currentPage = Math.max(this.currentPage-1, 0);
-		return this.currentPage;
+		if (this.currentPage * this.pageSize > this.pageSize) {
+			return this.currentPage - 1;
+		} else {
+			return 0;
+		}
 	}
 	
 	public int next () {
-		this.currentPage = Math.min(this.currentPage+1, this.length);
-		return this.currentPage;
+		if (this.currentPage * this.pageSize < this.length) {
+			return this.currentPage + 1;
+		} else {
+			return this.currentPage;
+		}
 	}
 	
 	
@@ -73,5 +79,7 @@ public class Page<T> {
 	public int fin () {
 		return (this.currentPage + 1) * this.pageSize - 1;
 	}
+	
+	
 	
 }

@@ -110,9 +110,6 @@ public class ComputerBuilder {
 		}
 		computer.setId(id);
 		
-		if (this.name == null) {
-			name = "";
-		}
 		computer.setName(name);
 		
 		computer.setIntroduced(introduced);
