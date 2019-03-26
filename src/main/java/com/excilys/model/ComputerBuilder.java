@@ -2,7 +2,12 @@ package com.excilys.model;
 
 import java.sql.Timestamp;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ComputerBuilder {
+	
+	private static final Logger logger = LoggerFactory.getLogger(ComputerBuilder.class);
 	
 	private Long id = 0L;
 	private String name = null;
@@ -97,7 +102,25 @@ public class ComputerBuilder {
 	 * @return l'odinateur
 	 */
 	public Computer build () {
-		return new Computer(id, name, introduced, discontinued, company);
+		Computer computer = new Computer();
+		
+		if (this.id == null) {
+			logger.warn("Id null");
+			return null;
+		}
+		computer.setId(id);
+		
+		if (this.name == null) {
+			name = "";
+		}
+		computer.setName(name);
+		
+		computer.setIntroduced(introduced);
+		computer.setDiscontinued(discontinued);
+		
+		computer.setCompany(company);
+		
+		return computer;
 	}
 	
 	

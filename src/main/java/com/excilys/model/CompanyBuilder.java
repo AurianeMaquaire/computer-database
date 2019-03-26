@@ -1,6 +1,11 @@
 package com.excilys.model;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class CompanyBuilder {
+	
+	private static final Logger logger = LoggerFactory.getLogger(CompanyBuilder.class);
 	
 	private Long id = 0L;
 	private String name = null;
@@ -59,7 +64,14 @@ public class CompanyBuilder {
 	 * @return la compagnie
 	 */
 	public Company build () {
-		return new Company(id, name);
+		Company company = new Company();
+		if (this.id == null) {
+			logger.warn("Id null");
+			return null;
+		} 
+		company.setId(this.id);
+		company.setName(this.name);
+		return company;
 	}
 	
 }

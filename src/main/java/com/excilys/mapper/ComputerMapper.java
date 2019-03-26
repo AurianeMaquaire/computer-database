@@ -3,7 +3,6 @@ package com.excilys.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -91,14 +90,12 @@ public class ComputerMapper {
 
 		String introducedString = null;
 		if (introduced != null) {
-			introducedString = new SimpleDateFormat("yyyy.MM.dd").format(introduced);
-			//introducedString = introduced.toString();
+			introducedString = TimestampMapper.timestampToString(introduced);
 		} 
 
 		String discontinuedString = null;
 		if (discontinued != null) {
-			discontinuedString = new SimpleDateFormat("yyyy.MM.dd").format(introduced);
-			//discontinuedString = discontinued.toString();
+			discontinuedString = TimestampMapper.timestampToString(introduced);
 		} 
 
 		return new ComputerDTO(id, name, introducedString, discontinuedString, companyId, companyName);
