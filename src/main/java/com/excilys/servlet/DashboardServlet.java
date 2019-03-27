@@ -9,7 +9,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.excilys.dto.ComputerDTO;
 import com.excilys.model.Page;
@@ -26,16 +25,15 @@ public class DashboardServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException  {
 		
-		HttpSession session = request.getSession();
-		
+				
 		ArrayList<ComputerDTO> listComputers = ComputerService.listeComputers();
 		request.setAttribute("listComputers", listComputers);
 		
 		this.page = null;
-		if (session.getAttribute("page") == null) {
+		if (request.getAttribute("page") == null) {
 			this.page = new Page<ComputerDTO>(listComputers);
 		} else {
-			this.page = (Page<ComputerDTO>) session.getAttribute("page");
+			this.page = (Page<ComputerDTO>) request.getAttribute("page");
 		}
 		
 		page.setData(listComputers);
@@ -45,7 +43,7 @@ public class DashboardServlet extends HttpServlet {
 			page.setCurrentPage(Integer.valueOf(currentPage));
 		} 
 		
-		session.setAttribute("page", page);
+		request.setAttribute("page", page);
 		
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("static/views/dashboard.jsp");
 		requestDispatcher.forward(request, response);

@@ -55,7 +55,7 @@ public class Page<T> {
 	}
 	
 	
-	public int previous () {
+	public int previousPage () {
 		if (this.currentPage * this.pageSize > this.pageSize) {
 			return this.currentPage - 1;
 		} else {
@@ -63,7 +63,7 @@ public class Page<T> {
 		}
 	}
 	
-	public int next () {
+	public int nextPage () {
 		if (this.currentPage * this.pageSize < this.length) {
 			return this.currentPage + 1;
 		} else {
@@ -79,7 +79,6 @@ public class Page<T> {
 	public int fin () {
 		return (this.currentPage + 1) * this.pageSize - 1;
 	}
-	
 	
 	
 }

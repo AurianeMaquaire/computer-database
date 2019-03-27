@@ -21,6 +21,12 @@ public class ComputerService {
 	public ComputerService () {
 		super();
 	}
+	
+	public static Optional<ComputerDTO> findComputer (Long id) {
+		Optional<Computer> computer = computerDao.find(id);
+		Optional<ComputerDTO> computerDTO = Optional.of(ComputerMapper.computerToComputerDTO(computer.get()));
+		return computerDTO;
+	}
 
 	public static ArrayList<ComputerDTO> listeComputers() {
 		ArrayList<Computer> computers = computerDao.listAll();
@@ -34,8 +40,12 @@ public class ComputerService {
 	}
 
 	public static void createComputer(String name, String introduced, String discontinued, String companyId) {
+		if (name == null) {
+			name = "";
+		}
+		
 		Timestamp intro = null;
-		if (introduced != null || introduced != "") {
+		if (! "".equals(introduced)) {
 			try {
 				intro = TimestampMapper.stringToTimestamp(introduced);
 			} catch (ParseException e) {
@@ -44,25 +54,67 @@ public class ComputerService {
 		} 
 
 		Timestamp disc = null;
-		if (discontinued != null || discontinued != "") {
+		if (! "".equals(discontinued)) {
 			try {
 				disc = TimestampMapper.stringToTimestamp(discontinued);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		} 
-
-		Long companyID ;
+		
+		Long companyID;
 		if (companyId != null) {
 			companyID = Long.parseLong(companyId);
 		} else {
-			companyID = 1L;
+			companyID = null;
 		}
 
 		Optional<Company> company = companyDao.find(companyID);
 		if(company.isPresent()) {
 			Computer computer = new Computer(name, intro, disc, company.get());
 			computerDao.create(computer);
+		}
+	}
+	
+	public static void editComputer(String id, String name, String introduced, String discontinued, String companyId) {
+		Long idComputer = 0L;
+		if (id != null) {
+			idComputer = Long.parseLong(id);
+		}
+		
+		if (name == null) {
+			name = "";
+		}
+		
+		Timestamp intro = null;
+		if (! "".equals(introduced)) {
+			try {
+				intro = TimestampMapper.stringToTimestamp(introduced);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		} 
+
+		Timestamp disc = null;
+		if (! "".equals(discontinued)) {
+			try {
+				disc = TimestampMapper.stringToTimestamp(discontinued);
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+		} 
+		
+		Long companyID;
+		if (companyId != null) {
+			companyID = Long.parseLong(companyId);
+		} else {
+			companyID = null;
+		}
+
+		Optional<Company> company = companyDao.find(companyID);
+		if(company.isPresent()) {
+			Computer computer = new Computer(idComputer, name, intro, disc, company.get());
+			computerDao.update(computer);
 		}
 	}
 

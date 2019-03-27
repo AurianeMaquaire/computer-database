@@ -1,15 +1,13 @@
 package com.excilys.view;
 
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Optional;
 import java.util.Scanner;
 
 import com.excilys.dao.CompanyDAO;
 import com.excilys.dao.ComputerDAO;
+import com.excilys.mapper.TimestampMapper;
 import com.excilys.model.ChoixUtilisateur;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
@@ -208,9 +206,7 @@ public class View {
 		System.out.println("Nom de l'ordinateur à créer:");
 		String nomOrdi = scanner.next();
 		
-		DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		String currentTime = df.format(new Date());
-		Timestamp tsIntroduced = Timestamp.valueOf(currentTime);
+		Timestamp tsIntroduced = TimestampMapper.currentTimeToTimestamp();
 		
 		System.out.println("Nom de la compagnie:");
 		String company_name = scanner.next();

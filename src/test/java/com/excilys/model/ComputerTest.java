@@ -6,7 +6,6 @@ import static org.junit.Assert.assertNotNull;
 
 import java.sql.Timestamp;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,7 +37,7 @@ public class ComputerTest {
     public void testId() {
 		computer1 = computerBuilder1.withId(2L).build();
 		computer2 = computerBuilder2.withId(3L).build();
-		Assert.assertNotEquals(computer1, computer2);
+		assertNotEquals(computer1, computer2);
 		
 		computer1 = computerBuilder1.withId(1L).build();
 		computer2 = computerBuilder2.withId(1L).build();
@@ -117,8 +116,8 @@ public class ComputerTest {
 		computer2 = computerBuilder2.withDiscontinued(time2).build();
 		assertNotEquals(computer1, computer2);
 		
-		computer1 = computerBuilder1.withDiscontinued(time1).build();
-		computer2 = computerBuilder2.withDiscontinued(time1).build();
+		computer1 = computerBuilder1.withDiscontinued(time2).build();
+		computer2 = computerBuilder2.withDiscontinued(time2).build();
 		assertEquals(computer1, computer2);
 	}
 	
@@ -140,7 +139,6 @@ public class ComputerTest {
 		computer1 = computerBuilder1.withCompany(company1).build();
 		computer2 = computerBuilder2.withCompany(company1).build();
 		assertEquals(computer1, computer2);
-		
 	}
 
 }

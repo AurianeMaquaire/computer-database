@@ -95,7 +95,7 @@ public class ComputerMapper {
 
 		String discontinuedString = null;
 		if (discontinued != null) {
-			discontinuedString = TimestampMapper.timestampToString(introduced);
+			discontinuedString = TimestampMapper.timestampToString(discontinued);
 		} 
 
 		return new ComputerDTO(id, name, introducedString, discontinuedString, companyId, companyName);

@@ -1,7 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ page session="true"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -24,10 +23,6 @@
 				Computer Database </a>
 		</div>
 	</header>
-
-	<%
-		pageContext.setAttribute("page", session.getAttribute("page"));
-	%>
 
 	<section id="main">
 		<div class="container">
@@ -87,8 +82,10 @@
 						begin="${page.debut()}" end="${page.fin()}">
 						<tr>
 							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="0"></td>
-							<td><a href="editComputer.html" onclick="">${ordi.name}</a></td>
+								class="cb" value="${ordi.id}"></td>
+							<td><a
+								href="<c:url value="/EditComputer?computerId=${ordi.id}"/>"
+								onclick="">${ordi.name}</a></td>
 							<td>${ordi.introduced}</td>
 							<td>${ordi.discontinued}</td>
 							<td>${ordi.companyName}</td>
@@ -102,25 +99,25 @@
 	</section>
 
 	<footer class="navbar-fixed-bottom">
-	
+
 		<div class="container text-center">
 			<ul class="pagination">
-				<li><a href="?currentPage=${page.previous()}"
+				<li><a href="?currentPage=${page.previousPage()}"
 					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 				</a></li>
-				
+
 				<li><a href="?currentPage=1">1</a></li>
 				<li><a href="?currentPage=2">2</a></li>
 				<li><a href="?currentPage=3">3</a></li>
 				<li><a href="?currentPage=4">4</a></li>
 				<li><a href="?currentPage=5">5</a></li>
-				
-				<li><a href="?currentPage=${page.next()}"
-					aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+
+				<li><a href="?currentPage=${page.nextPage()}" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
 				</a></li>
 			</ul>
 		</div>
-		
+
 		<div class="btn-group btn-group-sm pull-right" role="group">
 			<button type="button" class="btn btn-default">10</button>
 			<button type="button" class="btn btn-default">50</button>

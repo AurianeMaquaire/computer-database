@@ -22,34 +22,42 @@
 				Computer Database </a>
 		</div>
 	</header>
-
 	<section id="main">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8 col-xs-offset-2 box">
-					<h1>Add Computer</h1>
-					<form action="AddComputer" method="POST">
+					<div class="label label-default pull-right">id:
+						${computer.id}</div>
+					<h1>Edit Computer</h1>
+
+					<form action="EditComputer" method="POST">
+						<input type="hidden" value="${computer.id}" id="id"
+							name="computerId" />
+						<!-- TODO: Change this value with the computer id -->
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName"
-									name="computerName" placeholder="Computer name">
+									name="computerName" placeholder="Computer name"
+									value="${computer.name}">
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
 									type="date" class="form-control" id="introduced"
-									name="introduced" placeholder="Introduced date">
+									name="introduced" placeholder="Introduced date"
+									value="${computer.introduced}">
 							</div>
 							<div class="form-group">
 								<label for="discontinued">Discontinued date</label> <input
 									type="date" class="form-control" id="discontinued"
-									name="discontinued" placeholder="Discontinued date">
+									name="discontinued" placeholder="Discontinued date"
+									value="${computer.discontinued}">
 							</div>
 							<div class="form-group">
 								<label for="companyId">Company</label> <select
 									class="form-control" id="companyId" name="companyId">
-									
-									<option value="0">--</option>
+
+									<option value="${computer.companyId}">${computer.companyName}</option>
 									<c:forEach var="company" items="${listCompanies}">
 										<option value="${company.id}">${company.name}</option>
 									</c:forEach>
@@ -58,7 +66,7 @@
 							</div>
 						</fieldset>
 						<div class="actions pull-right">
-							<input type="submit" value="Add" class="btn btn-primary">
+							<input type="submit" value="Edit" class="btn btn-primary">
 							or <a href="<c:url value="/Dashboard"/>" class="btn btn-default">Cancel</a>
 						</div>
 					</form>

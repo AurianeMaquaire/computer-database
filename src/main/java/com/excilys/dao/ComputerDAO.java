@@ -22,7 +22,7 @@ public class ComputerDAO {
 	private final String SELECT_ID = SELECT_ALL + " WHERE ct.id = ?";
 	private final String SELECT_LIST = SELECT_ALL + " WHERE ct.id >= ? AND ct.id <= ?";
 	private final String INSERT = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
-	private final String UPDATE = "UPDATE computer SET name = ? WHERE id = ?";
+	private final String UPDATE = "UPDATE computer SET name = ?, introduced=?, discontinued=?, company_id=? WHERE id = ?";
 	private final String DELETE = "DELETE FROM computer WHERE id = ?";
 	private final String COUNT = "SELECT COUNT(id) AS len FROM computer";
 
@@ -31,11 +31,11 @@ public class ComputerDAO {
 		try (PreparedStatement statement = ConnectionDAO.getInstance().prepareStatement(SELECT_ID)) {
 
 			statement.setLong(1, id);
-			
+
 			ResultSet res = statement.executeQuery();
-			
+
 			computer = ComputerMapper.resultSetToComputer(res);
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.debug("Exception SQL", e);
@@ -67,7 +67,10 @@ public class ComputerDAO {
 		try (PreparedStatement statement = ConnectionDAO.getInstance().prepareStatement(UPDATE)) {
 
 			statement.setString(1, comp.getName());
-			statement.setLong(2, comp.getId());
+			statement.setTimestamp(2, comp.getIntroduced());
+			statement.setTimestamp(3, comp.getDiscontinued());
+			statement.setLong(4, comp.getCompany().getId());
+			statement.setLong(5, comp.getId());
 
 			statement.executeUpdate();
 			computer = Optional.of(comp);
@@ -97,7 +100,7 @@ public class ComputerDAO {
 		try (PreparedStatement statement = ConnectionDAO.getInstance().prepareStatement(SELECT_ALL)) {
 
 			ResultSet res = statement.executeQuery();
-			
+
 			computers = ComputerMapper.resultSetToListComputer(res);
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -109,14 +112,14 @@ public class ComputerDAO {
 	public ArrayList<Computer> list(Long idDebut, Long idFin) {
 		ArrayList<Computer> computers = new ArrayList<Computer>();
 		try (PreparedStatement statement = ConnectionDAO.getInstance().prepareStatement(SELECT_LIST)) {
-			
+
 			statement.setLong(1, idDebut);
 			statement.setLong(2, idFin);
-			
+
 			ResultSet res = statement.executeQuery();
-			
+
 			computers = ComputerMapper.resultSetToListComputer(res);
-			
+
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.debug("Exception SQL", e);

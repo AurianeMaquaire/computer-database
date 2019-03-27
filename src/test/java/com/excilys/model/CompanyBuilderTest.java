@@ -1,6 +1,7 @@
 package com.excilys.model;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,6 +45,9 @@ public class CompanyBuilderTest {
 		company1 = companyBuilder1.withId(1L).withName("company").build();
 		company2 = new Company(1L, "company");
 		assertEquals(company1, company2);
+		
+		company1 = companyBuilder1.withIdAndName(2L, "Company").build();
+		assertNotEquals(company1, company2);
 	}
 	
 }
