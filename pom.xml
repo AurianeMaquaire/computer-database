@@ -23,6 +23,7 @@
 		<mockito>2.23.0</mockito>
 		<servlet>4.0.1</servlet>
 		<jstl>1.2</jstl>
+		<hikari>2.7.8</hikari>
 	</properties>
 
 	<dependencies>
@@ -33,7 +34,7 @@
 			<version>${junit}</version>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.junit.jupiter</groupId>
 			<artifactId>junit-jupiter-engine</artifactId>
@@ -65,19 +66,26 @@
 			<artifactId>mockito-junit-jupiter</artifactId>
 			<version>${mockito}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
 			<version>${servlet}</version>
 			<scope>provided</scope>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
 			<version>${jstl}</version>
 			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.zaxxer</groupId>
+			<artifactId>HikariCP</artifactId>
+			<version>${hikari}</version>
+			<scope>compile</scope>
 		</dependency>
 
 	</dependencies>

@@ -8,12 +8,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="<c:url value="/static/css/bootstrap.min.css"/>"
-	rel="stylesheet" media="screen">
-<link href="<c:url value="/static/css/font-awesome.css"/>"
-	rel="stylesheet" media="screen">
-<link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"
+<link href="static/css/bootstrap.min.css" rel="stylesheet"
 	media="screen">
+<link href="static/css/font-awesome.css" rel="stylesheet" media="screen">
+<link href="static/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
 	<header class="navbar navbar-inverse navbar-fixed-top">
@@ -48,54 +46,55 @@
 			</div>
 		</div>
 
-		<form id="deleteForm" action="#" method="POST">
+		<form id="deleteForm" action="Dashboard" method="POST">
 			<input type="hidden" name="selection" value="">
-		</form>
 
-		<div class="container" style="margin-top: 10px;">
-			<table class="table table-striped table-bordered">
-				<thead>
-					<tr>
-						<!-- Variable declarations for passing labels as parameters -->
-						<!-- Table header for Computer Name -->
 
-						<th class="editMode" style="width: 60px; height: 22px;"><input
-							type="checkbox" id="selectall" /> <span
-							style="vertical-align: top;"> - <a href="#"
-								id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
-									class="fa fa-trash-o fa-lg"></i>
-							</a>
-						</span></th>
-						<th>Computer name</th>
-						<th>Introduced date</th>
-						<!-- Table header for Discontinued Date -->
-						<th>Discontinued date</th>
-						<!-- Table header for Company -->
-						<th>Company</th>
-
-					</tr>
-				</thead>
-				<!-- Browse attribute computers -->
-				<tbody id="results">
-
-					<c:forEach var="ordi" items="${listComputers}"
-						begin="${page.debut()}" end="${page.fin()}">
+			<div class="container" style="margin-top: 10px;">
+				<table class="table table-striped table-bordered">
+					<thead>
 						<tr>
-							<td class="editMode"><input type="checkbox" name="cb"
-								class="cb" value="${ordi.id}"></td>
-							<td><a
-								href="<c:url value="/EditComputer?computerId=${ordi.id}"/>"
-								onclick="">${ordi.name}</a></td>
-							<td>${ordi.introduced}</td>
-							<td>${ordi.discontinued}</td>
-							<td>${ordi.companyName}</td>
+							<!-- Variable declarations for passing labels as parameters -->
+							<!-- Table header for Computer Name -->
+
+							<th class="editMode" style="width: 60px; height: 22px;"><input
+								type="checkbox" id="selectall" /> <span
+								style="vertical-align: top;"> - <a href="#"
+									id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
+										class="fa fa-trash-o fa-lg"></i>
+								</a>
+							</span></th>
+							<th>Computer name</th>
+							<th>Introduced date</th>
+							<!-- Table header for Discontinued Date -->
+							<th>Discontinued date</th>
+							<!-- Table header for Company -->
+							<th>Company</th>
 
 						</tr>
-					</c:forEach>
+					</thead>
+					<!-- Browse attribute computers -->
+					<tbody id="results">
 
-				</tbody>
-			</table>
-		</div>
+						<c:forEach var="ordi" items="${listComputers}"
+							begin="${page.debut()}" end="${page.fin()}">
+							<tr>
+								<td class="editMode"><input type="checkbox" name="cb"
+									class="cb" value="${ordi.id}"></td>
+								<td><a
+									href="<c:url value="/EditComputer?computerId=${ordi.id}"/>"
+									onclick="">${ordi.name}</a></td>
+								<td>${ordi.introduced}</td>
+								<td>${ordi.discontinued}</td>
+								<td>${ordi.companyName}</td>
+
+							</tr>
+						</c:forEach>
+
+					</tbody>
+				</table>
+			</div>
+		</form>
 	</section>
 
 	<footer class="navbar-fixed-bottom">

@@ -22,8 +22,12 @@ public class ComputerService {
 		super();
 	}
 	
-	public static Optional<ComputerDTO> findComputer (Long id) {
-		Optional<Computer> computer = computerDao.find(id);
+	public static Optional<ComputerDTO> findComputer (String id) {
+		Long computerId = 0L;
+		if (id != null || id != "") {
+			computerId = Long.parseLong(id);
+		}
+		Optional<Computer> computer = computerDao.find(computerId);
 		Optional<ComputerDTO> computerDTO = Optional.of(ComputerMapper.computerToComputerDTO(computer.get()));
 		return computerDTO;
 	}
@@ -117,5 +121,19 @@ public class ComputerService {
 			computerDao.update(computer);
 		}
 	}
-
+	
+	public static void deleteComputer(String id) {
+		Long idComputer = 0L;
+		if (id != null && id != "") {
+			idComputer = Long.parseLong(id);
+		}
+		
+		Optional<Computer> computer = computerDao.find(idComputer);
+		if(computer.isPresent()) {
+			computerDao.delete(computer.get());
+		}
+	}
+	
+	
+	
 }

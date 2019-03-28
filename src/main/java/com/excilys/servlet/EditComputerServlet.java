@@ -18,9 +18,9 @@ import com.excilys.service.ComputerService;
 
 @WebServlet("/EditComputer")
 public class EditComputerServlet extends HttpServlet {
-
-	private static final long serialVersionUID = 7487549859182174093L;
 	
+	private static final long serialVersionUID = 1L;
+
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException  {
@@ -29,12 +29,8 @@ public class EditComputerServlet extends HttpServlet {
 		request.setAttribute("listCompanies", listCompanies);
 		
 		String id = request.getParameter("computerId");
-		Long computerId = 0L;
-		if (id != null || id != "") {
-			computerId = Long.parseLong(id);
-		}
 		
-		Optional<ComputerDTO> computer = ComputerService.findComputer(computerId);
+		Optional<ComputerDTO> computer = ComputerService.findComputer(id);
 		if (computer.isPresent()) {
 			request.setAttribute("computer", computer.get());
 		}
