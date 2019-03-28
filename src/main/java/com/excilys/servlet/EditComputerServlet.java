@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.dto.CompanyDTO;
 import com.excilys.dto.ComputerDTO;
+import com.excilys.exception.ValidatorException;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
@@ -49,9 +50,15 @@ public class EditComputerServlet extends HttpServlet {
 		String discontinued = request.getParameter("discontinued");
 		String companyId = request.getParameter("companyId");
 		
-		ComputerService.editComputer(id, name, introduced, discontinued, companyId);
-		
-		response.sendRedirect("Dashboard");
+		try {
+			ComputerService.editComputer(id, name, introduced, discontinued, companyId);
+			response.sendRedirect("Dashboard");
+		} catch (ValidatorException e) {
+			e.getMessage();
+			e.printStackTrace();
+			request.setAttribute("exception", e.getMessage());
+			doGet(request, response);
+		}
 	}
 	
 }

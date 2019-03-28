@@ -20,6 +20,7 @@ public class ComputerDAO {
 	private final String SELECT_ALL = "SELECT ct.id, ct.name, ct.introduced, ct.discontinued, cn.id, cn.name "
 			+ "FROM computer AS ct LEFT JOIN company AS cn ON ct.company_id = cn.id";
 	private final String SELECT_ID = SELECT_ALL + " WHERE ct.id = ?";
+	private final String SELECT_NAME = SELECT_ALL + " WHERE ct.name LIKE ?";
 	private final String SELECT_LIST = SELECT_ALL + " WHERE ct.id >= ? AND ct.id <= ?";
 	private final String INSERT = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
 	private final String UPDATE = "UPDATE computer SET name = ?, introduced=?, discontinued=?, company_id=? WHERE id = ?";
@@ -41,6 +42,23 @@ public class ComputerDAO {
 			logger.debug("Exception SQL", e);
 		}
 		return computer;
+	}
+	
+	public ArrayList<Computer> find(String name) {
+		ArrayList<Computer> computers = new ArrayList<Computer>();
+		try (PreparedStatement statement = ConnectionDAO.getInstance().prepareStatement(SELECT_NAME)) {
+
+			statement.setString(1, "%" + name + "%");
+
+			ResultSet res = statement.executeQuery();
+
+			computers = ComputerMapper.resultSetToListComputer(res);
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+			logger.debug("Exception SQL", e);
+		}
+		return computers;
 	}
 
 	public Optional<Computer> create(Computer comp) {

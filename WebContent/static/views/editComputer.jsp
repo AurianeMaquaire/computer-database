@@ -7,7 +7,8 @@
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="static/css/bootstrap.min.css" rel="stylesheet" media="screen">
+<link href="static/css/bootstrap.min.css" rel="stylesheet"
+	media="screen">
 <link href="static/css/font-awesome.css" rel="stylesheet" media="screen">
 <link href="static/css/main.css" rel="stylesheet" media="screen">
 </head>
@@ -30,7 +31,6 @@
 					<form action="EditComputer" method="POST">
 						<input type="hidden" value="${computer.id}" id="id"
 							name="computerId" />
-						<!-- TODO: Change this value with the computer id -->
 						<fieldset>
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
@@ -62,6 +62,13 @@
 								</select>
 							</div>
 						</fieldset>
+
+						<!-- TODO: Afficher un message pour les exceptions -->
+						<div class="exception">
+							<font color="red" size="+1"> <c:out value="${exception}" />
+							</font>
+						</div>
+
 						<div class="actions pull-right">
 							<input type="submit" value="Edit" class="btn btn-primary">
 							or <a href="<c:url value="/Dashboard"/>" class="btn btn-default">Cancel</a>

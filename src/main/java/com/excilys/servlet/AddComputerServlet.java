@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.excilys.dto.CompanyDTO;
+import com.excilys.exception.ValidatorException;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
@@ -39,7 +40,12 @@ public class AddComputerServlet extends HttpServlet {
 		String discontinued = request.getParameter("discontinued");
 		String companyId = request.getParameter("companyId");
 		
-		ComputerService.createComputer(name, introduced, discontinued, companyId);
+		try {
+			ComputerService.createComputer(name, introduced, discontinued, companyId);
+		} catch (ValidatorException e) {
+			e.getMessage();
+			e.printStackTrace();
+		}
 		
 		response.sendRedirect("Dashboard");
 	}

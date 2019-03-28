@@ -26,7 +26,6 @@ public class DashboardServlet extends HttpServlet {
 			throws ServletException, IOException  {
 
 		ArrayList<ComputerDTO> listComputers = ComputerService.listeComputers();
-		request.setAttribute("listComputers", listComputers);
 
 		this.page = null;
 		if (request.getAttribute("page") == null) {
@@ -40,8 +39,15 @@ public class DashboardServlet extends HttpServlet {
 		String currentPage = request.getParameter("currentPage");
 		if(currentPage != null && currentPage != "") {
 			page.setCurrentPage(Integer.valueOf(currentPage));
-		} 
-
+		}
+		
+		String search = request.getParameter("search");
+		ArrayList<ComputerDTO> computers;
+		if(search != null && search != "") {
+			computers = ComputerService.searchComputers(search);
+			page.setData(computers);
+		}
+		
 		request.setAttribute("page", page);
 
 		RequestDispatcher requestDispatcher = request.getRequestDispatcher("static/views/dashboard.jsp");

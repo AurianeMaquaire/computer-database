@@ -49,7 +49,6 @@
 		<form id="deleteForm" action="Dashboard" method="POST">
 			<input type="hidden" name="selection" value="">
 
-
 			<div class="container" style="margin-top: 10px;">
 				<table class="table table-striped table-bordered">
 					<thead>
@@ -76,7 +75,7 @@
 					<!-- Browse attribute computers -->
 					<tbody id="results">
 
-						<c:forEach var="ordi" items="${listComputers}"
+						<c:forEach var="ordi" items="${page.data}"
 							begin="${page.debut()}" end="${page.fin()}">
 							<tr>
 								<td class="editMode"><input type="checkbox" name="cb"

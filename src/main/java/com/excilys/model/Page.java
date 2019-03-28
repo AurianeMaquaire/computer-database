@@ -38,6 +38,7 @@ public class Page<T> {
 	
 	public void setData (ArrayList<T> data) {
 		this.data = data;
+		this.length = data.size();
 	}
 	
 	public void setCurrentPage (int currentPage) {

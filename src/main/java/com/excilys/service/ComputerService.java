@@ -1,17 +1,18 @@
 package com.excilys.service;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Optional;
 
 import com.excilys.dao.CompanyDAO;
 import com.excilys.dao.ComputerDAO;
 import com.excilys.dto.ComputerDTO;
+import com.excilys.exception.ValidatorException;
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.mapper.TimestampMapper;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
+import com.excilys.validator.ComputerValidator;
 
 public class ComputerService {
 
@@ -21,7 +22,7 @@ public class ComputerService {
 	public ComputerService () {
 		super();
 	}
-	
+
 	public static Optional<ComputerDTO> findComputer (String id) {
 		Long computerId = 0L;
 		if (id != null || id != "") {
@@ -43,97 +44,105 @@ public class ComputerService {
 		return computersDTO;
 	}
 
-	public static void createComputer(String name, String introduced, String discontinued, String companyId) {
+	public static void createComputer(String name, String introducedString, String discontinuedString, String companyId) throws ValidatorException {
 		if (name == null) {
 			name = "";
 		}
-		
-		Timestamp intro = null;
-		if (! "".equals(introduced)) {
-			try {
-				intro = TimestampMapper.stringToTimestamp(introduced);
-			} catch (ParseException e) {
-				e.printStackTrace();
+
+		Optional<Timestamp> intro = Optional.empty();
+		Timestamp introduced = null;
+		if (introducedString != null) {
+			intro = TimestampMapper.stringToTimestamp(introducedString);
+			if (intro.isPresent()) {
+				introduced = intro.get();
 			}
 		} 
 
-		Timestamp disc = null;
-		if (! "".equals(discontinued)) {
-			try {
-				disc = TimestampMapper.stringToTimestamp(discontinued);
-			} catch (ParseException e) {
-				e.printStackTrace();
+		Optional<Timestamp> disc = Optional.empty();
+		Timestamp discontined = null;
+		if (discontinuedString != null) {
+			disc = TimestampMapper.stringToTimestamp(discontinuedString);
+			if (disc.isPresent()) {
+				discontined = disc.get();
 			}
 		} 
-		
-		Long companyID;
+
+		Long companyID = null;
 		if (companyId != null) {
 			companyID = Long.parseLong(companyId);
-		} else {
-			companyID = null;
-		}
+		} 
 
 		Optional<Company> company = companyDao.find(companyID);
 		if(company.isPresent()) {
-			Computer computer = new Computer(name, intro, disc, company.get());
+			Computer computer = new Computer(name, introduced, discontined, company.get());
+			ComputerValidator.verify(computer);
 			computerDao.create(computer);
 		}
 	}
-	
-	public static void editComputer(String id, String name, String introduced, String discontinued, String companyId) {
+
+	public static void editComputer(String id, String name, String introducedString, String discontinuedString, String companyId) throws ValidatorException {
 		Long idComputer = 0L;
 		if (id != null) {
 			idComputer = Long.parseLong(id);
 		}
-		
+
 		if (name == null) {
 			name = "";
 		}
-		
-		Timestamp intro = null;
-		if (! "".equals(introduced)) {
-			try {
-				intro = TimestampMapper.stringToTimestamp(introduced);
-			} catch (ParseException e) {
-				e.printStackTrace();
+
+		Optional<Timestamp> intro = Optional.empty();
+		Timestamp introduced = null;
+		if (introducedString != null) {
+			intro = TimestampMapper.stringToTimestamp(introducedString);
+			if (intro.isPresent()) {
+				introduced = intro.get();
 			}
 		} 
 
-		Timestamp disc = null;
-		if (! "".equals(discontinued)) {
-			try {
-				disc = TimestampMapper.stringToTimestamp(discontinued);
-			} catch (ParseException e) {
-				e.printStackTrace();
+		Optional<Timestamp> disc = Optional.empty();
+		Timestamp discontined = null;
+		if (discontinuedString != null) {
+			disc = TimestampMapper.stringToTimestamp(discontinuedString);
+			if (disc.isPresent()) {
+				discontined = disc.get();
 			}
 		} 
-		
-		Long companyID;
+
+		Long companyID = null;
 		if (companyId != null) {
 			companyID = Long.parseLong(companyId);
-		} else {
-			companyID = null;
-		}
+		} 
 
 		Optional<Company> company = companyDao.find(companyID);
 		if(company.isPresent()) {
-			Computer computer = new Computer(idComputer, name, intro, disc, company.get());
+			Computer computer = new Computer(idComputer, name, introduced, discontined, company.get());
+			ComputerValidator.verify(computer);
 			computerDao.update(computer);
 		}
 	}
-	
+
 	public static void deleteComputer(String id) {
 		Long idComputer = 0L;
 		if (id != null && id != "") {
 			idComputer = Long.parseLong(id);
 		}
-		
+
 		Optional<Computer> computer = computerDao.find(idComputer);
 		if(computer.isPresent()) {
 			computerDao.delete(computer.get());
 		}
 	}
-	
-	
-	
+
+	public static ArrayList<ComputerDTO> searchComputers(String search) {
+		ArrayList<Computer> computers = computerDao.find(search);
+		ArrayList<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
+		for (Computer c : computers) {
+			ComputerDTO computer = ComputerMapper.computerToComputerDTO(c);
+			computersDTO.add(computer);
+		}
+		return computersDTO;
+	}
+
+
+
 }
