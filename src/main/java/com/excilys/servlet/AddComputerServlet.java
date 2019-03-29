@@ -42,11 +42,13 @@ public class AddComputerServlet extends HttpServlet {
 		
 		try {
 			ComputerService.createComputer(name, introduced, discontinued, companyId);
+			response.sendRedirect("Dashboard");
 		} catch (ValidatorException e) {
 			e.getMessage();
 			e.printStackTrace();
+			request.setAttribute("exception", e.getMessage());
+			doGet(request, response);
 		}
-		
-		response.sendRedirect("Dashboard");
 	}
+	
 }

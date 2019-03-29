@@ -63,9 +63,8 @@
 							</div>
 						</fieldset>
 
-						<!-- TODO: Afficher un message pour les exceptions -->
 						<div class="exception">
-							<font color="red" size="+1"> <c:out value="${exception}" />
+							<font color="red" size="+1"> <c:out value="${exception}"/>
 							</font>
 						</div>
 

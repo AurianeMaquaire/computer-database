@@ -37,15 +37,26 @@ public class DashboardServlet extends HttpServlet {
 		page.setData(listComputers);
 
 		String currentPage = request.getParameter("currentPage");
-		if(currentPage != null && currentPage != "") {
+		if (currentPage != null && currentPage != "") {
 			page.setCurrentPage(Integer.valueOf(currentPage));
+		} else {
+			page.setCurrentPage(0);
 		}
 		
 		String search = request.getParameter("search");
-		ArrayList<ComputerDTO> computers;
-		if(search != null && search != "") {
+		ArrayList<ComputerDTO> computers = new ArrayList<ComputerDTO>();
+		if (search != null && search != "") {
 			computers = ComputerService.searchComputers(search);
 			page.setData(computers);
+		} else {
+			page.setData(listComputers);
+		}
+		
+		String sortBy = request.getParameter("sortBy");
+		ArrayList<ComputerDTO> computersSorted = new ArrayList<ComputerDTO>();
+		if (sortBy != null && sortBy != "") {
+			computersSorted = ComputerService.orderComputers(sortBy);
+			page.setData(computersSorted);
 		}
 		
 		request.setAttribute("page", page);

@@ -31,7 +31,8 @@
 							<div class="form-group">
 								<label for="computerName">Computer name</label> <input
 									type="text" class="form-control" id="computerName"
-									name="computerName" placeholder="Computer name">
+									name="computerName" placeholder="Computer name"
+									required="required">
 							</div>
 							<div class="form-group">
 								<label for="introduced">Introduced date</label> <input
@@ -55,6 +56,12 @@
 								</select>
 							</div>
 						</fieldset>
+
+						<div class="exception">
+							<font color="red" size="+1"> <c:out value="${exception}" />
+							</font>
+						</div>
+
 						<div class="actions pull-right">
 							<input type="submit" value="Add" class="btn btn-primary">
 							or <a href="<c:url value="/Dashboard"/>" class="btn btn-default">Cancel</a>

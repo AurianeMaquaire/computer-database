@@ -9,12 +9,16 @@ import com.excilys.model.Computer;
 public class ComputerValidator {
 
 	public static void verify(Computer computer) throws ValidatorException {
-
+		
+		if (computer.getName() == null) {
+			throw new ValidatorException("Computer name can't be null");
+		}
+		
 		Timestamp introduced = computer.getIntroduced();
 		Timestamp discontinued = computer.getDiscontinued();
 
 		if (introduced == null && discontinued != null) {
-			throw new ValidatorException("Discontinued date can't be null while introduced date is null");
+			throw new ValidatorException("Discontinued date must be null while introduced date is null");
 		}
 
 		if (introduced != null && discontinued != null) {

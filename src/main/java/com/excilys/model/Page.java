@@ -42,7 +42,7 @@ public class Page<T> {
 	}
 	
 	public void setCurrentPage (int currentPage) {
-		if (currentPage >= 0 && currentPage <= this.length) {
+		if (currentPage >= 0 && currentPage < this.length) {
 			this.currentPage = currentPage;
 		}
 	}
@@ -73,13 +73,30 @@ public class Page<T> {
 	}
 	
 	
-	public int debut () {
+	public int start () {
 		return this.currentPage * this.pageSize;
 	}
 	
-	public int fin () {
+	public int end () {
 		return (this.currentPage + 1) * this.pageSize - 1;
 	}
 	
+	public int getMaxPages () {
+		return this.length / this.pageSize + ((this.length % this.pageSize > 0) ? 1 : 0);
+	}
+	
+	public int startIndex () {
+		if (this.currentPage < 3) {
+			return 1;
+		}
+		return this.currentPage - 2;
+	}
+	
+	public int endIndex () {
+		if (this.currentPage > getMaxPages() - 3) {
+			return getMaxPages();
+		}
+		return this.currentPage + 2;
+	}
 	
 }

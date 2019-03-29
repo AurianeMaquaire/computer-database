@@ -63,10 +63,16 @@
 										class="fa fa-trash-o fa-lg"></i>
 								</a>
 							</span></th>
-							<th>Computer name</th>
-							<th>Introduced date</th>
+							<th><a
+								onclick="location.href='<c:url value="/Dashboard?sortBy=name" />'"
+								title="Order by computer name">Computer name</a></th>
+							<th><a
+								onclick="location.href='<c:url value="/Dashboard?sortBy=introduced" />'"
+								title="Order by introduced date">Introduced date</a></th>
 							<!-- Table header for Discontinued Date -->
-							<th>Discontinued date</th>
+							<th><a
+								onclick="location.href='<c:url value="/Dashboard?sortBy=discontinued" />'"
+								title="Order by discontinued date">Discontinued date</a></th>
 							<!-- Table header for Company -->
 							<th>Company</th>
 
@@ -75,8 +81,8 @@
 					<!-- Browse attribute computers -->
 					<tbody id="results">
 
-						<c:forEach var="ordi" items="${page.data}"
-							begin="${page.debut()}" end="${page.fin()}">
+						<c:forEach var="ordi" items="${page.data}" begin="${page.start()}"
+							end="${page.end()}">
 							<tr>
 								<td class="editMode"><input type="checkbox" name="cb"
 									class="cb" value="${ordi.id}"></td>
@@ -104,11 +110,14 @@
 					aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
 				</a></li>
 
-				<li><a href="?currentPage=1">1</a></li>
-				<li><a href="?currentPage=2">2</a></li>
-				<li><a href="?currentPage=3">3</a></li>
-				<li><a href="?currentPage=4">4</a></li>
-				<li><a href="?currentPage=5">5</a></li>
+				<li><a href="?currentPage=0">1</a></li>
+				<li><a href="#">..</a></li>
+				<c:forEach varStatus="index" begin="${page.startIndex()}"
+					end="${page.endIndex()}">
+					<li><a href="?currentPage=${index.index-1}">${index.index}</a></li>
+				</c:forEach>
+				<li><a href="#">..</a></li>
+				<li><a href="?currentPage=${page.getMaxPages()-1}">${page.getMaxPages()}</a></li>
 
 				<li><a href="?currentPage=${page.nextPage()}" aria-label="Next">
 						<span aria-hidden="true">&raquo;</span>
