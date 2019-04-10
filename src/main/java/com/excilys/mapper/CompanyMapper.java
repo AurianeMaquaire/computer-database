@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.dto.CompanyDTO;
+import com.excilys.exception.DAOException;
 import com.excilys.model.Company;
 import com.excilys.model.CompanyBuilder;
 
@@ -17,7 +18,7 @@ public class CompanyMapper {
 	private static Logger logger = LoggerFactory.getLogger(CompanyMapper.class);
 
 
-	public static Optional<Company> resultSetToCompany (ResultSet resultSet) {
+	public static Optional<Company> resultSetToCompany (ResultSet resultSet) throws DAOException {
 
 		CompanyBuilder companyBuilder = new CompanyBuilder();
 		Optional<Company> company = Optional.empty();
@@ -32,12 +33,13 @@ public class CompanyMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error("SQLException", e);
+			throw new DAOException("Erreur dans resultSetToCompany");
 		}
 
 		return company;
 	}
 	
-	public static ArrayList<Company> resultSetToListCompany (ResultSet resultSet) {
+	public static ArrayList<Company> resultSetToListCompany (ResultSet resultSet) throws DAOException {
 		
 		ArrayList<Company> companies = new ArrayList<Company>();
 		CompanyBuilder companyBuilder = new CompanyBuilder();
@@ -54,6 +56,7 @@ public class CompanyMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error("SQLException", e);
+			throw new DAOException("Erreur dans resultSetToListCompany");
 		}
 
 		return companies;

@@ -22,16 +22,4 @@ public class PageTest<T> {
 		assertEquals(page.getCurrentPage(), 0);
 	}
 	
-	@Test
-	public void testDebut() {
-		int debut = page.getCurrentPage() * page.getPageSize();
-		assertEquals(page.debut(), debut);
-	}
-	
-	@Test
-	public void testFin() {
-		int fin = (page.getCurrentPage() + 1) * page.getPageSize() - 1;
-		assertEquals(page.fin(), fin);
-	}
-	
 }

@@ -10,6 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.excilys.dto.ComputerDTO;
+import com.excilys.exception.DAOException;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.model.ComputerBuilder;
@@ -18,7 +19,7 @@ public class ComputerMapper {
 
 	private static Logger logger = LoggerFactory.getLogger(CompanyMapper.class);
 
-	public static Optional<Computer> resultSetToComputer (ResultSet resultSet) {
+	public static Optional<Computer> resultSetToComputer (ResultSet resultSet) throws DAOException {
 
 		ComputerBuilder computerBuilder = new ComputerBuilder();
 		Optional<Computer> computer = Optional.empty();
@@ -43,12 +44,13 @@ public class ComputerMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error("SQLException", e);
+			throw new DAOException("Erreur dans resultSetToComputer");
 		}
 
 		return computer;
 	}
 
-	public static ArrayList<Computer> resultSetToListComputer (ResultSet resultSet) {
+	public static ArrayList<Computer> resultSetToListComputer (ResultSet resultSet) throws DAOException {
 
 		ArrayList<Computer> computers = new ArrayList<Computer>();
 		ComputerBuilder computerBuilder = new ComputerBuilder();
@@ -75,8 +77,9 @@ public class ComputerMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error("SQLException", e);
+			throw new DAOException("Erreur dans resultSetToListComputer");
 		}
-
+		
 		return computers;
 	}
 

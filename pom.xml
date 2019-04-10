@@ -15,6 +15,7 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
+
 		<junit>4.12</junit>
 		<jupiter>5.3.1</jupiter>
 		<mysql>8.0.15</mysql>
@@ -23,7 +24,7 @@
 		<mockito>2.23.0</mockito>
 		<servlet>4.0.1</servlet>
 		<jstl>1.2</jstl>
-		<hikari>2.7.8</hikari>
+		<hikari>3.3.1</hikari>
 	</properties>
 
 	<dependencies>

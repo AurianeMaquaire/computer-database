@@ -25,7 +25,7 @@ public class TimestampMapper {
 
 	public static String timestampToString (Timestamp timestamp) {
 		return new SimpleDateFormat("yyyy-MM-dd").format(timestamp);
-		//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy.MM.dd");
+		//		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		//		LocalDate localDate = timestamp.toLocalDate();
 		//		return localDate.format(formatter);
 	}

@@ -1,6 +1,9 @@
 package com.excilys.main;
 
 import com.excilys.controller.Controller;
+import com.excilys.exception.DAOException;
+
+import java.sql.SQLException;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +20,12 @@ public class App {
 		
 		logger.trace("Main started");
 		
-		new Controller();
+		try {
+			new Controller();
+		} catch (SQLException | DAOException e) {
+			e.printStackTrace();
+			logger.error("Main crashed");
+		}
 		
 	}
 

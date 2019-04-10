@@ -1,5 +1,6 @@
 package com.excilys.service;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Optional;
@@ -7,6 +8,7 @@ import java.util.Optional;
 import com.excilys.dao.CompanyDAO;
 import com.excilys.dao.ComputerDAO;
 import com.excilys.dto.ComputerDTO;
+import com.excilys.exception.DAOException;
 import com.excilys.exception.ValidatorException;
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.mapper.TimestampMapper;
@@ -23,7 +25,7 @@ public class ComputerService {
 		super();
 	}
 
-	public static Optional<ComputerDTO> findComputer (String id) {
+	public static Optional<ComputerDTO> findComputer (String id) throws SQLException, DAOException {
 		Long computerId = 0L;
 		if (id != null || id != "") {
 			computerId = Long.parseLong(id);
@@ -33,7 +35,7 @@ public class ComputerService {
 		return computerDTO;
 	}
 
-	public static ArrayList<ComputerDTO> listeComputers() {
+	public static ArrayList<ComputerDTO> listeComputers() throws SQLException, DAOException {
 		ArrayList<Computer> computers = computerDao.listAll();
 		ArrayList<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 
@@ -44,7 +46,7 @@ public class ComputerService {
 		return computersDTO;
 	}
 
-	public static void createComputer(String name, String introducedString, String discontinuedString, String companyId) throws ValidatorException {
+	public static void createComputer(String name, String introducedString, String discontinuedString, String companyId) throws ValidatorException, SQLException, DAOException {
 		Optional<Timestamp> intro = Optional.empty();
 		Timestamp introduced = null;
 		if (introducedString != null) {
@@ -79,7 +81,7 @@ public class ComputerService {
 		computerDao.create(computer);
 	}
 
-	public static void editComputer(String id, String name, String introducedString, String discontinuedString, String companyId) throws ValidatorException {
+	public static void editComputer(String id, String name, String introducedString, String discontinuedString, String companyId) throws ValidatorException, SQLException, DAOException {
 		Long idComputer = 0L;
 		if (id != null) {
 			idComputer = Long.parseLong(id);
@@ -119,7 +121,7 @@ public class ComputerService {
 		computerDao.update(computer);
 	}
 
-	public static void deleteComputer(String id) {
+	public static void deleteComputer(String id) throws SQLException, DAOException {
 		Long idComputer = 0L;
 		if (id != null && id != "") {
 			idComputer = Long.parseLong(id);
@@ -131,7 +133,7 @@ public class ComputerService {
 		}
 	}
 
-	public static ArrayList<ComputerDTO> searchComputers(String search) {
+	public static ArrayList<ComputerDTO> searchComputers(String search) throws SQLException, DAOException {
 		ArrayList<Computer> computers = computerDao.find(search);
 		ArrayList<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 		for (Computer computer : computers) {
@@ -141,7 +143,7 @@ public class ComputerService {
 		return computersDTO;
 	}
 
-	public static ArrayList<ComputerDTO> orderComputers(String sortBy) {
+	public static ArrayList<ComputerDTO> orderComputers(String sortBy) throws SQLException, DAOException {
 		ArrayList<Computer> computers = computerDao.sort(sortBy);
 		ArrayList<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 		for (Computer computer : computers) {

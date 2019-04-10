@@ -1,6 +1,7 @@
 package com.excilys.servlet;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 import javax.servlet.RequestDispatcher;
@@ -10,7 +11,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.excilys.dto.ComputerDTO;
+import com.excilys.exception.DAOException;
 import com.excilys.model.Page;
 import com.excilys.service.ComputerService;
 
@@ -18,6 +23,8 @@ import com.excilys.service.ComputerService;
 public class DashboardServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	
+	private static final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
 
 	private Page<ComputerDTO> page;
 
@@ -25,8 +32,15 @@ public class DashboardServlet extends HttpServlet {
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException  {
 
-		ArrayList<ComputerDTO> listComputers = ComputerService.listeComputers();
-
+		ArrayList<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
+		try {
+			listComputers = ComputerService.listeComputers();
+		} catch (SQLException | DAOException e) {
+			e.printStackTrace();
+			logger.error("Dashboard Servlet", e);
+			throw new ServletException("Dashboard Servlet Exception");
+		}
+		
 		this.page = null;
 		if (request.getAttribute("page") == null) {
 			this.page = new Page<ComputerDTO>(listComputers);
@@ -46,7 +60,13 @@ public class DashboardServlet extends HttpServlet {
 		String search = request.getParameter("search");
 		ArrayList<ComputerDTO> computers = new ArrayList<ComputerDTO>();
 		if (search != null && search != "") {
-			computers = ComputerService.searchComputers(search);
+			try {
+				computers = ComputerService.searchComputers(search);
+			} catch (SQLException | DAOException e) {
+				e.printStackTrace();
+				logger.error("Dashboard Servlet", e);
+				throw new ServletException("Dashboard Servlet Exception");
+			}
 			page.setData(computers);
 		} else {
 			page.setData(listComputers);
@@ -55,7 +75,13 @@ public class DashboardServlet extends HttpServlet {
 		String sortBy = request.getParameter("sortBy");
 		ArrayList<ComputerDTO> computersSorted = new ArrayList<ComputerDTO>();
 		if (sortBy != null && sortBy != "") {
-			computersSorted = ComputerService.orderComputers(sortBy);
+			try {
+				computersSorted = ComputerService.orderComputers(sortBy);
+			} catch (SQLException | DAOException e) {
+				e.printStackTrace();
+				logger.error("Dashboard Servlet", e);
+				throw new ServletException("Dashboard Servlet Exception");
+			}
 			page.setData(computersSorted);
 		}
 		
@@ -73,7 +99,13 @@ public class DashboardServlet extends HttpServlet {
 
 		if (computersToDelete != null) {
 			for (String id : computersToDelete) {
-				ComputerService.deleteComputer(id);
+				try {
+					ComputerService.deleteComputer(id);
+				} catch (SQLException | DAOException e) {
+					e.printStackTrace();
+					logger.error("Dashboard Servlet", e);
+					throw new ServletException("Dashboard Servlet Exception");
+				}
 			}
 		} 
 		
