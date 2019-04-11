@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.dto.ComputerDTO;
 import com.excilys.exception.DAOException;
@@ -25,16 +27,25 @@ public class DashboardServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static final Logger logger = LoggerFactory.getLogger(DashboardServlet.class);
-
+	
 	private Page<ComputerDTO> page;
-
+	
+	@Autowired
+	ComputerService computerService;
+	
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+	}
+	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException  {
 
 		ArrayList<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		try {
-			listComputers = ComputerService.listeComputers();
+			listComputers = computerService.listeComputers();
 		} catch (SQLException | DAOException e) {
 			e.printStackTrace();
 			logger.error("Dashboard Servlet", e);
@@ -61,7 +72,7 @@ public class DashboardServlet extends HttpServlet {
 		ArrayList<ComputerDTO> computers = new ArrayList<ComputerDTO>();
 		if (search != null && search != "") {
 			try {
-				computers = ComputerService.searchComputers(search);
+				computers = computerService.searchComputers(search);
 			} catch (SQLException | DAOException e) {
 				e.printStackTrace();
 				logger.error("Dashboard Servlet", e);
@@ -76,7 +87,7 @@ public class DashboardServlet extends HttpServlet {
 		ArrayList<ComputerDTO> computersSorted = new ArrayList<ComputerDTO>();
 		if (sortBy != null && sortBy != "") {
 			try {
-				computersSorted = ComputerService.orderComputers(sortBy);
+				computersSorted = computerService.orderComputers(sortBy);
 			} catch (SQLException | DAOException e) {
 				e.printStackTrace();
 				logger.error("Dashboard Servlet", e);
@@ -100,7 +111,7 @@ public class DashboardServlet extends HttpServlet {
 		if (computersToDelete != null) {
 			for (String id : computersToDelete) {
 				try {
-					ComputerService.deleteComputer(id);
+					computerService.deleteComputer(id);
 				} catch (SQLException | DAOException e) {
 					e.printStackTrace();
 					logger.error("Dashboard Servlet", e);

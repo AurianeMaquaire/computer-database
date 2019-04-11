@@ -9,12 +9,14 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Repository;
 
 import com.excilys.exception.DAOException;
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.model.Computer;
 import com.excilys.persistence.ConnectionDAO;
 
+@Repository
 public class ComputerDAO {
 
 	private static final Logger logger = LoggerFactory.getLogger(ComputerDAO.class);

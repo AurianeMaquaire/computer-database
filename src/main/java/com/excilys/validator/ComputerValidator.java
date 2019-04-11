@@ -7,7 +7,12 @@ import com.excilys.exception.ValidatorException;
 import com.excilys.model.Computer;
 
 public class ComputerValidator {
-
+	
+	/**
+	 * Vérifie si un ordinateur est correct
+	 * @param computer l'ordinateur
+	 * @throws ValidatorException si l'ordinateur est incorrect
+	 */
 	public static void verify(Computer computer) throws ValidatorException {
 		
 		if (computer.getName() == null) {

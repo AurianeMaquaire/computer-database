@@ -16,15 +16,15 @@ import com.excilys.model.Computer;
 
 public class View {
 
-	static ComputerDAO computerDao = null;
-	static CompanyDAO companyDao = null;
+	ComputerDAO computerDao = null;
+	CompanyDAO companyDao = null;
 	static Scanner scanner;
 	int nbChoisi;
 
-	public View() throws SQLException, DAOException {
+	public View(ComputerDAO computerDao, CompanyDAO companyDao) throws SQLException, DAOException {
 		super();
-		computerDao = new ComputerDAO();
-		companyDao = new CompanyDAO();
+		this.computerDao = computerDao;
+		this.companyDao = companyDao;
 		scanner = new Scanner(System.in);
 		console();
 	}
@@ -38,7 +38,7 @@ public class View {
 	public void console() throws SQLException, DAOException {
 		menu();
 		nbChoisi = scanner.nextInt();
-		ChoixUtilisateur choix = ChoixUtilisateur.values()[8];
+		ChoixUtilisateur choix = ChoixUtilisateur.values()[9];
 
 		if (nbChoisi > choix.ordinal()) {
 			System.out.println("Nombre non valide, veuillez en sélectionner un autre:");
@@ -86,11 +86,10 @@ public class View {
 			break;
 
 		case QUITTER:
-			System.out.println("Application fermée");
 			scanner.close();
+			System.out.println("Application fermée");
 			//ConnectionDAO.closeInstance();
 			return;
-
 		}
 		console();
 	}

@@ -13,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.support.SpringBeanAutowiringSupport;
 
 import com.excilys.dto.CompanyDTO;
 import com.excilys.exception.DAOException;
@@ -26,6 +28,15 @@ public class AddComputerServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	
 	private static final Logger logger = LoggerFactory.getLogger(AddComputerServlet.class);
+	
+	@Autowired
+	ComputerService computerService;
+	
+	@Override
+	public void init() throws ServletException {
+		super.init();
+		SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
+	}
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -55,7 +66,7 @@ public class AddComputerServlet extends HttpServlet {
 		String companyId = request.getParameter("companyId");
 		
 		try {
-			ComputerService.createComputer(name, introduced, discontinued, companyId);
+			computerService.createComputer(name, introduced, discontinued, companyId);
 			response.sendRedirect("Dashboard");
 		} catch (ValidatorException | SQLException | DAOException e) {
 			e.getMessage();

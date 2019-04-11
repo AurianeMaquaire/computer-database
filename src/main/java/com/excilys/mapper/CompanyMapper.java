@@ -7,12 +7,14 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.excilys.dto.CompanyDTO;
 import com.excilys.exception.DAOException;
 import com.excilys.model.Company;
 import com.excilys.model.CompanyBuilder;
 
+@Component 
 public class CompanyMapper {
 
 	private static Logger logger = LoggerFactory.getLogger(CompanyMapper.class);

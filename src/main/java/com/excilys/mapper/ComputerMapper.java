@@ -8,6 +8,7 @@ import java.util.Optional;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Component;
 
 import com.excilys.dto.ComputerDTO;
 import com.excilys.exception.DAOException;
@@ -15,6 +16,7 @@ import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.model.ComputerBuilder;
 
+@Component
 public class ComputerMapper {
 
 	private static Logger logger = LoggerFactory.getLogger(CompanyMapper.class);

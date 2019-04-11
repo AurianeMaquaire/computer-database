@@ -5,6 +5,9 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.excilys.dao.CompanyDAO;
 import com.excilys.dao.ComputerDAO;
 import com.excilys.dto.ComputerDTO;
@@ -16,16 +19,20 @@ import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.validator.ComputerValidator;
 
+@Service
 public class ComputerService {
-
-	static ComputerDAO computerDao = new ComputerDAO();
-	static CompanyDAO companyDao = new CompanyDAO();
+	
+	@Autowired 
+	ComputerDAO computerDao;
+	
+	@Autowired
+	CompanyDAO companyDao;
 
 	public ComputerService () {
 		super();
 	}
 
-	public static Optional<ComputerDTO> findComputer (String id) throws SQLException, DAOException {
+	public Optional<ComputerDTO> findComputer (String id) throws SQLException, DAOException {
 		Long computerId = 0L;
 		if (id != null || id != "") {
 			computerId = Long.parseLong(id);
@@ -35,7 +42,7 @@ public class ComputerService {
 		return computerDTO;
 	}
 
-	public static ArrayList<ComputerDTO> listeComputers() throws SQLException, DAOException {
+	public ArrayList<ComputerDTO> listeComputers() throws SQLException, DAOException {
 		ArrayList<Computer> computers = computerDao.listAll();
 		ArrayList<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 
@@ -46,7 +53,7 @@ public class ComputerService {
 		return computersDTO;
 	}
 
-	public static void createComputer(String name, String introducedString, String discontinuedString, String companyId) throws ValidatorException, SQLException, DAOException {
+	public void createComputer(String name, String introducedString, String discontinuedString, String companyId) throws ValidatorException, SQLException, DAOException {
 		Optional<Timestamp> intro = Optional.empty();
 		Timestamp introduced = null;
 		if (introducedString != null) {
@@ -81,7 +88,7 @@ public class ComputerService {
 		computerDao.create(computer);
 	}
 
-	public static void editComputer(String id, String name, String introducedString, String discontinuedString, String companyId) throws ValidatorException, SQLException, DAOException {
+	public void editComputer(String id, String name, String introducedString, String discontinuedString, String companyId) throws ValidatorException, SQLException, DAOException {
 		Long idComputer = 0L;
 		if (id != null) {
 			idComputer = Long.parseLong(id);
@@ -121,7 +128,7 @@ public class ComputerService {
 		computerDao.update(computer);
 	}
 
-	public static void deleteComputer(String id) throws SQLException, DAOException {
+	public void deleteComputer(String id) throws SQLException, DAOException {
 		Long idComputer = 0L;
 		if (id != null && id != "") {
 			idComputer = Long.parseLong(id);
@@ -133,7 +140,7 @@ public class ComputerService {
 		}
 	}
 
-	public static ArrayList<ComputerDTO> searchComputers(String search) throws SQLException, DAOException {
+	public ArrayList<ComputerDTO> searchComputers(String search) throws SQLException, DAOException {
 		ArrayList<Computer> computers = computerDao.find(search);
 		ArrayList<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 		for (Computer computer : computers) {
@@ -143,7 +150,7 @@ public class ComputerService {
 		return computersDTO;
 	}
 
-	public static ArrayList<ComputerDTO> orderComputers(String sortBy) throws SQLException, DAOException {
+	public ArrayList<ComputerDTO> orderComputers(String sortBy) throws SQLException, DAOException {
 		ArrayList<Computer> computers = computerDao.sort(sortBy);
 		ArrayList<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 		for (Computer computer : computers) {
