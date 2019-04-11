@@ -124,6 +124,5 @@ public class ComputerDTO {
 		return "ComputerDTO [id=" + id + ", name=" + name + ", introduced=" + introduced + ", discontinued="
 				+ discontinued + ", companyId=" + companyId + ", companyName=" + companyName + "]";
 	}
-	
 
 }

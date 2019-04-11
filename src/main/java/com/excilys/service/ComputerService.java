@@ -28,11 +28,11 @@ public class ComputerService {
 	@Autowired
 	CompanyDAO companyDao;
 
-	public ComputerService () {
+	public ComputerService() {
 		super();
 	}
 
-	public Optional<ComputerDTO> findComputer (String id) throws SQLException, DAOException {
+	public Optional<ComputerDTO> findComputer(String id) throws SQLException, DAOException {
 		Long computerId = 0L;
 		if (id != null || id != "") {
 			computerId = Long.parseLong(id);
@@ -159,6 +159,5 @@ public class ComputerService {
 		}
 		return computersDTO;
 	}
-
 
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import com.excilys.dto.ComputerDTO;
 import com.excilys.exception.DAOException;
+import com.excilys.exception.ModelException;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.model.ComputerBuilder;
@@ -21,7 +22,7 @@ public class ComputerMapper {
 
 	private static Logger logger = LoggerFactory.getLogger(CompanyMapper.class);
 
-	public static Optional<Computer> resultSetToComputer (ResultSet resultSet) throws DAOException {
+	public static Optional<Computer> resultSetToComputer(ResultSet resultSet) throws DAOException {
 
 		ComputerBuilder computerBuilder = new ComputerBuilder();
 		Optional<Computer> computer = Optional.empty();
@@ -46,17 +47,28 @@ public class ComputerMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error("SQLException", e);
-			throw new DAOException("Erreur dans resultSetToComputer");
+			throw new DAOException("SQLException dans resultSetToComputer");
+		} catch (ModelException e) {
+			e.printStackTrace();
+			logger.error("ModelException", e);
+			throw new DAOException("ModelException dans resultSetToComputer");
 		}
 
 		return computer;
 	}
 
-	public static ArrayList<Computer> resultSetToListComputer (ResultSet resultSet) throws DAOException {
+	public static ArrayList<Computer> resultSetToListComputer(ResultSet resultSet) throws DAOException {
 
 		ArrayList<Computer> computers = new ArrayList<Computer>();
 		ComputerBuilder computerBuilder = new ComputerBuilder();
-		Computer computer = computerBuilder.empty().build();
+		Computer computer;
+		try {
+			computer = computerBuilder.empty().build();
+		} catch (ModelException e) {
+			e.printStackTrace();
+			logger.error("ModelException", e);
+			throw new DAOException("ModelException dans resultSetToListComputer");
+		}
 
 		try {
 			while (resultSet.next()) {
@@ -79,13 +91,17 @@ public class ComputerMapper {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			logger.error("SQLException", e);
-			throw new DAOException("Erreur dans resultSetToListComputer");
+			throw new DAOException("SQLException dans resultSetToListComputer");
+		} catch (ModelException e) {
+			e.printStackTrace();
+			logger.error("ModelException", e);
+			throw new DAOException("ModelException dans resultSetToListComputer");
 		}
 		
 		return computers;
 	}
 
-	public static ComputerDTO computerToComputerDTO (Computer computer) {
+	public static ComputerDTO computerToComputerDTO(Computer computer) {
 		Long id = computer.getId();
 		String name = computer.getName();
 		Timestamp introduced = computer.getIntroduced();

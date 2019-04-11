@@ -30,7 +30,6 @@ public class ComputerDAO {
 	private final String UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
 	private final String DELETE = "DELETE FROM computer WHERE id = ?";
 	private final String COUNT = "SELECT COUNT(id) AS len FROM computer";
-	//private final String ORDER_BY = SELECT_ALL + " ORDER BY ? ASC";
 
 	public Optional<Computer> find(long id) throws SQLException, DAOException {
 		Connection conn = ConnectionDAO.getInstance().getConnection();

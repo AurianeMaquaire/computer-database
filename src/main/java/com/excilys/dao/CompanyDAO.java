@@ -66,7 +66,7 @@ public class CompanyDAO {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public Optional<Company> find (String name) throws SQLException, DAOException {
+	public Optional<Company> find(String name) throws SQLException, DAOException {
 		Connection conn = ConnectionDAO.getInstance().getConnection();
 		conn.setAutoCommit(false);
 		Optional<Company> company = Optional.empty();

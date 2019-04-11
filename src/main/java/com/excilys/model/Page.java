@@ -10,7 +10,7 @@ public class Page<T> {
 	private int pageSize;
 	
 	
-	public Page (ArrayList<T> list) {
+	public Page(ArrayList<T> list) {
 		super();
 		this.data = list;
 		this.currentPage = 0;
@@ -19,44 +19,44 @@ public class Page<T> {
 	}
 	
 	
-	public ArrayList<T> getData () {
+	public ArrayList<T> getData() {
 		return this.data;
 	}
 	
-	public int getCurrentPage () {
+	public int getCurrentPage() {
 		return this.currentPage;
 	}
 	
-	public int getLength () {
+	public int getLength() {
 		return this.length;
 	}
 	
-	public int getPageSize () {
+	public int getPageSize() {
 		return this.pageSize;
 	}
 	
 	
-	public void setData (ArrayList<T> data) {
+	public void setData(ArrayList<T> data) {
 		this.data = data;
 		this.length = data.size();
 	}
 	
-	public void setCurrentPage (int currentPage) {
+	public void setCurrentPage(int currentPage) {
 		if (currentPage >= 0 && currentPage < this.length) {
 			this.currentPage = currentPage;
 		}
 	}
 	
-	public void setLength (int length) {
+	public void setLength(int length) {
 		this.length = length;
 	}
 	
-	public void setPageSize (int pageSize) {
+	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
 	
 	
-	public int previousPage () {
+	public int previousPage() {
 		if (this.currentPage * this.pageSize > this.pageSize) {
 			return this.currentPage - 1;
 		} else {
@@ -64,7 +64,7 @@ public class Page<T> {
 		}
 	}
 	
-	public int nextPage () {
+	public int nextPage() {
 		if (this.currentPage * this.pageSize < this.length) {
 			return this.currentPage + 1;
 		} else {
@@ -72,27 +72,26 @@ public class Page<T> {
 		}
 	}
 	
-	
-	public int start () {
+	public int start() {
 		return this.currentPage * this.pageSize;
 	}
 	
-	public int end () {
+	public int end() {
 		return (this.currentPage + 1) * this.pageSize - 1;
 	}
 	
-	public int getMaxPages () {
+	public int getMaxPages() {
 		return this.length / this.pageSize + ((this.length % this.pageSize > 0) ? 1 : 0);
 	}
 	
-	public int startIndex () {
+	public int startIndex() {
 		if (this.currentPage < 3) {
 			return 1;
 		}
 		return this.currentPage - 2;
 	}
 	
-	public int endIndex () {
+	public int endIndex() {
 		if (this.currentPage > getMaxPages() - 3) {
 			return getMaxPages();
 		}

@@ -32,6 +32,9 @@ public class AddComputerServlet extends HttpServlet {
 	@Autowired
 	ComputerService computerService;
 	
+	@Autowired
+	CompanyService companyService;
+	
 	@Override
 	public void init() throws ServletException {
 		super.init();
@@ -40,11 +43,11 @@ public class AddComputerServlet extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException  {
+			throws ServletException, IOException {
 		
 		ArrayList<CompanyDTO> listCompanies = new ArrayList<CompanyDTO>();
 		try {
-			listCompanies = CompanyService.listeCompagnies();
+			listCompanies = companyService.listeCompagnies();
 		} catch (SQLException | DAOException e) {
 			e.printStackTrace();
 			logger.error("Add Computer Servlet", e);
@@ -58,7 +61,7 @@ public class AddComputerServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException  {
+			throws ServletException, IOException {
 		
 		String name = request.getParameter("computerName");
 		String introduced = request.getParameter("introduced");
@@ -69,7 +72,6 @@ public class AddComputerServlet extends HttpServlet {
 			computerService.createComputer(name, introduced, discontinued, companyId);
 			response.sendRedirect("Dashboard");
 		} catch (ValidatorException | SQLException | DAOException e) {
-			e.getMessage();
 			e.printStackTrace();
 			request.setAttribute("exception", e.getMessage());
 			doGet(request, response);

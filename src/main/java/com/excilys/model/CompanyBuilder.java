@@ -3,6 +3,8 @@ package com.excilys.model;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.excilys.exception.ModelException;
+
 public class CompanyBuilder {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CompanyBuilder.class);
@@ -21,7 +23,7 @@ public class CompanyBuilder {
 	 * Construit une compagnie vide
 	 * @return la compagnie
 	 */
-	public CompanyBuilder empty () {
+	public CompanyBuilder empty() {
 		this.id = 0L;
 		this.name = null;
 		return this;
@@ -32,7 +34,7 @@ public class CompanyBuilder {
 	 * @param id l'identifiant de l'ordinateur
 	 * @return le CompanyBuilder
 	 */
-	public CompanyBuilder withId (Long id) {
+	public CompanyBuilder withId(Long id) {
 		this.id = id;
 		return this;
 	}
@@ -42,7 +44,7 @@ public class CompanyBuilder {
 	 * @param name le nom de l'ordinateur
 	 * @return le CompanyBuilder
 	 */
-	public CompanyBuilder withName (String name) {
+	public CompanyBuilder withName(String name) {
 		this.name = name;
 		return this;
 	}
@@ -53,7 +55,7 @@ public class CompanyBuilder {
 	 * @param name le nom de l'ordinateur
 	 * @return le CompanyBuilder
 	 */
-	public CompanyBuilder withIdAndName (Long id, String name) {
+	public CompanyBuilder withIdAndName(Long id, String name) {
 		this.id = id;
 		this.name = name;
 		return this;
@@ -62,12 +64,13 @@ public class CompanyBuilder {
 	/**
 	 * Construit une compagnie 
 	 * @return la compagnie
+	 * @throws ModelException 
 	 */
-	public Company build () {
+	public Company build() throws ModelException {
 		Company company = new Company();
 		if (this.id == null) {
 			logger.warn("Id null");
-			return null;
+			throw new ModelException("La compagnie a un id null");
 		} 
 		company.setId(this.id);
 		company.setName(this.name);

@@ -1,6 +1,5 @@
 package com.excilys.validator;
 
-
 import java.sql.Timestamp;
 
 import com.excilys.exception.ValidatorException;

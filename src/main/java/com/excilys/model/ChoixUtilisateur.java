@@ -13,8 +13,6 @@ public enum ChoixUtilisateur {
 	SUPPRIMER_COMPAGNIE(),
 	QUITTER();
 	
-	
-	private ChoixUtilisateur () { }
-	
+	private ChoixUtilisateur() { }
 	
 }

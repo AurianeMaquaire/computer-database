@@ -23,8 +23,6 @@ public class App {
 		logger.trace("Main started");
 		
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConfigApp.class);
-//		MainView mainView = new MainView(context);
-//		mainView.chooseDatabase();
 		
 		try {
 			new Controller(context.getBean(ComputerDAO.class), context.getBean(CompanyDAO.class));
@@ -34,7 +32,6 @@ public class App {
 		}
 		
 		context.close();
-		
 	}
 
 }

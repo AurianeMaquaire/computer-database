@@ -13,6 +13,7 @@ import com.excilys.mapper.TimestampMapper;
 import com.excilys.model.ChoixUtilisateur;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
+import com.excilys.persistence.ConnectionDAO;
 
 public class View {
 
@@ -29,7 +30,6 @@ public class View {
 		console();
 	}
 
-
 	/**
 	 * Interagit avec l'utilisateur via la console
 	 * @throws SQLException 
@@ -38,15 +38,15 @@ public class View {
 	public void console() throws SQLException, DAOException {
 		menu();
 		nbChoisi = scanner.nextInt();
-		ChoixUtilisateur choix = ChoixUtilisateur.values()[9];
+		int nbChoix = ChoixUtilisateur.values().length;
 
-		if (nbChoisi > choix.ordinal()) {
+		if (nbChoisi > nbChoix) {
 			System.out.println("Nombre non valide, veuillez en sélectionner un autre:");
 			console();
 			return;
 		}
 
-		choix = ChoixUtilisateur.values()[nbChoisi];
+		ChoixUtilisateur choix = ChoixUtilisateur.values()[nbChoisi];
 
 		switch(choix) {
 		case AFFICHER_LISTE_ORDINATEURS: 
@@ -88,7 +88,7 @@ public class View {
 		case QUITTER:
 			scanner.close();
 			System.out.println("Application fermée");
-			//ConnectionDAO.closeInstance();
+			ConnectionDAO.getInstance().close();
 			return;
 		}
 		console();

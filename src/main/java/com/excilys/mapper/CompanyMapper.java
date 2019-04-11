@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.excilys.dto.CompanyDTO;
 import com.excilys.exception.DAOException;
+import com.excilys.exception.ModelException;
 import com.excilys.model.Company;
 import com.excilys.model.CompanyBuilder;
 
@@ -18,9 +19,8 @@ import com.excilys.model.CompanyBuilder;
 public class CompanyMapper {
 
 	private static Logger logger = LoggerFactory.getLogger(CompanyMapper.class);
-
-
-	public static Optional<Company> resultSetToCompany (ResultSet resultSet) throws DAOException {
+	
+	public static Optional<Company> resultSetToCompany(ResultSet resultSet) throws DAOException {
 
 		CompanyBuilder companyBuilder = new CompanyBuilder();
 		Optional<Company> company = Optional.empty();
@@ -36,16 +36,27 @@ public class CompanyMapper {
 			e.printStackTrace();
 			logger.error("SQLException", e);
 			throw new DAOException("Erreur dans resultSetToCompany");
+		} catch (ModelException e) {
+			e.printStackTrace();
+			logger.error("ModelException", e);
+			throw new DAOException("ModelException dans resultSetToCompany");
 		}
 
 		return company;
 	}
 	
-	public static ArrayList<Company> resultSetToListCompany (ResultSet resultSet) throws DAOException {
+	public static ArrayList<Company> resultSetToListCompany(ResultSet resultSet) throws DAOException {
 		
 		ArrayList<Company> companies = new ArrayList<Company>();
 		CompanyBuilder companyBuilder = new CompanyBuilder();
-		Company company = companyBuilder.empty().build();
+		Company company;
+		try {
+			company = companyBuilder.empty().build();
+		} catch (ModelException e) {
+			e.printStackTrace();
+			logger.error("ModelException", e);
+			throw new DAOException("ModelException dans resultSetToListCompany");
+		}
 
 		try {
 			while (resultSet.next()) {
@@ -59,12 +70,16 @@ public class CompanyMapper {
 			e.printStackTrace();
 			logger.error("SQLException", e);
 			throw new DAOException("Erreur dans resultSetToListCompany");
+		} catch (ModelException e) {
+			e.printStackTrace();
+			logger.error("ModelException", e);
+			throw new DAOException("ModelException dans resultSetToListCompany");
 		}
 
 		return companies;
 	}
 	
-	public static CompanyDTO companyToCompanyDTO (Company company) {
+	public static CompanyDTO companyToCompanyDTO(Company company) {
 		Long id = company.getId();
 		String name = company.getName();
 		

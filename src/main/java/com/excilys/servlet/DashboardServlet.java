@@ -41,7 +41,7 @@ public class DashboardServlet extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException  {
+			throws ServletException, IOException {
 
 		ArrayList<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		try {
@@ -104,7 +104,7 @@ public class DashboardServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException  {
+			throws ServletException, IOException {
 
 		String[] computersToDelete = request.getParameterValues("cb");
 

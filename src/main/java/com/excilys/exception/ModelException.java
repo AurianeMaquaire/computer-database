@@ -1,12 +1,12 @@
 package com.excilys.exception;
 
-public class DAOException extends Exception {
+public class ModelException extends Exception {
 
 	private static final long serialVersionUID = 1L;
 
 	private String exceptionMessage;
 
-	public DAOException(String message) {
+	public ModelException(String message) {
 		this.exceptionMessage = message;
 	}
 

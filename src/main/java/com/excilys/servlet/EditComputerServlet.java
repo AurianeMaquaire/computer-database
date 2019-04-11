@@ -33,6 +33,9 @@ public class EditComputerServlet extends HttpServlet {
 	
 	@Autowired
 	ComputerService computerService;
+	
+	@Autowired
+	CompanyService companyService;
 
 	@Override
 	public void init() throws ServletException {
@@ -42,11 +45,11 @@ public class EditComputerServlet extends HttpServlet {
 	
 	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException  {
+			throws ServletException, IOException {
 
 		ArrayList<CompanyDTO> listCompanies = new ArrayList<CompanyDTO>();
 		try {
-			listCompanies = CompanyService.listeCompagnies();
+			listCompanies = companyService.listeCompagnies();
 		} catch (SQLException | DAOException e) {
 			e.printStackTrace();
 			logger.error("Edit Computer Servlet", e);
@@ -74,7 +77,7 @@ public class EditComputerServlet extends HttpServlet {
 
 	@Override
 	public void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException  {
+			throws ServletException, IOException {
 
 		String id = request.getParameter("computerId");
 		String name = request.getParameter("computerName");
@@ -86,7 +89,6 @@ public class EditComputerServlet extends HttpServlet {
 			computerService.editComputer(id, name, introduced, discontinued, companyId);
 			response.sendRedirect("Dashboard");
 		} catch (ValidatorException | SQLException | DAOException e) {
-			e.getMessage();
 			e.printStackTrace();
 			request.setAttribute("exception", e.getMessage());
 			doGet(request, response);

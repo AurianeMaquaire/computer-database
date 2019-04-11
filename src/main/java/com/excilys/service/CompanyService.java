@@ -16,13 +16,13 @@ import com.excilys.model.Company;
 public class CompanyService {
 	
 	@Autowired
-	static CompanyDAO companyDao;
+	CompanyDAO companyDao;
 	
-	public CompanyService () {
+	public CompanyService() {
 		super();
 	}
 	
-	public static ArrayList<CompanyDTO> listeCompagnies() throws SQLException, DAOException {
+	public ArrayList<CompanyDTO> listeCompagnies() throws SQLException, DAOException {
 		ArrayList<Company> companies = companyDao.listAll();
 		ArrayList<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
 		

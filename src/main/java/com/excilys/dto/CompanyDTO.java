@@ -58,5 +58,4 @@ public class CompanyDTO {
 		return "CompanyDTO [id=" + id + ", name=" + name + "]";
 	}
 	
-	
 }

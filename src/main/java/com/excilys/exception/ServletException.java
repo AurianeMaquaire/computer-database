@@ -13,4 +13,5 @@ public class ServletException extends Exception {
 	public String getMessage() {
 		return exceptionMessage;
 	}
+	
 }
