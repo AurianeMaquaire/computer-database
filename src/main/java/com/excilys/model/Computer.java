@@ -5,7 +5,7 @@ import java.util.concurrent.atomic.AtomicLong;
 
 public class Computer {
 	
-	AtomicLong incr = new AtomicLong(560);
+	static AtomicLong incr = new AtomicLong(560);
 	private Long id;
 	private String name;
 	private Timestamp introduced;

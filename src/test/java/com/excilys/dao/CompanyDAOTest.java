@@ -2,11 +2,16 @@ package com.excilys.dao;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
+
+import com.excilys.exception.DAOException;
+import com.excilys.mapper.CompanyMapper;
+import com.excilys.model.Company;
 
 public class CompanyDAOTest {
 	
@@ -22,11 +27,11 @@ public class CompanyDAOTest {
 	}
 	
 	@Test
-	public void testCompany() throws SQLException {
-//		Optional<Company> company = CompanyMapper.resultSetToCompany(rs);
-//		
-//		assertEquals(company.get().getId(), Long.valueOf(1L));
-//		assertEquals(company.get().getName(),"Company name");
+	public void testCompany() throws SQLException, DAOException {
+		Optional<Company> company = CompanyMapper.resultSetToCompany(rs);
+		
+		//assertEquals(company.get().getId(), Long.valueOf(1L));
+		//assertEquals(company.get().getName(),"Company name");
 	}
 	
 }

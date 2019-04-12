@@ -1,7 +1,12 @@
 package com.excilys.model;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import org.junit.Before;
 import org.junit.Test;
+
+import com.excilys.exception.ModelException;
 
 public class CompanyBuilderTest {
 	
@@ -17,34 +22,34 @@ public class CompanyBuilderTest {
 	}
 	
 	@Test
-	public void testEmpty() {
-//		company1 = companyBuilder1.empty().build();
-//		company2 = new Company(0L, null);
-//		assertEquals(company1, company2);
+	public void testEmpty() throws ModelException {
+		company1 = companyBuilder1.empty().build();
+		company2 = new Company(0L, null);
+		assertEquals(company1, company2);
 	}
 	
 	@Test
-	public void testId() {
-//		company1 = companyBuilder1.withId(1L).build();
-//		company2 = new Company(1L, null);
-//		assertEquals(company1, company2);
+	public void testId() throws ModelException {
+		company1 = companyBuilder1.withId(1L).build();
+		company2 = new Company(1L, null);
+		assertEquals(company1, company2);
 	}
 	
 	@Test
-	public void testName() {
-//		company1 = companyBuilder1.withName("company").build();
-//		company2 = new Company(0L, "company");
-//		assertEquals(company1, company2);
+	public void testName() throws ModelException {
+		company1 = companyBuilder1.withName("company").build();
+		company2 = new Company(0L, "company");
+		assertEquals(company1, company2);
 	}
 	
 	@Test
-	public void testIdAndName() {
-//		company1 = companyBuilder1.withId(1L).withName("company").build();
-//		company2 = new Company(1L, "company");
-//		assertEquals(company1, company2);
-//		
-//		company1 = companyBuilder1.withIdAndName(2L, "Company").build();
-//		assertNotEquals(company1, company2);
+	public void testIdAndName() throws ModelException {
+		company1 = companyBuilder1.withId(1L).withName("company").build();
+		company2 = new Company(1L, "company");
+		assertEquals(company1, company2);
+		
+		company1 = companyBuilder1.withIdAndName(2L, "Company").build();
+		assertNotEquals(company1, company2);
 	}
 	
 }
