@@ -17,7 +17,7 @@ public class CompanyDTO {
 	 * @param id l'identifiant de la compagnie
 	 * @param name le nom de la compagnie
 	 */
-	public CompanyDTO(Long id, String name) {
+	public CompanyDTO(long id, String name) {
 		super();
 		this.id = id;
 		this.name = name;

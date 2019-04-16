@@ -1,26 +1,23 @@
 package com.excilys.dao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
 import com.excilys.exception.DAOException;
 import com.excilys.mapper.CompanyMapper;
 import com.excilys.model.Company;
-import com.excilys.persistence.ConnectionDAO;
 
 @Repository
 public class CompanyDAO {
-
-	private static final Logger logger = LoggerFactory.getLogger(CompanyDAO.class);
-
+	
 	private final String SELECT_ALL = "SELECT id, name FROM company";
 	private final String SELECT_ID = SELECT_ALL + " WHERE id = ?";
 	private final String SELECT_NAME = SELECT_ALL + " WHERE name = ?";
@@ -29,6 +26,12 @@ public class CompanyDAO {
 	private final String DELETE_COMPUTERS = "DELETE FROM computer WHERE company_id = ?";
 	private final String COUNT = "SELECT COUNT(id) AS len FROM company";
 
+	@Autowired
+	DataSource dataSource;
+	
+	@Autowired
+	CompanyMapper companyMapper;
+	
 	/**
 	 * Renvoie les informations sur une compagnie à partir de l'identifiant
 	 * @param id l'identifiant de la compagnie
@@ -36,27 +39,18 @@ public class CompanyDAO {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public Optional<Company> find(long id) throws SQLException, DAOException {
-		Connection conn = ConnectionDAO.getInstance().getConnection();
-		conn.setAutoCommit(false);
-		Optional<Company> company = Optional.empty();
-		
-		try (PreparedStatement statement = conn.prepareStatement(SELECT_ID)) {
-			statement.setLong(1, id);
-
-			ResultSet res = statement.executeQuery();
-
-			company = CompanyMapper.resultSetToCompany(res);
-			conn.commit();
-
-		} catch (SQLException e) {
-			logger.error("Exception SQL", e);
-			e.printStackTrace();
-			conn.rollback();
-			throw new DAOException("Erreur lors de la recherche d'une compagnie par id");
-		} 
-		conn.setAutoCommit(true);
-		return company;
+	public Optional<Company> find(Long id) throws SQLException {
+		Company company;
+		try {
+			JdbcTemplate select = new JdbcTemplate(dataSource);
+			company = select.queryForObject(SELECT_ID, new Object[] {id}, companyMapper);
+		} catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
+		}
+		if (company == null) {
+			return Optional.empty();
+		}
+		return Optional.of(company);
 	}
 
 	/**
@@ -67,117 +61,38 @@ public class CompanyDAO {
 	 * @throws DAOException 
 	 */
 	public Optional<Company> find(String name) throws SQLException, DAOException {
-		Connection conn = ConnectionDAO.getInstance().getConnection();
-		conn.setAutoCommit(false);
-		Optional<Company> company = Optional.empty();
-		
-		try (PreparedStatement statement = conn.prepareStatement(SELECT_NAME)) {
-			statement.setString(1, name);
-
-			ResultSet res = statement.executeQuery();
-
-			company = CompanyMapper.resultSetToCompany(res);
-			conn.commit();
-
-		} catch (SQLException e) {
-			logger.error("Exception SQL", e);
-			e.printStackTrace();
-			conn.rollback();
-			throw new DAOException("Erreur lors de la recherche d'une compagnie par nom");
-		} 
-		conn.setAutoCommit(true);
-		return company;
-	}
-
-	public ArrayList<Company> listAll() throws SQLException, DAOException {
-		Connection conn = ConnectionDAO.getInstance().getConnection();
-		conn.setAutoCommit(false);
-		ArrayList<Company> companies = new ArrayList<Company>();
-		
-		try (PreparedStatement statement = conn.prepareStatement(SELECT_ALL)) {
-			ResultSet res = statement.executeQuery();
-
-			companies = CompanyMapper.resultSetToListCompany(res);
-			conn.commit();
-
-		} catch (SQLException e) {
-			logger.error("Exception SQL", e);
-			e.printStackTrace();
-			conn.rollback();
-			throw new DAOException("Erreur lors de la liste des compagnies");
-		} 
-		conn.setAutoCommit(true);
-		return companies;
-	}
-
-	public ArrayList<Company> list(Long idDebut, Long idFin) throws SQLException, DAOException {
-		Connection conn = ConnectionDAO.getInstance().getConnection();
-		conn.setAutoCommit(false);
-		ArrayList<Company> companies = new ArrayList<Company>();
-		
-		try (PreparedStatement statement = conn.prepareStatement(SELECT_LIST)) {
-			statement.setLong(1, idDebut);
-			statement.setLong(2, idFin);
-
-			ResultSet res = statement.executeQuery();
-
-			companies = CompanyMapper.resultSetToListCompany(res);
-			conn.commit();
-
-		} catch (SQLException e) {
-			logger.error("Exception SQL", e);
-			e.printStackTrace();
-			conn.rollback();
-			throw new DAOException("Erreur lors de la liste des compagnies par pages");
+		Company company;
+		try {
+			JdbcTemplate select = new JdbcTemplate(dataSource);
+			company = select.queryForObject(SELECT_NAME, new Object[] {name}, companyMapper);
+		} catch (EmptyResultDataAccessException e) {
+			return Optional.empty();
 		}
-		conn.setAutoCommit(true);
-		return companies;
-	}
-	
-	public Long length() throws SQLException, DAOException {
-		Connection conn = ConnectionDAO.getInstance().getConnection();
-		conn.setAutoCommit(false);
-		Long len = 0L;
-		
-		try (PreparedStatement statement = conn.prepareStatement(COUNT)) {
-			ResultSet res = statement.executeQuery();
-
-			res.next();
-			len = res.getLong("len");
-			conn.commit();
-
-		} catch (SQLException e) {
-			logger.error("Exception SQL", e);
-			e.printStackTrace();
-			conn.rollback();
-			throw new DAOException("Erreur lors du calcul de la taille d'une liste de compagnies");
-		} 
-		conn.setAutoCommit(true);
-		return len;
+		if (company == null) {
+			return Optional.empty();
+		}
+		return Optional.of(company);
 	}
 
-	public void delete(Company company) throws SQLException, DAOException {
-		Connection conn = ConnectionDAO.getInstance().getConnection();
-		conn.setAutoCommit(false);
-		
-		try (PreparedStatement statementCompany = conn.prepareStatement(DELETE_COMPANY);
-				PreparedStatement statementComputers = conn.prepareStatement(DELETE_COMPUTERS)) {
-			
-			statementComputers.setLong(1, company.getId());
-			statementComputers.executeUpdate();
-			
-			statementCompany.setLong(1, company.getId());
-			statementCompany.executeUpdate();
-			
-			conn.commit();
+	public List<Company> listAll() throws SQLException {
+		JdbcTemplate select = new JdbcTemplate(dataSource);
+		return select.query(SELECT_ALL, companyMapper);
+	}
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-			logger.error("Exception SQL", e);
-			conn.rollback();
-			throw new DAOException("Erreur lors de la suppression d'une compagnie");
-		} 
-		conn.setAutoCommit(true);
+	public List<Company> list(Long idDebut, Long idFin) throws SQLException {
+		JdbcTemplate select = new JdbcTemplate(dataSource);
+		return select.query(SELECT_LIST, new Object[] {idDebut, idFin}, companyMapper);
+	}
+
+	public Long length() throws SQLException {
+		JdbcTemplate update = new JdbcTemplate(dataSource);
+		return update.queryForObject(COUNT, Long.class);
+	}
+
+	public void delete(Company company) throws SQLException {
+		JdbcTemplate update = new JdbcTemplate(dataSource);
+		update.update(DELETE_COMPUTERS, new Object[] {company.getId()} );
+		update.update(DELETE_COMPANY, new Object[] {company.getId()} );
 	}
 
 }

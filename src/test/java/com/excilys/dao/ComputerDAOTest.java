@@ -1,11 +1,8 @@
 package com.excilys.dao;
 
-import static org.junit.Assert.assertEquals;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Optional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,9 +10,6 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 
 import com.excilys.exception.DAOException;
-import com.excilys.mapper.ComputerMapper;
-import com.excilys.model.Company;
-import com.excilys.model.Computer;
 
 
 public class ComputerDAOTest {
@@ -37,8 +31,8 @@ public class ComputerDAOTest {
 	
 	@Test
 	public void testComputer() throws SQLException, DAOException {
-		Optional<Computer> computer = ComputerMapper.resultSetToComputer(rs);
-		
+//		Optional<Computer> computer = ComputerMapper.resultSetToComputer(rs);
+//		
 //		assertEquals(computer.get().getId(), Long.valueOf(1L));
 //		assertEquals(computer.get().getName(),"Computer name");
 //		assertEquals(computer.get().getIntroduced(),Timestamp.valueOf("2000-01-01 00:00:00"));

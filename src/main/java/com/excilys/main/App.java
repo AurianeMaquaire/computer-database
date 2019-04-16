@@ -19,7 +19,7 @@ public class App {
 	 * Lancement du programme
 	 */
 	public static void main(String[] args) {
-		
+				
 		logger.trace("Main started");
 		
 		AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ConfigApp.class);

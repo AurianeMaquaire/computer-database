@@ -2,7 +2,7 @@ package com.excilys.view;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
@@ -118,11 +118,12 @@ public class View {
 	 * @throws DAOException 
 	 */
 	public void afficherListeComputers() throws SQLException, DAOException {
-		ArrayList<Computer> computers = computerDao.listAll();
+		List<Computer> computers = computerDao.listAll();
 		System.out.println("Affichage de la liste des ordinateurs");
 		for(Computer c : computers) {
 			System.out.println(c);
 		}
+		System.out.println(computers.size() + " ordinateurs affichés");
 	}
 
 	/**
@@ -146,7 +147,7 @@ public class View {
 			idFin = max;
 		}
 
-		ArrayList<Computer> computers = computerDao.list(idDebut, idFin);
+		List<Computer> computers = computerDao.list(idDebut, idFin);
 		System.out.println("Affichage de la liste des ordinateurs de " + idDebut + " à " + idFin);
 		for(Computer c : computers) {
 			System.out.println(c);
@@ -159,11 +160,12 @@ public class View {
 	 * @throws DAOException 
 	 */
 	public void afficherListeCompanies() throws SQLException, DAOException {
-		ArrayList<Company> companies = companyDao.listAll();
+		List<Company> companies = companyDao.listAll();
 		System.out.println("Affichage de la liste des compagnies");
 		for(Company c : companies) {
 			System.out.println(c);
 		}
+		System.out.println(companies.size() + " compagnies affichées");
 	}
 
 	/**
@@ -187,7 +189,7 @@ public class View {
 			idFin = max;
 		}
 
-		ArrayList<Company> companies = companyDao.list(idDebut, idFin);
+		List<Company> companies = companyDao.list(idDebut, idFin);
 		System.out.println("Affichage de la liste des compagnies de " + idDebut + " à " + idFin);
 		for(Company c : companies) {
 			System.out.println(c);

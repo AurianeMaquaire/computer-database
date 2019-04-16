@@ -3,6 +3,7 @@ package com.excilys.service;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,12 +39,15 @@ public class ComputerService {
 			computerId = Long.parseLong(id);
 		}
 		Optional<Computer> computer = computerDao.find(computerId);
-		Optional<ComputerDTO> computerDTO = Optional.of(ComputerMapper.computerToComputerDTO(computer.get()));
+		Optional<ComputerDTO> computerDTO = Optional.empty();
+		if (computer.isPresent()) {
+			computerDTO = Optional.of(ComputerMapper.computerToComputerDTO(computer.get()));
+		}
 		return computerDTO;
 	}
 
 	public ArrayList<ComputerDTO> listeComputers() throws SQLException, DAOException {
-		ArrayList<Computer> computers = computerDao.listAll();
+		List<Computer> computers = computerDao.listAll();
 		ArrayList<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 
 		for (Computer computer : computers) {

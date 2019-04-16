@@ -2,6 +2,7 @@ package com.excilys.service;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,7 +24,7 @@ public class CompanyService {
 	}
 	
 	public ArrayList<CompanyDTO> listeCompagnies() throws SQLException, DAOException {
-		ArrayList<Company> companies = companyDao.listAll();
+		List<Company> companies = companyDao.listAll();
 		ArrayList<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
 		
 		for (Company c : companies) {

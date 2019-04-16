@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.Properties;
 
+import javax.sql.DataSource;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,7 +24,7 @@ public class ConnectionDAO {
 
 	public static final String DAO_PROPERTIES = "datasource.properties";
 
-	private HikariDataSource hikariDataSource;
+	private static HikariDataSource hikariDataSource;
 
 	private ConnectionDAO() throws IOException, DAOException {
 		this(DAO_PROPERTIES);
@@ -35,7 +37,7 @@ public class ConnectionDAO {
 		try {
 			properties.load(fichierProperties);
 			HikariConfig hikariConfig = new HikariConfig(properties);
-			this.hikariDataSource = new HikariDataSource(hikariConfig);
+			hikariDataSource = new HikariDataSource(hikariConfig);
 		} catch (IOException e) {
 			e.printStackTrace();
 			logger.error("Exception dans ConnectionDAO", e);
@@ -58,6 +60,10 @@ public class ConnectionDAO {
 
 	public Connection getConnection() throws SQLException {
 		return hikariDataSource.getConnection();
+	}
+	
+	public DataSource getDataSource() {
+		return hikariDataSource;
 	}
 
 	public void close() {
