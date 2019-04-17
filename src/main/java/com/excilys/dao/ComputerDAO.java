@@ -12,7 +12,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.exception.DAOException;
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.model.Computer;
 
@@ -35,7 +34,7 @@ public class ComputerDAO {
 	@Autowired
 	ComputerMapper computerMapper;
 	
-	public Optional<Computer> find(Long id) throws SQLException, DAOException {
+	public Optional<Computer> find(Long id) throws SQLException {
 		Computer computer;
 		try {
 			JdbcTemplate select = new JdbcTemplate(dataSource);

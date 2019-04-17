@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.excilys.dao.CompanyDAO;
 import com.excilys.dto.CompanyDTO;
-import com.excilys.exception.DAOException;
 import com.excilys.mapper.CompanyMapper;
 import com.excilys.model.Company;
 
@@ -23,7 +22,7 @@ public class CompanyService {
 		super();
 	}
 	
-	public ArrayList<CompanyDTO> listeCompagnies() throws SQLException, DAOException {
+	public ArrayList<CompanyDTO> listeCompagnies() throws SQLException {
 		List<Company> companies = companyDao.listAll();
 		ArrayList<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
 		

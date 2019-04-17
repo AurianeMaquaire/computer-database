@@ -11,7 +11,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.exception.DAOException;
 import com.excilys.mapper.CompanyMapper;
 import com.excilys.model.Company;
 
@@ -60,7 +59,7 @@ public class CompanyDAO {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public Optional<Company> find(String name) throws SQLException, DAOException {
+	public Optional<Company> find(String name) throws SQLException {
 		Company company;
 		try {
 			JdbcTemplate select = new JdbcTemplate(dataSource);
