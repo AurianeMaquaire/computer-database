@@ -15,21 +15,25 @@ public class ComputerValidator {
 	public static void verify(Computer computer) throws ValidatorException {
 		
 		if (computer.getName() == null) {
-			throw new ValidatorException("Computer name can't be null");
+			throw new ValidatorException("name");
 		}
 		
 		Timestamp introduced = computer.getIntroduced();
 		Timestamp discontinued = computer.getDiscontinued();
 
 		if (introduced == null && discontinued != null) {
-			throw new ValidatorException("Discontinued date must be null while introduced date is null");
+			throw new ValidatorException("discontinued");
 		}
 
 		if (introduced != null && discontinued != null) {
 			if (introduced.after(discontinued)) {
-				throw new ValidatorException("Introduced date is after discontinued date");
+				throw new ValidatorException("introduced");
 			}
 		}
 	}
+	
+	// Computer name can't be null
+	// Discontinued date must be null while introduced date is null
+	// Introduced date is after discontinued date
 
 }

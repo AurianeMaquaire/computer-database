@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -19,29 +20,34 @@
 			<a class="navbar-brand"
 				href="<c:url value="/Dashboard?currentPage=0"/>"> Application -
 				Computer Database </a>
+			<input type="button" onclick="location.href='<c:url value="/Dashboard?lang=en"/>'" value="EN"> 
+			<input type="button" onclick="location.href='<c:url value="/Dashboard?lang=fr"/>'" value="FR">
 		</div>
 	</header>
 
 	<section id="main">
 		<div class="container">
 			<h1 id="homeTitle">
-				<c:out value="${page.length} computers found" />
+				<spring:message code="nbComputers" arguments="${page.length}" />
 			</h1>
 			<div id="actions" class="form-horizontal">
 				<div class="pull-left">
 					<form id="searchForm" action="#" method="GET" class="form-inline">
 
 						<input type="search" id="searchbox" name="search"
-							class="form-control" placeholder="Search name" /> <input
-							type="submit" id="searchsubmit" value="Filter by name"
+							class="form-control"
+							placeholder="<spring:message code="searchBox" />" /> <input
+							type="submit" id="searchsubmit"
+							value="<spring:message code="searchButton" />"
 							class="btn btn-primary" />
 					</form>
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer"
-						href="<c:url value="/AddComputer"/>">Add Computer</a> <a
-						class="btn btn-default" id="editComputer" href="#"
-						onclick="$.fn.toggleEditMode();">Edit</a>
+						href="<c:url value="/AddComputer"/>"><spring:message
+							code="addComputer" /></a> <a class="btn btn-default"
+						id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message
+							code="edit" /></a>
 				</div>
 			</div>
 		</div>
@@ -65,16 +71,17 @@
 							</span></th>
 							<th><a
 								onclick="location.href='<c:url value="/Dashboard?sortBy=name" />'"
-								title="Order by computer name">Computer name</a></th>
+								title="<spring:message code="titleComputerName" />"><spring:message
+										code="computerName" /></a></th>
 							<th><a
 								onclick="location.href='<c:url value="/Dashboard?sortBy=introduced" />'"
-								title="Order by introduced date">Introduced date</a></th>
-							<!-- Table header for Discontinued Date -->
+								title="<spring:message code="titleIntroduced" />"><spring:message
+										code="introduced" /></a></th>
 							<th><a
 								onclick="location.href='<c:url value="/Dashboard?sortBy=discontinued" />'"
-								title="Order by discontinued date">Discontinued date</a></th>
-							<!-- Table header for Company -->
-							<th>Company</th>
+								title="<spring:message code="titleDiscontinued" />"><spring:message
+										code="discontinued" /></a></th>
+							<th><spring:message code="company" /></th>
 
 						</tr>
 					</thead>

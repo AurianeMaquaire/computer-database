@@ -3,10 +3,12 @@ package com.excilys.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Locale;
 
 import javax.servlet.ServletException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -26,6 +28,9 @@ public class AddComputerController {
 
 	@Autowired
 	CompanyService companyService;
+	
+	@Autowired
+	MessageSource messageSource;
 
 	@GetMapping({"/AddComputer", "/addcomputer"})
 	public String getAddComputer(Model model) throws ServletException, IOException {
@@ -47,15 +52,27 @@ public class AddComputerController {
 			@RequestParam(name="computerName", required=true) String name, 
 			@RequestParam(name="introduced", required=false) String introduced, 
 			@RequestParam(name="discontinued", required=false) String discontinued, 
-			@RequestParam(name="companyId", required=false) String companyId) 
+			@RequestParam(name="companyId", required=false) String companyId, 
+			Locale locale)
 					throws ServletException, IOException {
 
 		try {
 			computerService.createComputer(name, introduced, discontinued, companyId);
 			return "redirect:/Dashboard";
-		} catch (ValidatorException | SQLException e) {
+		} catch (ValidatorException e) {
+			String except = e.getMessage();
+			String exception = null;
+			if (except == "name") {
+				exception = messageSource.getMessage("exceptionName", null, locale);
+			} else if (except == "discontinued") {
+				exception = messageSource.getMessage("exceptionDiscontinued", null, locale);
+			} else if (except == "introduced") {
+				exception = messageSource.getMessage("exceptionIntroduced", null, locale);
+			}
+			model.addAttribute("exception",exception);
+			return getAddComputer(model);
+		} catch (SQLException e) {
 			e.printStackTrace();
-			model.addAttribute("exception", e.getMessage());
 			return getAddComputer(model);
 		}
 	}

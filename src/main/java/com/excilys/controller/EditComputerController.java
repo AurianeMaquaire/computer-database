@@ -3,11 +3,13 @@ package com.excilys.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Optional;
 
 import javax.servlet.ServletException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +30,9 @@ public class EditComputerController {
 
 	@Autowired
 	CompanyService companyService;
+	
+	@Autowired
+	MessageSource messageSource;
 
 	@GetMapping({"/EditComputer", "/editcomputer"})
 	public String getEditComputer(Model model, 
@@ -63,15 +68,27 @@ public class EditComputerController {
 			@RequestParam(name="computerName", required=false) String name, 
 			@RequestParam(name="introduced", required=false) String introduced, 
 			@RequestParam(name="discontinued", required=false) String discontinued, 
-			@RequestParam(name="companyId", required=false) String companyId) 
+			@RequestParam(name="companyId", required=false) String companyId, 
+			Locale locale) 
 					throws ServletException, IOException {
 		
 		try {
 			computerService.editComputer(id, name, introduced, discontinued, companyId);
 			return "redirect:/Dashboard";
-		} catch (ValidatorException | SQLException e) {
+		} catch (ValidatorException e) {
+			String except = e.getMessage();
+			String exception = null;
+			if (except == "name") {
+				exception = messageSource.getMessage("exceptionName", null, locale);
+			} else if (except == "discontinued") {
+				exception = messageSource.getMessage("exceptionDiscontinued", null, locale);
+			} else if (except == "introduced") {
+				exception = messageSource.getMessage("exceptionIntroduced", null, locale);
+			}
+			model.addAttribute("exception",exception);
+			return getEditComputer(model, id);
+		} catch (SQLException e) {
 			e.printStackTrace();
-			model.addAttribute("exception", e.getMessage());
 			return getEditComputer(model, id);
 		} 
 	}

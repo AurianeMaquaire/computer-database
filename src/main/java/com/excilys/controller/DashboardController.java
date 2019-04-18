@@ -46,7 +46,13 @@ public class DashboardController {
 		page.setData(listComputers);
 
 		if (currentPage != null && currentPage != "") {
-			page.setCurrentPage(Integer.valueOf(currentPage));
+			int currentPageInt = Integer.parseInt(currentPage);
+			if (currentPageInt < page.getMaxPages()) {
+				page.setCurrentPage(Integer.valueOf(currentPage));
+			} else {
+				return "404";
+				//throw new ServletException("Numéro de page trop grand");
+			}
 		} else {
 			page.setCurrentPage(0);
 		}

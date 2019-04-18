@@ -5,10 +5,15 @@
 	version="3.0">
 
 	<display-name>computer-database</display-name>
-	
+
 	<servlet-mapping>
-	<servlet-name>default</servlet-name>
-	<url-pattern>*.css</url-pattern>
+		<servlet-name>default</servlet-name>
+		<url-pattern>*.css</url-pattern>
+		<url-pattern>*.js</url-pattern>
+		<url-pattern>*.eot</url-pattern>
+		<url-pattern>*.svg</url-pattern>
+		<url-pattern>*.ttf</url-pattern>
+		<url-pattern>*.woff</url-pattern>
 	</servlet-mapping>
 
 </web-app>
