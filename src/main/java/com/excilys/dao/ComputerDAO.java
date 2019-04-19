@@ -1,7 +1,6 @@
 package com.excilys.dao;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,9 +47,9 @@ public class ComputerDAO {
 		return Optional.of(computer);
 	}
 
-	public ArrayList<Computer> find(String name) throws SQLException {
+	public List<Computer> find(String name) throws SQLException {
 		JdbcTemplate select = new JdbcTemplate(dataSource);
-		return (ArrayList<Computer>) select.query(SELECT_NAME, new Object[] {"%" + name + "%", "%" + name + "%"}, computerMapper);
+		return select.query(SELECT_NAME, new Object[] {"%" + name + "%", "%" + name + "%"}, computerMapper);
 	}
 
 	public Optional<Computer> create(Computer comp) throws SQLException {
@@ -85,15 +84,10 @@ public class ComputerDAO {
 		return update.queryForObject(COUNT, Long.class);
 	}
 
-	public ArrayList<Computer> sort(String sortBy) throws SQLException {
-		String ORDER_BY;
-		if (sortBy == "name") {
-			ORDER_BY = SELECT_ALL + " ORDER BY ct." + sortBy;
-		} else {
-			ORDER_BY = SELECT_ALL + " ORDER BY ct." + sortBy + " IS NULL, ct." + sortBy;
-		}
+	public List<Computer> sort(String sortBy) throws SQLException {
+		String ORDER_BY = SELECT_ALL + " ORDER BY ct." + sortBy + " IS NULL, ct." + sortBy;
 		JdbcTemplate select = new JdbcTemplate(dataSource);
-		return (ArrayList<Computer>) select.query(ORDER_BY, computerMapper);
+		return select.query(ORDER_BY, computerMapper);
 	}
 
 }

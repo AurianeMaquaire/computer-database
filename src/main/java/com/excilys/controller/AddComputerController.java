@@ -5,8 +5,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Locale;
 
-import javax.servlet.ServletException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -33,14 +31,15 @@ public class AddComputerController {
 	MessageSource messageSource;
 
 	@GetMapping({"/AddComputer", "/addcomputer"})
-	public String getAddComputer(Model model) throws ServletException, IOException {
+	public String getAddComputer(Model model, Locale locale) throws IOException {
 
 		ArrayList<CompanyDTO> listCompanies = new ArrayList<CompanyDTO>();
 		try {
 			listCompanies = companyService.listeCompagnies();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ServletException("Add Computer Exception");
+			String exception = messageSource.getMessage("exceptionListCompanies", null, locale);
+			model.addAttribute("exception", exception);
+			return "404";
 		}
 		model.addAttribute("listCompanies", listCompanies);
 
@@ -54,7 +53,7 @@ public class AddComputerController {
 			@RequestParam(name="discontinued", required=false) String discontinued, 
 			@RequestParam(name="companyId", required=false) String companyId, 
 			Locale locale)
-					throws ServletException, IOException {
+					throws IOException {
 
 		try {
 			computerService.createComputer(name, introduced, discontinued, companyId);
@@ -70,10 +69,10 @@ public class AddComputerController {
 				exception = messageSource.getMessage("exceptionIntroduced", null, locale);
 			}
 			model.addAttribute("exception",exception);
-			return getAddComputer(model);
+			return getAddComputer(model, locale);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return getAddComputer(model);
+			return getAddComputer(model, locale);
 		}
 	}
 

@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Optional;
 
-import javax.servlet.ServletException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -36,15 +34,17 @@ public class EditComputerController {
 
 	@GetMapping({"/EditComputer", "/editcomputer"})
 	public String getEditComputer(Model model, 
-			@RequestParam(name="computerId", required=true) String id) 
-					throws ServletException, IOException {
+			@RequestParam(name="computerId", required=true) String id, 
+			Locale locale) 
+					throws IOException {
 		
 		ArrayList<CompanyDTO> listCompanies = new ArrayList<CompanyDTO>();
 		try {
 			listCompanies = companyService.listeCompagnies();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ServletException("Edit Computer Exception");
+			String exception = messageSource.getMessage("exceptionListCompanies", null, locale);
+			model.addAttribute("exception", exception);
+			return "404";
 		} 
 		model.addAttribute("listCompanies", listCompanies);
 
@@ -52,8 +52,9 @@ public class EditComputerController {
 		try {
 			computer = computerService.findComputer(id);
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ServletException("Edit Computer Exception");
+			String exception = messageSource.getMessage("exceptionFindComputer", null, locale);
+			model.addAttribute("exception", exception);
+			return "404";
 		} 
 		if (computer.isPresent()) {
 			model.addAttribute("computer", computer.get());
@@ -70,7 +71,7 @@ public class EditComputerController {
 			@RequestParam(name="discontinued", required=false) String discontinued, 
 			@RequestParam(name="companyId", required=false) String companyId, 
 			Locale locale) 
-					throws ServletException, IOException {
+					throws IOException {
 		
 		try {
 			computerService.editComputer(id, name, introduced, discontinued, companyId);
@@ -86,10 +87,10 @@ public class EditComputerController {
 				exception = messageSource.getMessage("exceptionIntroduced", null, locale);
 			}
 			model.addAttribute("exception",exception);
-			return getEditComputer(model, id);
+			return getEditComputer(model, id, locale);
 		} catch (SQLException e) {
 			e.printStackTrace();
-			return getEditComputer(model, id);
+			return getEditComputer(model, id, locale);
 		} 
 	}
 

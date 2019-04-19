@@ -18,9 +18,10 @@
 		<div class="container">
 			<a class="navbar-brand"
 				href="<c:url value="/Dashboard?currentPage=0"/>"> Application -
-				Computer Database </a>
-			<input type="button" onclick="location.href='<c:url value="?lang=en"/>'" value="EN"> 
-			<input type="button" onclick="location.href='<c:url value="?lang=fr"/>'" value="FR">
+				Computer Database </a> <input type="button"
+				onclick="location.href='<c:url value="?lang=en"/>'" value="EN">
+			<input type="button"
+				onclick="location.href='<c:url value="?lang=fr"/>'" value="FR">
 		</div>
 	</header>
 
@@ -30,6 +31,10 @@
 				<spring:message code="error404" />
 				<br />
 				<!-- stacktrace -->
+				<div class="exception">
+					<font color="red" size="+1"> <c:out value="${exception}" />
+					</font>
+				</div>
 			</div>
 		</div>
 	</section>

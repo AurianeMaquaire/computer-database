@@ -3,10 +3,10 @@ package com.excilys.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
-
-import javax.servlet.ServletException;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,20 +23,25 @@ public class DashboardController {
 	@Autowired
 	ComputerService computerService;
 
+	@Autowired
+	MessageSource messageSource;
+
 	@GetMapping({"/", "/Dashboard", "/dashboard"})
 	public String getDashboard(Model model, 
 			@RequestParam(name="page", required=false) Page<ComputerDTO> page, 
 			@RequestParam(name="currentPage", required=false) String currentPage, 
 			@RequestParam(name="search", required=false) String search, 
-			@RequestParam(name="sortBy", required=false) String sortBy) 
-					throws ServletException, IOException {
+			@RequestParam(name="sortBy", required=false) String sortBy, 
+			Locale locale) 
+					throws IOException {
 
 		ArrayList<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		try {
 			listComputers = computerService.listeComputers();
 		} catch (SQLException e) {
-			e.printStackTrace();
-			throw new ServletException("Dashboard Exception");
+			String exception = messageSource.getMessage("exceptionList", null, locale);
+			model.addAttribute("exception", exception);
+			return "404";
 		}
 
 		if (page == null) {
@@ -47,27 +52,27 @@ public class DashboardController {
 
 		if (currentPage != null && currentPage != "") {
 			int currentPageInt = Integer.parseInt(currentPage);
-			if (currentPageInt < page.getMaxPages()) {
+			if (currentPageInt < page.getMaxPages() && currentPageInt >= 0) {
 				page.setCurrentPage(Integer.valueOf(currentPage));
 			} else {
+				String exception = messageSource.getMessage("exceptionPage", null, locale);
+				model.addAttribute("exception", exception);
 				return "404";
-				//throw new ServletException("Numéro de page trop grand");
 			}
 		} else {
 			page.setCurrentPage(0);
 		}
-
+		
 		ArrayList<ComputerDTO> computers = new ArrayList<ComputerDTO>();
 		if (search != null && search != "") {
 			try {
 				computers = computerService.searchComputers(search);
 			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new ServletException("Dashboard Exception");
+				String exception = messageSource.getMessage("exceptionSearch", null, locale);
+				model.addAttribute("exception", exception);
+				return "404";
 			}
 			page.setData(computers);
-		} else {
-			page.setData(listComputers);
 		}
 
 		ArrayList<ComputerDTO> computersSorted = new ArrayList<ComputerDTO>();
@@ -75,12 +80,13 @@ public class DashboardController {
 			try {
 				computersSorted = computerService.orderComputers(sortBy);
 			} catch (SQLException e) {
-				e.printStackTrace();
-				throw new ServletException("Dashboard Exception");
+				String exception = messageSource.getMessage("exceptionSort", null, locale);
+				model.addAttribute("exception", exception);
+				return "404";
 			}
 			page.setData(computersSorted);
-		}
-
+		} 
+				
 		model.addAttribute("page", page);
 
 		return "dashboard";
@@ -88,16 +94,18 @@ public class DashboardController {
 
 	@PostMapping({"/", "/Dashboard", "/dashboard"})
 	public String postDashboard(Model model, 
-			@RequestParam(name="cb", required=true) String[] computersToDelete) 
-					throws ServletException, IOException {
+			@RequestParam(name="cb", required=true) String[] computersToDelete, 
+			Locale locale) 
+					throws IOException {
 
 		if (computersToDelete != null) {
 			for (String id : computersToDelete) {
 				try {
 					computerService.deleteComputer(id);
 				} catch (SQLException e) {
-					e.printStackTrace();
-					throw new ServletException("Dashboard Exception");
+					String exception = messageSource.getMessage("exceptionDeleteComputer", null, locale);
+					model.addAttribute("exception", exception);
+					return "404";
 				}
 			}
 		} 

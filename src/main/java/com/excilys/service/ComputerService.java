@@ -144,7 +144,7 @@ public class ComputerService {
 	}
 
 	public ArrayList<ComputerDTO> searchComputers(String search) throws SQLException {
-		ArrayList<Computer> computers = computerDao.find(search);
+		List<Computer> computers = computerDao.find(search);
 		ArrayList<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 		for (Computer computer : computers) {
 			ComputerDTO computerDto = ComputerMapper.computerToComputerDTO(computer);
@@ -154,7 +154,7 @@ public class ComputerService {
 	}
 
 	public ArrayList<ComputerDTO> orderComputers(String sortBy) throws SQLException {
-		ArrayList<Computer> computers = computerDao.sort(sortBy);
+		List<Computer> computers = computerDao.sort(sortBy);
 		ArrayList<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 		for (Computer computer : computers) {
 			ComputerDTO computerDto = ComputerMapper.computerToComputerDTO(computer);
