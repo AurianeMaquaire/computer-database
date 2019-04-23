@@ -45,9 +45,9 @@ public class ComputerService {
 		return computerDTO;
 	}
 
-	public ArrayList<ComputerDTO> listeComputers() throws SQLException {
+	public List<ComputerDTO> listeComputers() throws SQLException {
 		List<Computer> computers = computerDao.listAll();
-		ArrayList<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 
 		for (Computer computer : computers) {
 			computersDTO.add(ComputerMapper.computerToComputerDTO(computer));
@@ -56,11 +56,11 @@ public class ComputerService {
 		return computersDTO;
 	}
 
-	public void createComputer(String name, String introducedString, String discontinuedString, String companyId) throws ValidatorException, SQLException {
+	public void createComputer(ComputerDTO computerDto) throws ValidatorException, SQLException {
 		Optional<Timestamp> intro = Optional.empty();
 		Timestamp introduced = null;
-		if (introducedString != null) {
-			intro = TimestampMapper.stringToTimestamp(introducedString);
+		if (computerDto.getIntroduced() != null) {
+			intro = TimestampMapper.stringToTimestamp(computerDto.getIntroduced());
 			if (intro.isPresent()) {
 				introduced = intro.get();
 			}
@@ -68,39 +68,29 @@ public class ComputerService {
 
 		Optional<Timestamp> disc = Optional.empty();
 		Timestamp discontined = null;
-		if (discontinuedString != null) {
-			disc = TimestampMapper.stringToTimestamp(discontinuedString);
+		if (computerDto.getDiscontinued() != null) {
+			disc = TimestampMapper.stringToTimestamp(computerDto.getDiscontinued());
 			if (disc.isPresent()) {
 				discontined = disc.get();
 			}
 		} 
 
-		Long companyID = null;
-		if (companyId != null) {
-			companyID = Long.parseLong(companyId);
-		} 
-
-		Optional<Company> company = companyDao.find(companyID);
+		Optional<Company> company = companyDao.find(computerDto.getCompanyId());
 		Computer computer;
 		if (company.isPresent()) {
-			computer = new Computer(name, introduced, discontined, company.get());
+			computer = new Computer(computerDto.getName(), introduced, discontined, company.get());
 		} else {
-			computer = new Computer(name, introduced, discontined, null);
+			computer = new Computer(computerDto.getName(), introduced, discontined, null);
 		}
 		ComputerValidator.verify(computer);
 		computerDao.create(computer);
 	}
 
-	public void editComputer(String id, String name, String introducedString, String discontinuedString, String companyId) throws ValidatorException, SQLException {
-		Long idComputer = 0L;
-		if (id != null) {
-			idComputer = Long.parseLong(id);
-		}
-
+	public void editComputer(ComputerDTO computerDto) throws ValidatorException, SQLException {
 		Optional<Timestamp> intro = Optional.empty();
 		Timestamp introduced = null;
-		if (introducedString != null) {
-			intro = TimestampMapper.stringToTimestamp(introducedString);
+		if (computerDto.getIntroduced() != null) {
+			intro = TimestampMapper.stringToTimestamp(computerDto.getIntroduced());
 			if (intro.isPresent()) {
 				introduced = intro.get();
 			}
@@ -108,24 +98,19 @@ public class ComputerService {
 
 		Optional<Timestamp> disc = Optional.empty();
 		Timestamp discontined = null;
-		if (discontinuedString != null) {
-			disc = TimestampMapper.stringToTimestamp(discontinuedString);
+		if (computerDto.getDiscontinued() != null) {
+			disc = TimestampMapper.stringToTimestamp(computerDto.getDiscontinued());
 			if (disc.isPresent()) {
 				discontined = disc.get();
 			}
 		} 
 
-		Long companyID = null;
-		if (companyId != null) {
-			companyID = Long.parseLong(companyId);
-		} 
-
-		Optional<Company> company = companyDao.find(companyID);
+		Optional<Company> company = companyDao.find(computerDto.getCompanyId());
 		Computer computer;
 		if (company.isPresent()) {
-			computer = new Computer(idComputer, name, introduced, discontined, company.get());
+			computer = new Computer(computerDto.getId(), computerDto.getName(), introduced, discontined, company.get());
 		} else {
-			computer = new Computer(idComputer, name, introduced, discontined, null);
+			computer = new Computer(computerDto.getId(), computerDto.getName(), introduced, discontined, null);
 		}
 		ComputerValidator.verify(computer);
 		computerDao.update(computer);
@@ -143,9 +128,9 @@ public class ComputerService {
 		}
 	}
 
-	public ArrayList<ComputerDTO> searchComputers(String search) throws SQLException {
+	public List<ComputerDTO> searchComputers(String search) throws SQLException {
 		List<Computer> computers = computerDao.find(search);
-		ArrayList<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 		for (Computer computer : computers) {
 			ComputerDTO computerDto = ComputerMapper.computerToComputerDTO(computer);
 			computersDTO.add(computerDto);
@@ -153,9 +138,9 @@ public class ComputerService {
 		return computersDTO;
 	}
 
-	public ArrayList<ComputerDTO> orderComputers(String sortBy) throws SQLException {
+	public List<ComputerDTO> orderComputers(String sortBy) throws SQLException {
 		List<Computer> computers = computerDao.sort(sortBy);
-		ArrayList<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 		for (Computer computer : computers) {
 			ComputerDTO computerDto = ComputerMapper.computerToComputerDTO(computer);
 			computersDTO.add(computerDto);

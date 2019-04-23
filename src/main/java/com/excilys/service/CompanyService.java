@@ -22,9 +22,9 @@ public class CompanyService {
 		super();
 	}
 	
-	public ArrayList<CompanyDTO> listeCompagnies() throws SQLException {
+	public List<CompanyDTO> listeCompagnies() throws SQLException {
 		List<Company> companies = companyDao.listAll();
-		ArrayList<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
+		List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
 		
 		for (Company c : companies) {
 			companiesDTO.add(CompanyMapper.companyToCompanyDTO(c));

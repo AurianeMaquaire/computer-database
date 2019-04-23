@@ -38,7 +38,7 @@ public class ComputerDTO {
 	/**
 	 * @return l'identifiant de l'ordinateur
 	 */
-	public Long getId() {
+	public long getId() {
 		return this.id;
 	}
 

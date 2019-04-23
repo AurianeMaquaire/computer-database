@@ -1,16 +1,16 @@
 package com.excilys.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class Page<T> {
 	
-	private ArrayList<T> data;
+	private List<T> data;
 	private int currentPage;
 	private int length;
 	private int pageSize;
 	
 	
-	public Page(ArrayList<T> list) {
+	public Page(List<T> list) {
 		super();
 		this.data = list;
 		this.currentPage = 0;
@@ -19,7 +19,7 @@ public class Page<T> {
 	}
 	
 	
-	public ArrayList<T> getData() {
+	public List<T> getData() {
 		return this.data;
 	}
 	
@@ -36,7 +36,7 @@ public class Page<T> {
 	}
 	
 	
-	public void setData(ArrayList<T> data) {
+	public void setData(List<T> data) {
 		this.data = data;
 		this.length = data.size();
 	}

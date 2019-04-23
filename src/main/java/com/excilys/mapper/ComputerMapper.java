@@ -3,8 +3,6 @@ package com.excilys.mapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 import org.slf4j.Logger;
@@ -28,85 +26,6 @@ public class ComputerMapper implements RowMapper<Computer> {
 	
 	@Autowired
 	CompanyDAO companyDAO;
-
-	public static Optional<Computer> resultSetToComputer(ResultSet resultSet) throws DAOException {
-
-		ComputerBuilder computerBuilder = new ComputerBuilder();
-		Optional<Computer> computer = Optional.empty();
-
-		try {
-			if (resultSet.next()) {
-				Long id = resultSet.getLong(1);
-				String name = resultSet.getString(2);
-				Timestamp introduced = resultSet.getTimestamp(3);
-				Timestamp discontinued = resultSet.getTimestamp(4);
-				Long companyId = resultSet.getLong(5);
-				String companyName = resultSet.getString(6);
-				Company company = new Company(companyId, companyName);
-				computer = Optional.of(computerBuilder.withId(id)
-						.withName(name)
-						.withIntroduced(introduced)
-						.withDiscontinued(discontinued)
-						.withCompany(company)
-						.build());
-			} 
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			logger.error("SQLException", e);
-			throw new DAOException("SQLException dans resultSetToComputer");
-		} catch (ModelException e) {
-			e.printStackTrace();
-			logger.error("ModelException", e);
-			throw new DAOException("ModelException dans resultSetToComputer");
-		}
-
-		return computer;
-	}
-
-	public static List<Computer> resultSetToListComputer(ResultSet resultSet) throws DAOException {
-
-		List<Computer> computers = new ArrayList<Computer>();
-		ComputerBuilder computerBuilder = new ComputerBuilder();
-		Computer computer;
-		try {
-			computer = computerBuilder.empty().build();
-		} catch (ModelException e) {
-			e.printStackTrace();
-			logger.error("ModelException", e);
-			throw new DAOException("ModelException dans resultSetToListComputer");
-		}
-
-		try {
-			while (resultSet.next()) {
-				Long id = resultSet.getLong(1);
-				String name = resultSet.getString(2);
-				Timestamp introduced = resultSet.getTimestamp(3);
-				Timestamp discontinued = resultSet.getTimestamp(4);
-				Long companyId = resultSet.getLong(5);
-				String companyName = resultSet.getString(6);
-				Company company = new Company(companyId, companyName);
-				computer = computerBuilder.withId(id)
-						.withName(name)
-						.withIntroduced(introduced)
-						.withDiscontinued(discontinued)
-						.withCompany(company)
-						.build();
-				computers.add(computer);
-			} 
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-			logger.error("SQLException", e);
-			throw new DAOException("SQLException dans resultSetToListComputer");
-		} catch (ModelException e) {
-			e.printStackTrace();
-			logger.error("ModelException", e);
-			throw new DAOException("ModelException dans resultSetToListComputer");
-		}
-
-		return computers;
-	}
 
 	public static ComputerDTO computerToComputerDTO(Computer computer) {
 		long id = computer.getId();
@@ -133,7 +52,7 @@ public class ComputerMapper implements RowMapper<Computer> {
 		return new ComputerDTO(id, name, introducedString, discontinuedString, companyId, companyName);
 	}
 
-	public Computer rsToComputer(ResultSet resultSet) throws DAOException, ModelException {
+	public Computer resultSetToComputer(ResultSet resultSet) throws DAOException, ModelException {
 
 		ComputerBuilder computerBuilder = new ComputerBuilder();
 		Computer computer = computerBuilder.empty().build();
@@ -171,7 +90,7 @@ public class ComputerMapper implements RowMapper<Computer> {
 	@Override
 	public Computer mapRow(ResultSet rs, int rowNum) throws SQLException {
 		try {
-			return rsToComputer(rs);
+			return resultSetToComputer(rs);
 		} catch (DAOException e) {
 			e.printStackTrace();
 		} catch (ModelException e) {

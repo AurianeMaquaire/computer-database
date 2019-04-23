@@ -3,6 +3,7 @@ package com.excilys.controller;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +36,7 @@ public class DashboardController {
 			Locale locale) 
 					throws IOException {
 
-		ArrayList<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		try {
 			listComputers = computerService.listeComputers();
 		} catch (SQLException e) {
@@ -63,7 +64,7 @@ public class DashboardController {
 			page.setCurrentPage(0);
 		}
 		
-		ArrayList<ComputerDTO> computers = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> computers = new ArrayList<ComputerDTO>();
 		if (search != null && search != "") {
 			try {
 				computers = computerService.searchComputers(search);
@@ -75,7 +76,7 @@ public class DashboardController {
 			page.setData(computers);
 		}
 
-		ArrayList<ComputerDTO> computersSorted = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> computersSorted = new ArrayList<ComputerDTO>();
 		if (sortBy != null && sortBy != "") {
 			try {
 				computersSorted = computerService.orderComputers(sortBy);
