@@ -52,7 +52,6 @@ public class ComputerService {
 		for (Computer computer : computers) {
 			computersDTO.add(ComputerMapper.computerToComputerDTO(computer));
 		}
-
 		return computersDTO;
 	}
 

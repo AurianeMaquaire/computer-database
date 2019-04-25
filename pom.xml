@@ -26,6 +26,7 @@
 		<jstl>1.2</jstl>
 		<hikari>3.3.1</hikari>
 		<spring>5.1.6.RELEASE</spring>
+		<hibernate>5.3.9.Final</hibernate>
 	</properties>
 
 	<dependencies>
@@ -95,11 +96,23 @@
 			<artifactId>spring-jdbc</artifactId>
 			<version>${spring}</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-webmvc</artifactId>
 			<version>${spring}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${spring}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate}</version>
 		</dependency>
 
 	</dependencies>

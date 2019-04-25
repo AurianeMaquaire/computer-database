@@ -131,7 +131,7 @@ public class View {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public void afficherPageComputers() throws SQLException, DAOException {
+	public void afficherPageComputers() throws DAOException, SQLException {
 		System.out.println("Id de début:");
 		Long idDebut = scanner.nextLong();
 		System.out.println("Nombre d'ordinateurs à afficher:");
@@ -173,7 +173,7 @@ public class View {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public void afficherPageCompanies() throws SQLException, DAOException {
+	public void afficherPageCompanies() throws DAOException {
 		System.out.println("Id de début:");
 		Long idDebut = scanner.nextLong();
 		System.out.println("Nombre de compagnies à afficher:");
@@ -223,7 +223,7 @@ public class View {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public void creerOrdinateur() throws SQLException, DAOException {
+	public void creerOrdinateur() throws SQLException {
 		System.out.println("Nom de l'ordinateur à créer:");
 		String nomOrdi = scanner.next();
 
@@ -233,7 +233,7 @@ public class View {
 		String company_name = scanner.next();
 		Optional<Company> company = companyDao.find(company_name);
 
-		if(company.isPresent()) {
+		if (company.isPresent()) {
 			Computer computer = new Computer(nomOrdi, tsIntroduced, null, company.get());
 			computerDao.create(computer);
 			System.out.println("L'ordinateur " + nomOrdi + " a bien été crée");

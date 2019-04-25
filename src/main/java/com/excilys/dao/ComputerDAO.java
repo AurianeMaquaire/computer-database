@@ -1,93 +1,166 @@
 package com.excilys.dao;
 
-import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
+import javax.persistence.criteria.Root;
 import javax.sql.DataSource;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.excilys.mapper.ComputerMapper;
 import com.excilys.model.Computer;
 
 @Repository
+@Transactional
 public class ComputerDAO {
-	
-	private final String SELECT_ALL = "SELECT ct.id, ct.name, ct.introduced, ct.discontinued, cn.id, cn.name "
-			+ "FROM computer AS ct LEFT JOIN company AS cn ON ct.company_id = cn.id";
-	private final String SELECT_ID = SELECT_ALL + " WHERE ct.id = ?";
-	private final String SELECT_NAME = SELECT_ALL + " WHERE ct.name LIKE ? OR cn.name LIKE ?";
-	private final String SELECT_LIST = SELECT_ALL + " WHERE ct.id >= ? AND ct.id <= ?";
-	private final String INSERT = "INSERT INTO computer (name, introduced, discontinued, company_id) VALUES (?, ?, ?, ?)";
-	private final String UPDATE = "UPDATE computer SET name = ?, introduced = ?, discontinued = ?, company_id = ? WHERE id = ?";
-	private final String DELETE = "DELETE FROM computer WHERE id = ?";
-	private final String COUNT = "SELECT COUNT(id) AS len FROM computer";
 	
 	@Autowired
 	DataSource dataSource;
-	
+
 	@Autowired
 	ComputerMapper computerMapper;
-	
-	public Optional<Computer> find(Long id) throws SQLException {
-		Computer computer;
+
+	@Autowired
+	SessionFactory sessionFactory;
+
+	private Session getSession(SessionFactory sessionFactory) {
 		try {
-			JdbcTemplate select = new JdbcTemplate(dataSource);
-			computer = select.queryForObject(SELECT_ID, new Object[] {id}, computerMapper);
-		} catch (EmptyResultDataAccessException e) {
+			return sessionFactory.getCurrentSession();
+		} catch (HibernateException e) {
+			return sessionFactory.openSession();
+		}
+	}
+
+	public Optional<Computer> find(Long id) {
+		try (Session session = getSession(sessionFactory)) {
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<Computer> criteriaQuery = criteriaBuilder.createQuery(Computer.class);
+			Root<Computer> root = criteriaQuery.from(Computer.class);
+			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("id"), id));
+			Query<Computer> query = session.createQuery(criteriaQuery);
+			return Optional.ofNullable(query.getSingleResult());
+		} 
+	}
+
+	public List<Computer> find(String name) {
+		try (Session session = getSession(sessionFactory)) {
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<Computer> criteriaQuery = criteriaBuilder.createQuery(Computer.class);
+			Root<Computer> root = criteriaQuery.from(Computer.class);
+			criteriaQuery.select(root).where(criteriaBuilder.like(root.<String>get("name"), name + "%"));
+			Query<Computer> query = session.createQuery(criteriaQuery);
+			return query.getResultList();
+		} catch (HibernateException e) {
+			return new ArrayList<Computer>();
+		}
+	}
+
+	public void create(Computer comp) {
+		try (Session session = getSession(sessionFactory)) {
+			Transaction transaction = session.beginTransaction();
+			session.save(comp);
+			transaction.commit();
+		} catch (HibernateException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public Optional<Computer> update(Computer comp) {
+		try (Session session = getSession(sessionFactory)) {
+			Transaction transaction = session.beginTransaction();
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaUpdate<Computer> criteriaUpdate = criteriaBuilder.createCriteriaUpdate(Computer.class);
+			Root<Computer> root = criteriaUpdate.from(Computer.class);
+			criteriaUpdate.set("name", comp.getName());
+			criteriaUpdate.set("introduced", comp.getIntroduced());
+			criteriaUpdate.set("discontinued", comp.getDiscontinued());
+			if (comp.getCompany() != null) {
+				criteriaUpdate.set("company", comp.getCompany().getId());
+			}
+			
+			criteriaUpdate.where(criteriaBuilder.equal(root.get("id"), comp.getId()));
+			session.createQuery(criteriaUpdate).executeUpdate();
+			transaction.commit();
+			return Optional.ofNullable(comp);
+		} catch (HibernateException e) {
 			return Optional.empty();
 		}
-		if (computer == null) {
-			return Optional.empty();
+	}
+
+	public void delete(Computer comp) {
+		try (Session session = getSession(sessionFactory)) {
+			Transaction transaction = session.beginTransaction();
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaDelete<Computer> criteriaDelete = criteriaBuilder.createCriteriaDelete(Computer.class);
+			Root<Computer> root = criteriaDelete.from(Computer.class);
+			criteriaDelete.where(criteriaBuilder.equal(root.get("id"), comp.getId()));
+			session.createQuery(criteriaDelete).executeUpdate();
+			transaction.commit();
+		} catch (HibernateException e) {
 		}
-		return Optional.of(computer);
 	}
 
-	public List<Computer> find(String name) throws SQLException {
-		JdbcTemplate select = new JdbcTemplate(dataSource);
-		return select.query(SELECT_NAME, new Object[] {"%" + name + "%", "%" + name + "%"}, computerMapper);
+	public List<Computer> listAll() {
+		try (Session session = getSession(sessionFactory)) {
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<Computer> criteriaQuery = criteriaBuilder.createQuery(Computer.class);
+			Root<Computer> root = criteriaQuery.from(Computer.class);
+			criteriaQuery.select(root);
+			Query<Computer> query = session.createQuery(criteriaQuery);
+			return query.getResultList();
+		} catch (HibernateException e) {
+			return new ArrayList<Computer>();
+		}
 	}
 
-	public Optional<Computer> create(Computer comp) throws SQLException {
-		JdbcTemplate update = new JdbcTemplate(dataSource);
-		update.update(INSERT, new Object[] {comp.getName(), comp.getIntroduced(), comp.getDiscontinued(), comp.getCompany().getId()} );
-		return Optional.of(comp);
+	public List<Computer> list(Long idDebut, Long idFin) {
+		try (Session session = getSession(sessionFactory)) {
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<Computer> criteriaQuery = criteriaBuilder.createQuery(Computer.class);
+			Root<Computer> root = criteriaQuery.from(Computer.class);
+			criteriaQuery.select(root).where(criteriaBuilder.between(root.get("id"), idDebut, idFin));
+			Query<Computer> query = session.createQuery(criteriaQuery);
+			return query.getResultList();
+		} catch (HibernateException e) {
+			return new ArrayList<Computer>();
+		}
 	}
 
-	public Optional<Computer> update(Computer comp) throws SQLException {
-		JdbcTemplate update = new JdbcTemplate(dataSource);
-		update.update(UPDATE, new Object[] {comp.getName(), comp.getIntroduced(), comp.getDiscontinued(), comp.getCompany().getId(), comp.getId()} );
-		return Optional.of(comp);
+	public Long length() {
+		try (Session session = getSession(sessionFactory)) {
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
+			Root<Computer> root = criteriaQuery.from(Computer.class);
+			criteriaQuery.select(criteriaBuilder.count(root));
+			Query<Long> query = session.createQuery(criteriaQuery);
+			return query.getSingleResult();
+		}
 	}
 
-	public void delete(Computer comp) throws SQLException {
-		JdbcTemplate update = new JdbcTemplate(dataSource);
-		update.update(DELETE, new Object[] {comp.getId()} );
-	}
-
-	public List<Computer> listAll() throws SQLException {
-		JdbcTemplate select = new JdbcTemplate(dataSource);
-		return select.query(SELECT_ALL, computerMapper);
-	}
-
-	public List<Computer> list(Long idDebut, Long idFin) throws SQLException {
-		JdbcTemplate select = new JdbcTemplate(dataSource);
-		return select.query(SELECT_LIST, new Object[] {idDebut, idFin}, computerMapper);
-	}
-
-	public Long length() throws SQLException {
-		JdbcTemplate update = new JdbcTemplate(dataSource);
-		return update.queryForObject(COUNT, Long.class);
-	}
-
-	public List<Computer> sort(String sortBy) throws SQLException {
-		String ORDER_BY = SELECT_ALL + " ORDER BY ct." + sortBy + " IS NULL, ct." + sortBy;
-		JdbcTemplate select = new JdbcTemplate(dataSource);
-		return select.query(ORDER_BY, computerMapper);
+	public List<Computer> sort(String sortBy) {
+		try (Session session = getSession(sessionFactory)) {
+			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<Computer> criteriaQuery = criteriaBuilder.createQuery(Computer.class);
+			Root<Computer> root = criteriaQuery.from(Computer.class);
+			criteriaQuery.orderBy(criteriaBuilder.asc(root.get(sortBy)));
+			Query<Computer> query = session.createQuery(criteriaQuery);
+			return query.getResultList();
+		} catch (HibernateException e) {
+			return new ArrayList<Computer>();
+		}
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.excilys.service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +21,7 @@ public class CompanyService {
 		super();
 	}
 	
-	public List<CompanyDTO> listeCompagnies() throws SQLException {
+	public List<CompanyDTO> listeCompagnies() {
 		List<Company> companies = companyDao.listAll();
 		List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
 		

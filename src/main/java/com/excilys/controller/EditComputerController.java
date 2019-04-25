@@ -46,13 +46,7 @@ public class EditComputerController {
 					throws IOException {
 		
 		List<CompanyDTO> listCompanies = new ArrayList<CompanyDTO>();
-		try {
-			listCompanies = companyService.listeCompagnies();
-		} catch (SQLException e) {
-			String exception = messageSource.getMessage("exceptionListCompanies", null, locale);
-			model.addAttribute("exception", exception);
-			return "404";
-		} 
+		listCompanies = companyService.listeCompagnies(); 
 		model.addAttribute("listCompanies", listCompanies);
 
 		Optional<ComputerDTO> computer = Optional.empty();

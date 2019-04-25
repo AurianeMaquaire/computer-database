@@ -37,13 +37,7 @@ public class AddComputerController {
 	public String getAddComputer(Model model, Locale locale) throws IOException {
 
 		List<CompanyDTO> listCompanies = new ArrayList<CompanyDTO>();
-		try {
-			listCompanies = companyService.listeCompagnies();
-		} catch (SQLException e) {
-			String exception = messageSource.getMessage("exceptionListCompanies", null, locale);
-			model.addAttribute("exception", exception);
-			return "404";
-		}
+		listCompanies = companyService.listeCompagnies();
 		model.addAttribute("listCompanies", listCompanies);
 		
 		model.addAttribute("computer", new ComputerDTO());
@@ -69,7 +63,7 @@ public class AddComputerController {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return getAddComputer(model, locale);
-		}
+		} 
 	}
 
 }
