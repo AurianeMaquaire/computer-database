@@ -21,7 +21,6 @@
 		<mysql>8.0.15</mysql>
 		<slf4j>1.8.0-beta4</slf4j>
 		<logback>1.2.3</logback>
-		<mockito>2.23.0</mockito>
 		<servlet>4.0.1</servlet>
 		<jstl>1.2</jstl>
 		<hikari>3.3.1</hikari>
@@ -62,12 +61,6 @@
 			<groupId>ch.qos.logback</groupId>
 			<artifactId>logback-core</artifactId>
 			<version>${logback}</version>
-		</dependency>
-
-		<dependency>
-			<groupId>org.mockito</groupId>
-			<artifactId>mockito-junit-jupiter</artifactId>
-			<version>${mockito}</version>
 		</dependency>
 
 		<dependency>

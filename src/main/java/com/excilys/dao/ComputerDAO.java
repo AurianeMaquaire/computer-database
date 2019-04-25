@@ -1,6 +1,5 @@
 package com.excilys.dao;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,7 +25,7 @@ import com.excilys.model.Computer;
 @Repository
 @Transactional
 public class ComputerDAO {
-	
+
 	@Autowired
 	DataSource dataSource;
 
@@ -35,6 +34,12 @@ public class ComputerDAO {
 
 	@Autowired
 	SessionFactory sessionFactory;
+
+	CriteriaBuilder criteriaBuilder;
+	CriteriaQuery<Computer> criteriaQuery;
+	CriteriaUpdate<Computer> criteriaUpdate;
+	CriteriaDelete<Computer> criteriaDelete;
+	Root<Computer> root;
 
 	private Session getSession(SessionFactory sessionFactory) {
 		try {
@@ -45,121 +50,126 @@ public class ComputerDAO {
 	}
 
 	public Optional<Computer> find(Long id) {
-		try (Session session = getSession(sessionFactory)) {
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<Computer> criteriaQuery = criteriaBuilder.createQuery(Computer.class);
-			Root<Computer> root = criteriaQuery.from(Computer.class);
-			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("id"), id));
-			Query<Computer> query = session.createQuery(criteriaQuery);
+		try (Session session = getSession(sessionFactory);) {
+			this.criteriaBuilder = session.getCriteriaBuilder();
+			this.criteriaQuery = criteriaBuilder.createQuery(Computer.class);
+			this.root = criteriaQuery.from(Computer.class);
+
+			this.criteriaQuery.select(this.root).where(this.criteriaBuilder.equal(this.root.get("id"), id));
+			Query<Computer> query = session.createQuery(this.criteriaQuery);
+
 			return Optional.ofNullable(query.getSingleResult());
-		} 
+		}
 	}
 
 	public List<Computer> find(String name) {
-		try (Session session = getSession(sessionFactory)) {
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<Computer> criteriaQuery = criteriaBuilder.createQuery(Computer.class);
-			Root<Computer> root = criteriaQuery.from(Computer.class);
-			criteriaQuery.select(root).where(criteriaBuilder.like(root.<String>get("name"), name + "%"));
-			Query<Computer> query = session.createQuery(criteriaQuery);
+		try (Session session = getSession(sessionFactory);) {
+			this.criteriaBuilder = session.getCriteriaBuilder();
+			this.criteriaQuery = criteriaBuilder.createQuery(Computer.class);
+			this.root = criteriaQuery.from(Computer.class);
+
+			this.criteriaQuery.select(this.root).where(this.criteriaBuilder.like(this.root.<String>get("name"), name + "%"));
+			Query<Computer> query = session.createQuery(this.criteriaQuery);
+
 			return query.getResultList();
-		} catch (HibernateException e) {
-			return new ArrayList<Computer>();
 		}
 	}
 
 	public void create(Computer comp) {
-		try (Session session = getSession(sessionFactory)) {
+		try (Session session = getSession(sessionFactory);) {
 			Transaction transaction = session.beginTransaction();
+
 			session.save(comp);
+
 			transaction.commit();
-		} catch (HibernateException e) {
-			e.printStackTrace();
 		}
 	}
 
 	public Optional<Computer> update(Computer comp) {
-		try (Session session = getSession(sessionFactory)) {
+		try (Session session = getSession(sessionFactory);) {
+			this.criteriaBuilder = session.getCriteriaBuilder();
+			this.criteriaUpdate = criteriaBuilder.createCriteriaUpdate(Computer.class);
+			this.root = criteriaUpdate.from(Computer.class);
 			Transaction transaction = session.beginTransaction();
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaUpdate<Computer> criteriaUpdate = criteriaBuilder.createCriteriaUpdate(Computer.class);
-			Root<Computer> root = criteriaUpdate.from(Computer.class);
-			criteriaUpdate.set("name", comp.getName());
-			criteriaUpdate.set("introduced", comp.getIntroduced());
-			criteriaUpdate.set("discontinued", comp.getDiscontinued());
+
+			this.criteriaUpdate.set("name", comp.getName());
+			this.criteriaUpdate.set("introduced", comp.getIntroduced());
+			this.criteriaUpdate.set("discontinued", comp.getDiscontinued());
 			if (comp.getCompany() != null) {
-				criteriaUpdate.set("company", comp.getCompany().getId());
+				this.criteriaUpdate.set("company", comp.getCompany().getId());
 			}
-			
-			criteriaUpdate.where(criteriaBuilder.equal(root.get("id"), comp.getId()));
-			session.createQuery(criteriaUpdate).executeUpdate();
+			this.criteriaUpdate.where(this.criteriaBuilder.equal(this.root.get("id"), comp.getId()));
+			session.createQuery(this.criteriaUpdate).executeUpdate();
+
 			transaction.commit();
 			return Optional.ofNullable(comp);
-		} catch (HibernateException e) {
-			return Optional.empty();
 		}
 	}
 
 	public void delete(Computer comp) {
-		try (Session session = getSession(sessionFactory)) {
+		try (Session session = getSession(sessionFactory);) {
+			this.criteriaBuilder = session.getCriteriaBuilder();
+			this.criteriaDelete = criteriaBuilder.createCriteriaDelete(Computer.class);
+			this.root = criteriaDelete.from(Computer.class);
 			Transaction transaction = session.beginTransaction();
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaDelete<Computer> criteriaDelete = criteriaBuilder.createCriteriaDelete(Computer.class);
-			Root<Computer> root = criteriaDelete.from(Computer.class);
-			criteriaDelete.where(criteriaBuilder.equal(root.get("id"), comp.getId()));
-			session.createQuery(criteriaDelete).executeUpdate();
+
+			this.criteriaDelete.where(this.criteriaBuilder.equal(this.root.get("id"), comp.getId()));
+			session.createQuery(this.criteriaDelete).executeUpdate();
+
 			transaction.commit();
-		} catch (HibernateException e) {
 		}
 	}
 
 	public List<Computer> listAll() {
-		try (Session session = getSession(sessionFactory)) {
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<Computer> criteriaQuery = criteriaBuilder.createQuery(Computer.class);
-			Root<Computer> root = criteriaQuery.from(Computer.class);
-			criteriaQuery.select(root);
-			Query<Computer> query = session.createQuery(criteriaQuery);
+		try (Session session = getSession(sessionFactory);) {
+			this.criteriaBuilder = session.getCriteriaBuilder();
+			this.criteriaQuery = criteriaBuilder.createQuery(Computer.class);
+			this.root = criteriaQuery.from(Computer.class);
+
+			this.criteriaQuery.select(this.root);
+			Query<Computer> query = session.createQuery(this.criteriaQuery);
+
 			return query.getResultList();
-		} catch (HibernateException e) {
-			return new ArrayList<Computer>();
 		}
 	}
 
 	public List<Computer> list(Long idDebut, Long idFin) {
-		try (Session session = getSession(sessionFactory)) {
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<Computer> criteriaQuery = criteriaBuilder.createQuery(Computer.class);
-			Root<Computer> root = criteriaQuery.from(Computer.class);
-			criteriaQuery.select(root).where(criteriaBuilder.between(root.get("id"), idDebut, idFin));
-			Query<Computer> query = session.createQuery(criteriaQuery);
+		try (Session session = getSession(sessionFactory);) {
+			this.criteriaBuilder = session.getCriteriaBuilder();
+			this.criteriaQuery = criteriaBuilder.createQuery(Computer.class);
+			this.root = criteriaQuery.from(Computer.class);
+
+			this.criteriaQuery.select(this.root).where(this.criteriaBuilder.between(this.root.get("id"), idDebut, idFin));
+			Query<Computer> query = session.createQuery(this.criteriaQuery);
+
 			return query.getResultList();
-		} catch (HibernateException e) {
-			return new ArrayList<Computer>();
 		}
 	}
 
 	public Long length() {
-		try (Session session = getSession(sessionFactory)) {
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-			Root<Computer> root = criteriaQuery.from(Computer.class);
-			criteriaQuery.select(criteriaBuilder.count(root));
+		try (Session session = getSession(sessionFactory);) {
+			this.criteriaBuilder = session.getCriteriaBuilder();
+			this.criteriaQuery = criteriaBuilder.createQuery(Computer.class);
+			this.root = criteriaQuery.from(Computer.class);
+
+			CriteriaQuery<Long> criteriaQuery = this.criteriaBuilder.createQuery(Long.class);
+			criteriaQuery.select(this.criteriaBuilder.count(this.root));
 			Query<Long> query = session.createQuery(criteriaQuery);
+
 			return query.getSingleResult();
 		}
 	}
 
 	public List<Computer> sort(String sortBy) {
-		try (Session session = getSession(sessionFactory)) {
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<Computer> criteriaQuery = criteriaBuilder.createQuery(Computer.class);
-			Root<Computer> root = criteriaQuery.from(Computer.class);
-			criteriaQuery.orderBy(criteriaBuilder.asc(root.get(sortBy)));
-			Query<Computer> query = session.createQuery(criteriaQuery);
+		try (Session session = getSession(sessionFactory);) {
+			this.criteriaBuilder = session.getCriteriaBuilder();
+			this.criteriaQuery = criteriaBuilder.createQuery(Computer.class);
+			this.root = criteriaQuery.from(Computer.class);
+
+			this.criteriaQuery.orderBy(this.criteriaBuilder.asc(this.root.get(sortBy)));
+			Query<Computer> query = session.createQuery(this.criteriaQuery);
+
 			return query.getResultList();
-		} catch (HibernateException e) {
-			return new ArrayList<Computer>();
 		}
 	}
 

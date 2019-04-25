@@ -37,6 +37,10 @@ public class CompanyDAO {
 	@Autowired
 	SessionFactory sessionFactory;
 	
+	CriteriaBuilder criteriaBuilder;
+	CriteriaQuery<Company> criteriaQuery;
+	Root<Company> root;
+	
 	private Session getSession(SessionFactory sessionFactory) {
 		try {
 		    return sessionFactory.getCurrentSession();
@@ -47,12 +51,14 @@ public class CompanyDAO {
 	
 	public Optional<Company> find(Long id) {
 		try (Session session = getSession(sessionFactory)) {
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<Company> criteriaQuery = criteriaBuilder.createQuery(Company.class);
-			Root<Company> root = criteriaQuery.from(Company.class);
-			criteriaQuery.select(root).where(criteriaBuilder.equal(root.get("id"), id));
-			Query<Company> query = session.createQuery(criteriaQuery);
+			this.criteriaBuilder = session.getCriteriaBuilder();
+			this.criteriaQuery = this.criteriaBuilder.createQuery(Company.class);
+			this.root = this.criteriaQuery.from(Company.class);
+			
+			this.criteriaQuery.select(this.root).where(this.criteriaBuilder.equal(this.root.get("id"), id));
+			Query<Company> query = session.createQuery(this.criteriaQuery);
 			return Optional.ofNullable(query.getSingleResult());
+			
 		} catch (NoResultException e) {
 			return Optional.empty();
 		} catch (HibernateException e) {
@@ -62,12 +68,14 @@ public class CompanyDAO {
 
 	public Optional<Company> find(String name) {
 		try (Session session = getSession(sessionFactory)) {
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<Company> criteriaQuery = criteriaBuilder.createQuery(Company.class);
-			Root<Company> root = criteriaQuery.from(Company.class);
-			criteriaQuery.select(root).where(criteriaBuilder.equal(root.<String>get("name"), name));
-			Query<Company> query = session.createQuery(criteriaQuery);
+			this.criteriaBuilder = session.getCriteriaBuilder();
+			this.criteriaQuery = this.criteriaBuilder.createQuery(Company.class);
+			this.root = this.criteriaQuery.from(Company.class);
+			
+			this.criteriaQuery.select(this.root).where(this.criteriaBuilder.equal(this.root.<String>get("name"), name));
+			Query<Company> query = session.createQuery(this.criteriaQuery);
 			return Optional.ofNullable(query.getSingleResult());
+			
 		} catch (HibernateException e) {
 			return Optional.empty();
 		}
@@ -75,12 +83,14 @@ public class CompanyDAO {
 
 	public List<Company> listAll() {
 		try (Session session = getSession(sessionFactory)) {
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<Company> criteriaQuery = criteriaBuilder.createQuery(Company.class);
-			Root<Company> root = criteriaQuery.from(Company.class);
-			criteriaQuery.select(root);
-			Query<Company> query = session.createQuery(criteriaQuery);
+			this.criteriaBuilder = session.getCriteriaBuilder();
+			this.criteriaQuery = this.criteriaBuilder.createQuery(Company.class);
+			this.root = this.criteriaQuery.from(Company.class);
+			
+			this.criteriaQuery.select(this.root);
+			Query<Company> query = session.createQuery(this.criteriaQuery);
 			return query.getResultList();
+			
 		} catch (HibernateException e) {
 			return new ArrayList<Company>();
 		}
@@ -88,12 +98,14 @@ public class CompanyDAO {
 
 	public List<Company> list(Long idDebut, Long idFin) {
 		try (Session session = getSession(sessionFactory)) {
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<Company> criteriaQuery = criteriaBuilder.createQuery(Company.class);
-			Root<Company> root = criteriaQuery.from(Company.class);
-			criteriaQuery.select(root).where(criteriaBuilder.between(root.get("id"), idDebut, idFin));
-			Query<Company> query = session.createQuery(criteriaQuery);
+			this.criteriaBuilder = session.getCriteriaBuilder();
+			this.criteriaQuery = this.criteriaBuilder.createQuery(Company.class);
+			this.root = this.criteriaQuery.from(Company.class);
+			
+			this.criteriaQuery.select(this.root).where(this.criteriaBuilder.between(this.root.get("id"), idDebut, idFin));
+			Query<Company> query = session.createQuery(this.criteriaQuery);
 			return query.getResultList();
+			
 		} catch (HibernateException e) {
 			return new ArrayList<Company>();
 		}
@@ -101,10 +113,11 @@ public class CompanyDAO {
 
 	public Long length() {
 		try (Session session = getSession(sessionFactory)) {
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
-			CriteriaQuery<Long> criteriaQuery = criteriaBuilder.createQuery(Long.class);
-			Root<Company> root = criteriaQuery.from(Company.class);
-			criteriaQuery.select(criteriaBuilder.count(root));
+			this.criteriaBuilder = session.getCriteriaBuilder();
+			CriteriaQuery<Long> criteriaQuery = this.criteriaBuilder.createQuery(Long.class);
+			this.root = criteriaQuery.from(Company.class);
+			
+			criteriaQuery.select(this.criteriaBuilder.count(this.root));
 			Query<Long> query = session.createQuery(criteriaQuery);
 			return query.getSingleResult();
 		}
@@ -113,16 +126,16 @@ public class CompanyDAO {
 	public void delete(Company company) {
 		try (Session session = getSession(sessionFactory)) {
 			Transaction transaction = session.beginTransaction();
-			CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+			this.criteriaBuilder = session.getCriteriaBuilder();
 			
-			CriteriaDelete<Computer> criteriaDeleteComputer = criteriaBuilder.createCriteriaDelete(Computer.class);
+			CriteriaDelete<Computer> criteriaDeleteComputer = this.criteriaBuilder.createCriteriaDelete(Computer.class);
 			Root<Computer> rootComputer = criteriaDeleteComputer.from(Computer.class);
-			criteriaDeleteComputer.where(criteriaBuilder.equal(rootComputer.get("company"), company));
+			criteriaDeleteComputer.where(this.criteriaBuilder.equal(rootComputer.get("company"), company));
 			session.createQuery(criteriaDeleteComputer).executeUpdate();
 			
-			CriteriaDelete<Company> criteriaDelete = criteriaBuilder.createCriteriaDelete(Company.class);
+			CriteriaDelete<Company> criteriaDelete = this.criteriaBuilder.createCriteriaDelete(Company.class);
 			Root<Company> root = criteriaDelete.from(Company.class);
-			criteriaDelete.where(criteriaBuilder.equal(root.get("id"), company.getId()));
+			criteriaDelete.where(this.criteriaBuilder.equal(root.get("id"), company.getId()));
 			session.createQuery(criteriaDelete).executeUpdate();
 			
 			transaction.commit();
