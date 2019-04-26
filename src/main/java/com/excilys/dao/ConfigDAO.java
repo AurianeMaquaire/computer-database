@@ -46,8 +46,6 @@ public class ConfigDAO {
         LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
         sessionFactory.setDataSource(dataSource());
         sessionFactory.setPackagesToScan("com.excilys.model");
-        //sessionFactory.setHibernateProperties(hibernateProperties());
- 
         return sessionFactory;
     }
 	

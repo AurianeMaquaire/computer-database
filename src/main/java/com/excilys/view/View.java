@@ -22,7 +22,7 @@ public class View {
 	static Scanner scanner;
 	int nbChoisi;
 
-	public View(ComputerDAO computerDao, CompanyDAO companyDao) throws SQLException, DAOException {
+	public View(ComputerDAO computerDao, CompanyDAO companyDao) throws DAOException {
 		super();
 		this.computerDao = computerDao;
 		this.companyDao = companyDao;
@@ -35,7 +35,7 @@ public class View {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public void console() throws SQLException, DAOException {
+	public void console() throws DAOException {
 		menu();
 		nbChoisi = scanner.nextInt();
 		int nbChoix = ChoixUtilisateur.values().length;
@@ -117,7 +117,7 @@ public class View {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public void afficherListeComputers() throws SQLException, DAOException {
+	public void afficherListeComputers() throws DAOException {
 		List<Computer> computers = computerDao.listAll();
 		System.out.println("Affichage de la liste des ordinateurs");
 		for(Computer c : computers) {
@@ -131,7 +131,7 @@ public class View {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public void afficherPageComputers() throws DAOException, SQLException {
+	public void afficherPageComputers() throws DAOException {
 		System.out.println("Id de début:");
 		Long idDebut = scanner.nextLong();
 		System.out.println("Nombre d'ordinateurs à afficher:");
@@ -159,7 +159,7 @@ public class View {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public void afficherListeCompanies() throws SQLException, DAOException {
+	public void afficherListeCompanies() throws DAOException {
 		List<Company> companies = companyDao.listAll();
 		System.out.println("Affichage de la liste des compagnies");
 		for(Company c : companies) {
@@ -202,7 +202,7 @@ public class View {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public void afficherDetailsOrdinateur() throws SQLException, DAOException {
+	public void afficherDetailsOrdinateur() throws DAOException {
 		System.out.println("Id de l'ordinateur:");
 		Long idOrdi = scanner.nextLong();
 		Optional<Computer> computer = computerDao.find(idOrdi);
@@ -223,7 +223,7 @@ public class View {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public void creerOrdinateur() throws SQLException {
+	public void creerOrdinateur() {
 		System.out.println("Nom de l'ordinateur à créer:");
 		String nomOrdi = scanner.next();
 
@@ -247,7 +247,7 @@ public class View {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public void mettreAJourOrdinateur() throws SQLException, DAOException {
+	public void mettreAJourOrdinateur() throws DAOException {
 		System.out.println("Id de l'ordinateur à mettre à jour:");
 		Long idOrdi = scanner.nextLong();
 
@@ -275,7 +275,7 @@ public class View {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public void supprimerOrdinateur() throws SQLException, DAOException {
+	public void supprimerOrdinateur() throws DAOException {
 		System.out.println("Id de l'ordinateur à supprimer:");
 		Long idOrdi = scanner.nextLong();
 
@@ -293,7 +293,7 @@ public class View {
 	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
-	public void supprimerCompagnie() throws SQLException, DAOException {
+	public void supprimerCompagnie() throws DAOException {
 		System.out.println("Id de la compagnie à supprimer:");
 		Long idComp = scanner.nextLong();
 		

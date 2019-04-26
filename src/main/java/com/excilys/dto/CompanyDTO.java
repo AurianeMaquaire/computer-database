@@ -46,7 +46,6 @@ public class CompanyDTO {
 	}
 	
 	/**
-	 * 
 	 * @param pName le nom de la compagnie
 	 */
 	public void setName(String pName) {

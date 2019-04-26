@@ -1,6 +1,5 @@
 package com.excilys.service;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +31,7 @@ public class ComputerService {
 		super();
 	}
 
-	public Optional<ComputerDTO> findComputer(String id) throws SQLException {
+	public Optional<ComputerDTO> findComputer(String id) {
 		Long computerId = 0L;
 		if (id != null || id != "") {
 			computerId = Long.parseLong(id);
@@ -45,7 +44,7 @@ public class ComputerService {
 		return computerDTO;
 	}
 
-	public List<ComputerDTO> listeComputers() throws SQLException {
+	public List<ComputerDTO> listeComputers() {
 		List<Computer> computers = computerDao.listAll();
 		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 
@@ -55,7 +54,7 @@ public class ComputerService {
 		return computersDTO;
 	}
 
-	public void createComputer(ComputerDTO computerDto) throws ValidatorException, SQLException {
+	public void createComputer(ComputerDTO computerDto) throws ValidatorException {
 		Optional<Timestamp> intro = Optional.empty();
 		Timestamp introduced = null;
 		if (computerDto.getIntroduced() != null) {
@@ -85,7 +84,7 @@ public class ComputerService {
 		computerDao.create(computer);
 	}
 
-	public void editComputer(ComputerDTO computerDto) throws ValidatorException, SQLException {
+	public void editComputer(ComputerDTO computerDto) throws ValidatorException {
 		Optional<Timestamp> intro = Optional.empty();
 		Timestamp introduced = null;
 		if (computerDto.getIntroduced() != null) {
@@ -115,7 +114,7 @@ public class ComputerService {
 		computerDao.update(computer);
 	}
 
-	public void deleteComputer(String id) throws SQLException {
+	public void deleteComputer(String id) {
 		Long idComputer = 0L;
 		if (id != null && id != "") {
 			idComputer = Long.parseLong(id);
@@ -127,7 +126,7 @@ public class ComputerService {
 		}
 	}
 
-	public List<ComputerDTO> searchComputers(String search) throws SQLException {
+	public List<ComputerDTO> searchComputers(String search) {
 		List<Computer> computers = computerDao.find(search);
 		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 		for (Computer computer : computers) {
@@ -137,7 +136,7 @@ public class ComputerService {
 		return computersDTO;
 	}
 
-	public List<ComputerDTO> orderComputers(String sortBy) throws SQLException {
+	public List<ComputerDTO> orderComputers(String sortBy) {
 		List<Computer> computers = computerDao.sort(sortBy);
 		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 		for (Computer computer : computers) {

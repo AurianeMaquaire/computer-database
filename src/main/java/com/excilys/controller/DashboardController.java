@@ -1,7 +1,6 @@
 package com.excilys.controller;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -37,13 +36,7 @@ public class DashboardController {
 					throws IOException {
 
 		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
-		try {
-			listComputers = computerService.listeComputers();
-		} catch (SQLException e) {
-			String exception = messageSource.getMessage("exceptionList", null, locale);
-			model.addAttribute("exception", exception);
-			return "404";
-		}
+		listComputers = computerService.listeComputers();
 
 		if (page == null) {
 			page = new Page<ComputerDTO>(listComputers);
@@ -66,25 +59,13 @@ public class DashboardController {
 		
 		List<ComputerDTO> computers = new ArrayList<ComputerDTO>();
 		if (search != null && search != "") {
-			try {
-				computers = computerService.searchComputers(search);
-			} catch (SQLException e) {
-				String exception = messageSource.getMessage("exceptionSearch", null, locale);
-				model.addAttribute("exception", exception);
-				return "404";
-			}
+			computers = computerService.searchComputers(search);
 			page.setData(computers);
 		}
 
 		List<ComputerDTO> computersSorted = new ArrayList<ComputerDTO>();
 		if (sortBy != null && sortBy != "") {
-			try {
-				computersSorted = computerService.orderComputers(sortBy);
-			} catch (SQLException e) {
-				String exception = messageSource.getMessage("exceptionSort", null, locale);
-				model.addAttribute("exception", exception);
-				return "404";
-			}
+			computersSorted = computerService.orderComputers(sortBy);
 			page.setData(computersSorted);
 		} 
 				
@@ -101,13 +82,7 @@ public class DashboardController {
 
 		if (computersToDelete != null) {
 			for (String id : computersToDelete) {
-				try {
-					computerService.deleteComputer(id);
-				} catch (SQLException e) {
-					String exception = messageSource.getMessage("exceptionDeleteComputer", null, locale);
-					model.addAttribute("exception", exception);
-					return "404";
-				}
+				computerService.deleteComputer(id);
 			}
 		} 
 		return "redirect:" + "/Dashboard";
