@@ -5,40 +5,40 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.excilys</groupId>
-	<artifactId>computer-db</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<packaging>pom</packaging>
+	<parent>
+		<groupId>com.excilys</groupId>
+		<artifactId>computer-db</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+	</parent>
 
-	<name>computer-db</name>
-	<url>http://maven.apache.org</url>
-
-	<modules>
-		<module>core</module>
-		<module>persistence</module>
-		<module>service</module>
-		<module>binding</module>
-		<module>webapp</module>
-		<module>console</module>
-	</modules>
+	<artifactId>core</artifactId>
+	<packaging>jar</packaging>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
-			
-		<spring.boot>2.1.4.RELEASE</spring.boot>
+		
+		<junit>4.12</junit>
+		<hibernate>5.3.9.Final</hibernate>
 		
 	</properties>
-
+	
 	<dependencies>
-
+		
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter</artifactId>
-			<version>${spring.boot}</version>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit}</version>
+			<scope>test</scope>
 		</dependency>
-
+		
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate}</version>
+		</dependency>
+		
 	</dependencies>
-
+	
 </project>
