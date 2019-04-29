@@ -1,5 +1,7 @@
 package com.excilys.validator;
 
+import static org.junit.Assert.assertEquals;
+
 import java.sql.Timestamp;
 
 import org.junit.Before;
@@ -29,27 +31,39 @@ public class ComputerValidatorTest {
 		ComputerValidator.verify(computer);
 	}
 	
-	@Test(expected = ValidatorException.class)
-	public void testException1() throws ValidatorException {
+	@Test
+	public void testException1() {
 		Timestamp introduced = Timestamp.valueOf("2000-01-01 00:00:00");
 		Timestamp discontinued = Timestamp.valueOf("2001-01-01 00:00:00");
 		computer = new Computer(0L, null, introduced, discontinued, null);
-		ComputerValidator.verify(computer);
+		try {
+			ComputerValidator.verify(computer);
+		} catch (ValidatorException e) {
+			assertEquals(e.getMessage(), "exceptionName");
+		}
 	}
 	
-	@Test(expected = ValidatorException.class)
-	public void testException2() throws ValidatorException {
+	@Test
+	public void testException2() {
 		Timestamp discontinued = Timestamp.valueOf("2001-01-01 00:00:00");
 		computer = new Computer(0L, "name", null, discontinued, null);
-		ComputerValidator.verify(computer);
+		try {
+			ComputerValidator.verify(computer);
+		} catch (ValidatorException e) {
+			assertEquals(e.getMessage(), "exceptionDiscontinued");
+		}
 	}
 	
-	@Test(expected = ValidatorException.class)
-	public void testException3() throws ValidatorException {
+	@Test
+	public void testException3() {
 		Timestamp introduced = Timestamp.valueOf("2010-01-01 00:00:00");
 		Timestamp discontinued = Timestamp.valueOf("2000-01-01 00:00:00");
 		computer = new Computer(0L, "name", introduced, discontinued, null);
-		ComputerValidator.verify(computer);
+		try {
+			ComputerValidator.verify(computer);
+		} catch (ValidatorException e) {
+			assertEquals(e.getMessage(), "exceptionIntroduced");
+		}
 	}
 	
 }
