@@ -81,7 +81,10 @@
 								onclick="location.href='<c:url value="/Dashboard?sortBy=discontinued" />'"
 								title="<spring:message code="titleDiscontinued" />"><spring:message
 										code="discontinued" /></a></th>
-							<th><spring:message code="company" /></th>
+							<th><a
+								onclick="location.href='<c:url value="/Dashboard?sortBy=company" />'"
+								title="<spring:message code="titleCompany" />"><spring:message
+										code="company" /></a></th>
 
 						</tr>
 					</thead>
