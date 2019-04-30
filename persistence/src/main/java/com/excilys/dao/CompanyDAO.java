@@ -9,7 +9,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.sql.DataSource;
 import javax.transaction.Transactional;
 
 import org.hibernate.HibernateException;
@@ -20,19 +19,12 @@ import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.excilys.mapper.CompanyMapper;
 import com.excilys.model.Company;
 import com.excilys.model.Computer;
 
 @Repository
 @Transactional
 public class CompanyDAO {
-	
-	@Autowired
-	DataSource dataSource;
-	
-	@Autowired
-	CompanyMapper companyMapper;
 	
 	@Autowired
 	SessionFactory sessionFactory;

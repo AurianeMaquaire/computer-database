@@ -1,6 +1,5 @@
 package com.excilys.view;
 
-import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
@@ -32,7 +31,6 @@ public class View {
 
 	/**
 	 * Interagit avec l'utilisateur via la console
-	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
 	public void console() throws DAOException {
@@ -114,7 +112,6 @@ public class View {
 
 	/**
 	 * Affiche la liste des ordinateurs
-	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
 	public void afficherListeComputers() throws DAOException {
@@ -128,7 +125,6 @@ public class View {
 
 	/**
 	 * Affiche la liste des ordinateurs par pages
-	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
 	public void afficherPageComputers() throws DAOException {
@@ -156,7 +152,6 @@ public class View {
 
 	/**
 	 * Affiche la liste des compagnies
-	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
 	public void afficherListeCompanies() throws DAOException {
@@ -170,7 +165,6 @@ public class View {
 
 	/**
 	 * Affiche la liste des compagnies par pages
-	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
 	public void afficherPageCompanies() throws DAOException {
@@ -199,7 +193,6 @@ public class View {
 	/**
 	 * Affiche les détails d'un ordinateur
 	 * @param id l'identifiant de l'ordinateur
-	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
 	public void afficherDetailsOrdinateur() throws DAOException {
@@ -220,8 +213,6 @@ public class View {
 	 * @param introduced la date de début
 	 * @param discontinued la date de fin
 	 * @param company la compagnie à laquelle il appartient
-	 * @throws SQLException 
-	 * @throws DAOException 
 	 */
 	public void creerOrdinateur() {
 		System.out.println("Nom de l'ordinateur à créer:");
@@ -244,7 +235,6 @@ public class View {
 
 	/**
 	 * Met à jour un ordinateur
-	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
 	public void mettreAJourOrdinateur() throws DAOException {
@@ -272,7 +262,6 @@ public class View {
 
 	/**
 	 * Supprime un ordinateur
-	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
 	public void supprimerOrdinateur() throws DAOException {
@@ -290,7 +279,6 @@ public class View {
 	
 	/**
 	 * Supprime une compagnie
-	 * @throws SQLException 
 	 * @throws DAOException 
 	 */
 	public void supprimerCompagnie() throws DAOException {

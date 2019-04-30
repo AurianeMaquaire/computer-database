@@ -6,12 +6,14 @@ import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Import;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
@@ -20,9 +22,10 @@ import org.springframework.web.servlet.view.JstlView;
 
 @Configuration
 @EnableWebMvc
+@Import({SecurityConfig.class})
 @ComponentScan(basePackageClasses = {com.excilys.dao.ConfigDAO.class, com.excilys.service.ConfigService.class, com.excilys.controller.ConfigController.class})
 public class ConfigSpringMvc implements WebMvcConfigurer {
-	
+
 	@Bean
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver bean = new InternalResourceViewResolver();
@@ -31,7 +34,7 @@ public class ConfigSpringMvc implements WebMvcConfigurer {
 		bean.setSuffix(".jsp");
 		return bean;
 	}
-	
+
 	@Bean
 	public MessageSource messageSource() {
 		ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
@@ -39,14 +42,14 @@ public class ConfigSpringMvc implements WebMvcConfigurer {
 		messageSource.setDefaultEncoding("UTF-8");
 		return messageSource;
 	}
-	
+
 	@Bean
-	  public LocaleResolver localeResolver() {
-	      SessionLocaleResolver slr = new SessionLocaleResolver();
-	      slr.setDefaultLocale(Locale.ENGLISH);
-	      return slr;
-	  }
-	
+	public LocaleResolver localeResolver() {
+		SessionLocaleResolver slr = new SessionLocaleResolver();
+		slr.setDefaultLocale(Locale.ENGLISH);
+		return slr;
+	}
+
 	@Bean
 	public LocaleChangeInterceptor localeChangeInterceptor() {
 		LocaleChangeInterceptor lci = new LocaleChangeInterceptor();
@@ -58,9 +61,17 @@ public class ConfigSpringMvc implements WebMvcConfigurer {
 	public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(localeChangeInterceptor());
 	}
-	
+
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/ressources/**").addResourceLocations("/ressources/");
+		registry.addResourceHandler("/css/**").addResourceLocations("/css/");
+		registry.addResourceHandler("/font/**").addResourceLocations("/font/");
+		registry.addResourceHandler("/js/**").addResourceLocations("/js/");
 	}
-	
+
+	@Override
+	public void addViewControllers(ViewControllerRegistry registry) {
+		registry.addViewController("/login").setViewName("login");
+	}
+
 }

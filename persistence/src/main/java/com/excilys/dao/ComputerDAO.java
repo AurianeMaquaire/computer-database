@@ -8,7 +8,6 @@ import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Root;
-import javax.sql.DataSource;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
@@ -19,19 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.excilys.mapper.ComputerMapper;
 import com.excilys.model.Computer;
 
 @Repository
 @Transactional
 public class ComputerDAO {
-
-	@Autowired
-	DataSource dataSource;
-
-	@Autowired
-	ComputerMapper computerMapper;
-
+	
 	@Autowired
 	SessionFactory sessionFactory;
 
