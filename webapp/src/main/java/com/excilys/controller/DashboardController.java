@@ -85,7 +85,7 @@ public class DashboardController {
 				computerService.deleteComputer(id);
 			}
 		} 
-		return "redirect:" + "/Dashboard";
+		return "redirect:/Dashboard";
 	}
 
 }

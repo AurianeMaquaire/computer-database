@@ -64,9 +64,6 @@ public class ConfigSpringMvc implements WebMvcConfigurer {
 
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/ressources/**").addResourceLocations("/ressources/");
-		registry.addResourceHandler("/css/**").addResourceLocations("/css/");
-		registry.addResourceHandler("/font/**").addResourceLocations("/font/");
-		registry.addResourceHandler("/js/**").addResourceLocations("/js/");
 	}
 
 	@Override

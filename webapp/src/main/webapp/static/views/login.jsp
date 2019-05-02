@@ -27,25 +27,33 @@
 
 	<section id="main">
 		<div class="container">
-			<h1 id="homeTitle">
-				<spring:message code="login" />
-			</h1>
-			<form action="<c:url value="/login" />" method="POST">
-				<fieldset>
-					<div class="form-group">
-						<label for="username"><spring:message code="username" /></label>
-						<input type="text" name="username" />
-					</div>
-					<div class="form-group">
-						<label for="password"><spring:message code="password" /></label>
-						<input type="password" name="password" />
-					</div>
-					<div class="form-group">
-						<input name="submit" type="submit"
-							value="<spring:message code="buttonLogin"/>" />
-					</div>
-				</fieldset>
-			</form>
+			<div class="row">
+				<div class="col-xs-8 col-xs-offset-2 box">
+					<h1>
+						<spring:message code="login" />
+					</h1>
+
+					<form action="<c:url value="/LoginProcess" />" method="POST">
+						<fieldset>
+							<legend>
+								<spring:message code="information" />
+							</legend>
+							<div class="form-group">
+								<label for="username"><spring:message code="username" /></label>
+								<input type="text" name="username" />
+							</div>
+							<div class="form-group">
+								<label for="password"><spring:message code="password" /></label>
+								<input type="password" name="password" />
+							</div>
+							<div class="form-group">
+								<input name="submit" type="submit"
+									value="<spring:message code="buttonLogin"/>" />
+							</div>
+						</fieldset>
+					</form>
+				</div>
+			</div>
 		</div>
 	</section>
 
