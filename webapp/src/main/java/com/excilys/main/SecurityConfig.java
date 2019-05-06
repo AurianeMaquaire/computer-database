@@ -36,11 +36,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable()
 	    .authorizeRequests()
-		    .antMatchers("/AddComputer").hasAuthority("ADMIN")
-			.antMatchers("/EditComputer").hasAuthority("ADMIN")
-			.antMatchers("/").authenticated()
-			.antMatchers("/Dashboard").authenticated()
-			.antMatchers("/LoginProcess").permitAll()
+		    .mvcMatchers("/AddComputer").hasAuthority("ADMIN")
+			.mvcMatchers("/EditComputer").hasAuthority("ADMIN")
+			.mvcMatchers("/").authenticated()
+			.mvcMatchers("/Dashboard").authenticated()
+			.mvcMatchers("/LoginProcess").permitAll()
 		.and()
 			.formLogin()
 			.loginPage("/login")
@@ -53,7 +53,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.logout()
 			.logoutSuccessUrl("/login?logout=true")
 			.logoutUrl("/LogoutProcess")
-			.deleteCookies("JSESSIONID");
+			.deleteCookies("JSESSIONID")
+		.and()
+			.exceptionHandling()
+			.accessDeniedPage("/403");
 	}
 
 }
