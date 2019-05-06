@@ -1,6 +1,5 @@
 package com.excilys.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -32,8 +31,7 @@ public class DashboardController {
 			@RequestParam(name="currentPage", required=false) String currentPage, 
 			@RequestParam(name="search", required=false) String search, 
 			@RequestParam(name="sortBy", required=false) String sortBy, 
-			Locale locale) 
-					throws IOException {
+			Locale locale) {
 
 		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
 		listComputers = computerService.listeComputers();
@@ -77,8 +75,7 @@ public class DashboardController {
 	@PostMapping({"/", "/Dashboard", "/dashboard"})
 	public String postDashboard(Model model, 
 			@RequestParam(name="cb", required=true) String[] computersToDelete, 
-			Locale locale) 
-					throws IOException {
+			Locale locale) {
 
 		if (computersToDelete != null) {
 			for (String id : computersToDelete) {

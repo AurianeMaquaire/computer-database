@@ -33,7 +33,23 @@
 						<spring:message code="login" />
 					</h1>
 
-					<form action="<c:url value="/LoginProcess" />" method="POST">
+					<c:if test="${param.logout}">
+						<div class="alert alert-info">
+							<strong><spring:message code="logout" /></strong>
+						</div>
+					</c:if>
+					<c:if test="${param.error}">
+						<div class="alert alert-danger">
+							<strong><spring:message code="error" /></strong>
+						</div>
+					</c:if>
+					<c:if test="${param.created}">
+						<div class="alert alert-success">
+							<strong><spring:message code="signin" /></strong>
+						</div>
+					</c:if>
+
+					<form method="POST" action="LoginProcess">
 						<fieldset>
 							<legend>
 								<spring:message code="information" />
@@ -47,11 +63,15 @@
 								<input type="password" name="password" />
 							</div>
 							<div class="form-group">
-								<input name="submit" type="submit"
-									value="<spring:message code="buttonLogin"/>" />
+								<input name="submit" type="submit" class="btn btn-success"
+									value="<spring:message code="buttonLogin"/>" /> <a
+									class="btn btn-primary" id="create"
+									href=<c:url value ="/create"/>><spring:message
+										code="create" /></a>
 							</div>
 						</fieldset>
 					</form>
+
 				</div>
 			</div>
 		</div>

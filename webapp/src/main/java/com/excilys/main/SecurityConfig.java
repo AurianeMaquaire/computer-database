@@ -48,10 +48,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.usernameParameter("username")
 			.passwordParameter("password")
 			.defaultSuccessUrl("/")
-			.failureForwardUrl("/login?error")
+			.failureUrl("/login?error=true")
 		.and()
 			.logout()
-			.logoutSuccessUrl("/login?logout")
+			.logoutSuccessUrl("/login?logout=true")
 			.logoutUrl("/LogoutProcess")
 			.deleteCookies("JSESSIONID");
 	}

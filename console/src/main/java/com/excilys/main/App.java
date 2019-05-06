@@ -1,7 +1,5 @@
 package com.excilys.main;
 
-import java.sql.SQLException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
@@ -26,7 +24,7 @@ public class App {
 		
 		try {
 			new ControllerCli(context.getBean(ComputerDAO.class), context.getBean(CompanyDAO.class));
-		} catch (SQLException | DAOException e) {
+		} catch (DAOException e) {
 			e.printStackTrace();
 			logger.error("Main crashed", e.getMessage());
 		}

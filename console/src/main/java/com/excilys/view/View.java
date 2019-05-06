@@ -112,9 +112,8 @@ public class View {
 
 	/**
 	 * Affiche la liste des ordinateurs
-	 * @throws DAOException 
 	 */
-	public void afficherListeComputers() throws DAOException {
+	public void afficherListeComputers() {
 		List<Computer> computers = computerDao.listAll();
 		System.out.println("Affichage de la liste des ordinateurs");
 		for(Computer c : computers) {
@@ -125,9 +124,8 @@ public class View {
 
 	/**
 	 * Affiche la liste des ordinateurs par pages
-	 * @throws DAOException 
 	 */
-	public void afficherPageComputers() throws DAOException {
+	public void afficherPageComputers() {
 		System.out.println("Id de début:");
 		Long idDebut = scanner.nextLong();
 		System.out.println("Nombre d'ordinateurs à afficher:");
@@ -152,9 +150,8 @@ public class View {
 
 	/**
 	 * Affiche la liste des compagnies
-	 * @throws DAOException 
 	 */
-	public void afficherListeCompanies() throws DAOException {
+	public void afficherListeCompanies() {
 		List<Company> companies = companyDao.listAll();
 		System.out.println("Affichage de la liste des compagnies");
 		for(Company c : companies) {
@@ -165,9 +162,8 @@ public class View {
 
 	/**
 	 * Affiche la liste des compagnies par pages
-	 * @throws DAOException 
 	 */
-	public void afficherPageCompanies() throws DAOException {
+	public void afficherPageCompanies() {
 		System.out.println("Id de début:");
 		Long idDebut = scanner.nextLong();
 		System.out.println("Nombre de compagnies à afficher:");
@@ -192,10 +188,8 @@ public class View {
 
 	/**
 	 * Affiche les détails d'un ordinateur
-	 * @param id l'identifiant de l'ordinateur
-	 * @throws DAOException 
 	 */
-	public void afficherDetailsOrdinateur() throws DAOException {
+	public void afficherDetailsOrdinateur() {
 		System.out.println("Id de l'ordinateur:");
 		Long idOrdi = scanner.nextLong();
 		Optional<Computer> computer = computerDao.find(idOrdi);
@@ -209,10 +203,6 @@ public class View {
 
 	/**
 	 * Crée un ordinateur
-	 * @param name le nom de l'ordinateur
-	 * @param introduced la date de début
-	 * @param discontinued la date de fin
-	 * @param company la compagnie à laquelle il appartient
 	 */
 	public void creerOrdinateur() {
 		System.out.println("Nom de l'ordinateur à créer:");
@@ -235,9 +225,8 @@ public class View {
 
 	/**
 	 * Met à jour un ordinateur
-	 * @throws DAOException 
 	 */
-	public void mettreAJourOrdinateur() throws DAOException {
+	public void mettreAJourOrdinateur() {
 		System.out.println("Id de l'ordinateur à mettre à jour:");
 		Long idOrdi = scanner.nextLong();
 
@@ -262,9 +251,8 @@ public class View {
 
 	/**
 	 * Supprime un ordinateur
-	 * @throws DAOException 
 	 */
-	public void supprimerOrdinateur() throws DAOException {
+	public void supprimerOrdinateur() {
 		System.out.println("Id de l'ordinateur à supprimer:");
 		Long idOrdi = scanner.nextLong();
 
@@ -279,9 +267,8 @@ public class View {
 	
 	/**
 	 * Supprime une compagnie
-	 * @throws DAOException 
 	 */
-	public void supprimerCompagnie() throws DAOException {
+	public void supprimerCompagnie() {
 		System.out.println("Id de la compagnie à supprimer:");
 		Long idComp = scanner.nextLong();
 		

@@ -1,6 +1,5 @@
 package com.excilys.controller;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -40,7 +39,7 @@ public class ComputerController {
 
 	@GetMapping({"/EditComputer", "/editcomputer"})
 	public String getEditComputer(@RequestParam(name="computerId", required=false, defaultValue="") String id, 
-			Locale locale, Model model) throws IOException {
+			Locale locale, Model model) {
 		
 		List<CompanyDTO> listCompanies = new ArrayList<CompanyDTO>();
 		listCompanies = companyService.listeCompagnies(); 
@@ -62,7 +61,7 @@ public class ComputerController {
 
 	@PostMapping({"/EditComputer", "/editcomputer"})
 	public String postEditComputer(@ModelAttribute("computer") ComputerDTO computerDto,
-			BindingResult result, Model model, Locale locale) throws IOException {
+			BindingResult result, Model model, Locale locale) {
 
 		if (result.hasErrors()) {
             return "404";
@@ -80,7 +79,7 @@ public class ComputerController {
 	}
 	
 	@GetMapping({"/AddComputer", "/addcomputer"})
-	public String getAddComputer(Model model, Locale locale) throws IOException {
+	public String getAddComputer(Model model, Locale locale) {
 
 		List<CompanyDTO> listCompanies = new ArrayList<CompanyDTO>();
 		listCompanies = companyService.listeCompagnies();
@@ -93,7 +92,7 @@ public class ComputerController {
 
 	@PostMapping({"/AddComputer", "/addcomputer"})
 	public String postAddComputer(@ModelAttribute("computer") ComputerDTO computerDto,
-			BindingResult result, Model model, Locale locale) throws IOException {
+			BindingResult result, Model model, Locale locale) {
 		
 		if (result.hasErrors()) {
             return "404";

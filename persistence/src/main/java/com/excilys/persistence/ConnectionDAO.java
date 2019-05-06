@@ -21,11 +21,11 @@ public class ConnectionDAO {
 
 	private static HikariDataSource hikariDataSource;
 
-	private ConnectionDAO() throws IOException, DAOException {
+	private ConnectionDAO() throws DAOException {
 		this(DAO_PROPERTIES);
 	}
 
-	private ConnectionDAO(String propertiesPath) throws IOException, DAOException {
+	private ConnectionDAO(String propertiesPath) throws DAOException {
 		Properties properties = new Properties();
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
 		InputStream fichierProperties = classLoader.getResourceAsStream(propertiesPath);
@@ -44,7 +44,7 @@ public class ConnectionDAO {
 		if (instance == null) {
 			try {
 				instance = new ConnectionDAO();
-			} catch (IOException | DAOException e) {
+			} catch (DAOException e) {
 				e.printStackTrace();
 				logger.error("Exception dans ConnectionDAO", e.getMessage());
 				throw new DAOException("Erreur dans la fonction getInstance() de ConnectionDAO");
