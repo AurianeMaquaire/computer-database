@@ -17,8 +17,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.dto.CompanyDTO;
 import com.excilys.dto.ComputerDTO;
+import com.excilys.exception.ModelException;
 import com.excilys.exception.ValidatorException;
 import com.excilys.mapper.ComputerMapper;
+import com.excilys.model.Computer;
+import com.excilys.model.Page;
 import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
@@ -36,6 +39,66 @@ public class ComputerController {
 	
 	@Autowired
 	MessageSource messageSource;
+	
+	@GetMapping({"/", "/Dashboard", "/dashboard"})
+	public String getDashboard(Model model, 
+			@RequestParam(name="page", required=false) Page<ComputerDTO> page, 
+			@RequestParam(name="currentPage", required=false) String currentPage, 
+			@RequestParam(name="search", required=false) String search, 
+			@RequestParam(name="sortBy", required=false) String sortBy, 
+			Locale locale) {
+
+		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
+		listComputers = computerService.listeComputers();
+
+		if (page == null) {
+			page = new Page<ComputerDTO>(listComputers);
+		} 
+
+		page.setData(listComputers);
+
+		if (currentPage != null && currentPage != "") {
+			int currentPageInt = Integer.parseInt(currentPage);
+			if (currentPageInt < page.getMaxPages() && currentPageInt >= 0) {
+				page.setCurrentPage(Integer.valueOf(currentPage));
+			} else {
+				String exception = messageSource.getMessage("exceptionPage", null, locale);
+				model.addAttribute("exception", exception);
+				return "404";
+			}
+		} else {
+			page.setCurrentPage(0);
+		}
+		
+		List<ComputerDTO> computers = new ArrayList<ComputerDTO>();
+		if (search != null && search != "") {
+			computers = computerService.searchComputers(search);
+			page.setData(computers);
+		}
+
+		List<ComputerDTO> computersSorted = new ArrayList<ComputerDTO>();
+		if (sortBy != null && sortBy != "") {
+			computersSorted = computerService.orderComputers(sortBy);
+			page.setData(computersSorted);
+		} 
+				
+		model.addAttribute("page", page);
+
+		return "dashboard";
+	}
+
+	@PostMapping({"/", "/Dashboard", "/dashboard"})
+	public String postDashboard(Model model, 
+			@RequestParam(name="cb", required=true) String[] computersToDelete, 
+			Locale locale) {
+
+		if (computersToDelete != null) {
+			for (String id : computersToDelete) {
+				computerService.deleteComputer(id);
+			}
+		} 
+		return "redirect:/Dashboard";
+	}
 
 	@GetMapping({"/EditComputer", "/editcomputer"})
 	public String getEditComputer(@RequestParam(name="computerId", required=false, defaultValue="") String id, 
@@ -68,9 +131,10 @@ public class ComputerController {
         }
 		
 		try {
-			computerService.editComputer(computerDto);
+			Computer computer = ComputerMapper.computerDTOToComputer(computerDto);
+			computerService.editComputer(computer);
 			return "redirect:/Dashboard";
-		} catch (ValidatorException e) {
+		} catch (ValidatorException | ModelException e) {
 			String exception = messageSource.getMessage(e.getMessage(), null, locale);
 			model.addAttribute("exception", exception);
 			String id = Long.toString(computerDto.getId());
@@ -99,9 +163,10 @@ public class ComputerController {
         }
 		
 		try {
-			computerService.createComputer(computerDto);
+			Computer computer = ComputerMapper.computerDTOToComputer(computerDto);
+			computerService.createComputer(computer);
 			return "redirect:/Dashboard";
-		} catch (ValidatorException e) {
+		} catch (ValidatorException | ModelException e) {
 			String exception = messageSource.getMessage(e.getMessage(), null, locale);
 			model.addAttribute("exception", exception);
 			return getAddComputer(model, locale);

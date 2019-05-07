@@ -18,7 +18,7 @@ public class CompanyService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(CompanyService.class);
 	
-	@Autowired
+	@Autowired 
 	CompanyDAO companyDao;
 	
 	public CompanyService() {

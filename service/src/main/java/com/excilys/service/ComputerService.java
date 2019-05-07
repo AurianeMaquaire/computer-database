@@ -1,36 +1,25 @@
 package com.excilys.service;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.excilys.dao.CompanyDAO;
 import com.excilys.dao.ComputerDAO;
 import com.excilys.dto.ComputerDTO;
 import com.excilys.exception.ValidatorException;
 import com.excilys.mapper.ComputerMapper;
-import com.excilys.mapper.TimestampMapper;
-import com.excilys.model.Company;
 import com.excilys.model.Computer;
 import com.excilys.validator.ComputerValidator;
 
 @Service
 public class ComputerService {
-	
-	private static final Logger logger = LoggerFactory.getLogger(ComputerService.class);
-	
+		
 	@Autowired 
 	ComputerDAO computerDao;
-	
-	@Autowired
-	CompanyDAO companyDao;
-
+		
 	public ComputerService() {
 		super();
 	}
@@ -49,7 +38,6 @@ public class ComputerService {
 	}
 
 	public List<ComputerDTO> listeComputers() {
-		logger.debug("Fonction listeComputers dans ComputerService");
 		List<Computer> computers = computerDao.listAll();
 		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
 
@@ -59,62 +47,12 @@ public class ComputerService {
 		return computersDTO;
 	}
 
-	public void createComputer(ComputerDTO computerDto) throws ValidatorException {
-		Optional<Timestamp> intro = Optional.empty();
-		Timestamp introduced = null;
-		if (computerDto.getIntroduced() != null) {
-			intro = TimestampMapper.stringToTimestamp(computerDto.getIntroduced());
-			if (intro.isPresent()) {
-				introduced = intro.get();
-			}
-		} 
-
-		Optional<Timestamp> disc = Optional.empty();
-		Timestamp discontined = null;
-		if (computerDto.getDiscontinued() != null) {
-			disc = TimestampMapper.stringToTimestamp(computerDto.getDiscontinued());
-			if (disc.isPresent()) {
-				discontined = disc.get();
-			}
-		} 
-
-		Optional<Company> company = companyDao.find(computerDto.getCompanyId());
-		Computer computer;
-		if (company.isPresent()) {
-			computer = new Computer(computerDto.getName(), introduced, discontined, company.get());
-		} else {
-			computer = new Computer(computerDto.getName(), introduced, discontined, null);
-		}
+	public void createComputer(Computer computer) throws ValidatorException {
 		ComputerValidator.verify(computer);
 		computerDao.create(computer);
 	}
 
-	public void editComputer(ComputerDTO computerDto) throws ValidatorException {
-		Optional<Timestamp> intro = Optional.empty();
-		Timestamp introduced = null;
-		if (computerDto.getIntroduced() != null) {
-			intro = TimestampMapper.stringToTimestamp(computerDto.getIntroduced());
-			if (intro.isPresent()) {
-				introduced = intro.get();
-			}
-		} 
-
-		Optional<Timestamp> disc = Optional.empty();
-		Timestamp discontined = null;
-		if (computerDto.getDiscontinued() != null) {
-			disc = TimestampMapper.stringToTimestamp(computerDto.getDiscontinued());
-			if (disc.isPresent()) {
-				discontined = disc.get();
-			}
-		} 
-
-		Optional<Company> company = companyDao.find(computerDto.getCompanyId());
-		Computer computer;
-		if (company.isPresent()) {
-			computer = new Computer(computerDto.getId(), computerDto.getName(), introduced, discontined, company.get());
-		} else {
-			computer = new Computer(computerDto.getId(), computerDto.getName(), introduced, discontined, null);
-		}
+	public void editComputer(Computer computer) throws ValidatorException {
 		ComputerValidator.verify(computer);
 		computerDao.update(computer);
 	}

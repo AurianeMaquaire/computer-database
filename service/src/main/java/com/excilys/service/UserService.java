@@ -16,7 +16,7 @@ import com.excilys.validator.UserValidator;
 @Service
 public class UserService {
 
-	@Autowired
+	@Autowired 
 	UserDAO userDao;
 	
 	public UserService() {
@@ -32,23 +32,23 @@ public class UserService {
 		return userDto;
 	}
 	
-	public void createUser(UserDTO userDto) throws ValidatorException {
+	public void createUser(User user) throws ValidatorException {
 		
-		Long id = userDto.getId();
-		String username = userDto.getUsername();
-		String password = userDto.getPassword();
+		Long id = user.getId();
+		String username = user.getUsername();
+		String password = user.getPassword();
 		
 		BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 		String passwordCoded = encoder.encode(password);
 		
-		User user = new User(id, username, passwordCoded, 1);
+		User newUser = new User(id, username, passwordCoded, 1);
 		
-		UserValidator.verify(user);
+		UserValidator.verify(newUser);
 		if (findUser(username).isPresent()) {
 			throw new ValidatorException("exceptionUsername");
 		}
-		userDao.create(user);
-		userDao.createUserRole(user);
+		userDao.create(newUser);
+		userDao.createUserRole(newUser);
 	}
 	
 	

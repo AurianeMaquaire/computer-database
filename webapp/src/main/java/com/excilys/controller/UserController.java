@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import com.excilys.dto.UserDTO;
 import com.excilys.exception.ValidatorException;
+import com.excilys.mapper.UserMapper;
+import com.excilys.model.User;
 import com.excilys.service.UserService;
 
 @Controller
@@ -28,7 +30,8 @@ public class UserController {
 	public String postCreate(@ModelAttribute("user") UserDTO userDto, 
 			BindingResult result, Model model, Locale locale) {
 		try {
-			userService.createUser(userDto);
+			User user = UserMapper.userDTOToUser(userDto);
+			userService.createUser(user);
 			model.addAttribute("created", true);
 			return "redirect:dashboard";
 		} catch (ValidatorException e) {

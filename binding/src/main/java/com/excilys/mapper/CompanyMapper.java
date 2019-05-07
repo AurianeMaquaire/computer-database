@@ -14,5 +14,12 @@ public class CompanyMapper {
 
 		return new CompanyDTO(id, name);
 	}
+	
+	public static Company companyDTOToCompany(CompanyDTO companyDto) {
+		Long id = companyDto.getId();
+		String name = companyDto.getName();
+
+		return new Company(id, name);
+	}
 
 }
