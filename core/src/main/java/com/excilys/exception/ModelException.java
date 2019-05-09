@@ -9,7 +9,8 @@ public class ModelException extends Exception {
 	public ModelException(String message) {
 		this.exceptionMessage = message;
 	}
-
+	
+	@Override
 	public String getMessage() {
 		return exceptionMessage;
 	}

@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.excilys.dto.CompanyDTO;
@@ -26,6 +27,7 @@ import com.excilys.service.CompanyService;
 import com.excilys.service.ComputerService;
 
 @Controller
+@RequestMapping("/computers")
 public class ComputerController {
 
 	@Autowired
@@ -33,14 +35,11 @@ public class ComputerController {
 
 	@Autowired
 	CompanyService companyService;
-	
-	@Autowired
-	ComputerMapper computerMapper;
-	
+
 	@Autowired
 	MessageSource messageSource;
-	
-	@GetMapping({"/", "/Dashboard", "/dashboard"})
+
+	@GetMapping
 	public String getDashboard(Model model, 
 			@RequestParam(name="page", required=false) Page<ComputerDTO> page, 
 			@RequestParam(name="currentPage", required=false) String currentPage, 
@@ -48,12 +47,11 @@ public class ComputerController {
 			@RequestParam(name="sortBy", required=false) String sortBy, 
 			Locale locale) {
 
-		List<ComputerDTO> listComputers = new ArrayList<ComputerDTO>();
-		listComputers = computerService.listeComputers();
+		List<ComputerDTO> listComputers = computerService.listeComputers();
 
 		if (page == null) {
 			page = new Page<ComputerDTO>(listComputers);
-		} 
+		}
 
 		page.setData(listComputers);
 
@@ -69,7 +67,7 @@ public class ComputerController {
 		} else {
 			page.setCurrentPage(0);
 		}
-		
+
 		List<ComputerDTO> computers = new ArrayList<ComputerDTO>();
 		if (search != null && search != "") {
 			computers = computerService.searchComputers(search);
@@ -81,13 +79,13 @@ public class ComputerController {
 			computersSorted = computerService.orderComputers(sortBy);
 			page.setData(computersSorted);
 		} 
-				
+
 		model.addAttribute("page", page);
 
 		return "dashboard";
 	}
 
-	@PostMapping({"/", "/Dashboard", "/dashboard"})
+	@PostMapping("/deleteComputer")
 	public String postDashboard(Model model, 
 			@RequestParam(name="cb", required=true) String[] computersToDelete, 
 			Locale locale) {
@@ -97,20 +95,18 @@ public class ComputerController {
 				computerService.deleteComputer(id);
 			}
 		} 
-		return "redirect:/Dashboard";
+		return "redirect:/computers";
 	}
 
-	@GetMapping({"/EditComputer", "/editcomputer"})
+	@GetMapping("/editComputer")
 	public String getEditComputer(@RequestParam(name="computerId", required=false, defaultValue="") String id, 
 			Locale locale, Model model) {
-		
-		List<CompanyDTO> listCompanies = new ArrayList<CompanyDTO>();
-		listCompanies = companyService.listeCompagnies(); 
+
+		List<CompanyDTO> listCompanies = companyService.listeCompagnies(); 
 		model.addAttribute("listCompanies", listCompanies);
 
-		Optional<ComputerDTO> computer = Optional.empty();
-		computer = computerService.findComputer(id);
-		
+		Optional<ComputerDTO> computer = computerService.findComputer(id);
+
 		if (computer.isPresent()) {
 			model.addAttribute("computer", computer.get());
 		} else {
@@ -122,18 +118,18 @@ public class ComputerController {
 		return "editComputer";
 	}
 
-	@PostMapping({"/EditComputer", "/editcomputer"})
+	@PostMapping("/editComputer")
 	public String postEditComputer(@ModelAttribute("computer") ComputerDTO computerDto,
 			BindingResult result, Model model, Locale locale) {
 
 		if (result.hasErrors()) {
-            return "404";
-        }
-		
+			return "404";
+		}
+
 		try {
 			Computer computer = ComputerMapper.computerDTOToComputer(computerDto);
 			computerService.editComputer(computer);
-			return "redirect:/Dashboard";
+			return "redirect:/computers";
 		} catch (ValidatorException | ModelException e) {
 			String exception = messageSource.getMessage(e.getMessage(), null, locale);
 			model.addAttribute("exception", exception);
@@ -141,31 +137,30 @@ public class ComputerController {
 			return getEditComputer(id, locale, model);
 		} 
 	}
-	
-	@GetMapping({"/AddComputer", "/addcomputer"})
+
+	@GetMapping("/addComputer")
 	public String getAddComputer(Model model, Locale locale) {
 
-		List<CompanyDTO> listCompanies = new ArrayList<CompanyDTO>();
-		listCompanies = companyService.listeCompagnies();
+		List<CompanyDTO> listCompanies = companyService.listeCompagnies();
 		model.addAttribute("listCompanies", listCompanies);
-		
+
 		model.addAttribute("computer", new ComputerDTO());
 
 		return "addComputer";
 	}
 
-	@PostMapping({"/AddComputer", "/addcomputer"})
+	@PostMapping("/addComputer")
 	public String postAddComputer(@ModelAttribute("computer") ComputerDTO computerDto,
 			BindingResult result, Model model, Locale locale) {
-		
+
 		if (result.hasErrors()) {
-            return "404";
-        }
-		
+			return "404";
+		}
+
 		try {
 			Computer computer = ComputerMapper.computerDTOToComputer(computerDto);
 			computerService.createComputer(computer);
-			return "redirect:/Dashboard";
+			return "redirect:/computers";
 		} catch (ValidatorException | ModelException e) {
 			String exception = messageSource.getMessage(e.getMessage(), null, locale);
 			model.addAttribute("exception", exception);

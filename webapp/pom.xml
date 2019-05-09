@@ -20,6 +20,7 @@
 		<maven.compiler.target>1.8</maven.compiler.target>
 
 		<spring>5.1.4.RELEASE</spring>
+		<spring.boot>2.1.4.RELEASE</spring.boot>
 		<servlet>4.0.1</servlet>
 		<jstl>1.2</jstl>
 
@@ -73,6 +74,12 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
 			<version>${spring}</version>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring.boot}</version>
 		</dependency>
 
 		<dependency>

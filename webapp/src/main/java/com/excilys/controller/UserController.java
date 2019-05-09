@@ -18,6 +18,7 @@ import com.excilys.model.User;
 import com.excilys.service.UserService;
 
 @Controller
+//@RequestMapping("/users")
 public class UserController {
 
 	@Autowired
@@ -33,7 +34,8 @@ public class UserController {
 			User user = UserMapper.userDTOToUser(userDto);
 			userService.createUser(user);
 			model.addAttribute("created", true);
-			return "redirect:dashboard";
+			//return "redirect:dashboard";
+			return "redirect:computers";
 		} catch (ValidatorException e) {
 			String exception = messageSource.getMessage(e.getMessage(), null, locale);
 			model.addAttribute("exception", exception);

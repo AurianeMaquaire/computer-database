@@ -1,7 +1,7 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,28 +9,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="utf-8">
 <!-- Bootstrap -->
-<link href="static/css/bootstrap.min.css" rel="stylesheet"
+<link href="<c:url value="static/css/bootstrap.min.css"/>"
+	rel="stylesheet" media="screen">
+<link href="<c:url value="static/css/font-awesome.css"/>"
+	rel="stylesheet" media="screen">
+<link href="<c:url value="static/css/main.css"/>" rel="stylesheet"
 	media="screen">
-<link href="static/css/font-awesome.css" rel="stylesheet" media="screen">
-<link href="static/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
-	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<a class="navbar-brand pull-left"
-				href="<c:url value="/Dashboard?currentPage=0"/>"> Application -
-				Computer Database </a> <span class="pull-right"> <input
-				type="button" class="btn btn-default"
-				onclick="location.href='<c:url value="/Dashboard?lang=en"/>'"
-				value="EN"> <input type="button" class="btn btn-default"
-				onclick="location.href='<c:url value="/Dashboard?lang=fr"/>'"
-				value="FR"> <input type="button"
-				onclick="location.href='<c:url value="/login?logout=true"/>'"
-				value="<spring:message code="buttonLogout" />"
-				class="btn btn-primary">
-			</span>
-		</div>
-	</header>
+
+	<%@include file="header.jsp"%>
 
 	<section id="main">
 		<div class="container">
@@ -51,7 +39,7 @@
 				</div>
 				<div class="pull-right">
 					<a class="btn btn-success" id="addComputer"
-						href="<c:url value="/AddComputer"/>"><spring:message
+						href="<c:url value="computers/addComputer"/>"><spring:message
 							code="addComputer" /></a> <a class="btn btn-default"
 						id="editComputer" href="#" onclick="$.fn.toggleEditMode();"><spring:message
 							code="edit" /></a>
@@ -59,7 +47,7 @@
 			</div>
 		</div>
 
-		<form id="deleteForm" action="Dashboard" method="POST">
+		<form id="deleteForm" action="computers/deleteComputer" method="POST">
 			<input type="hidden" name="selection" value="">
 
 			<div class="container" style="margin-top: 10px;">
@@ -77,19 +65,19 @@
 								</a>
 							</span></th>
 							<th><a
-								onclick="location.href='<c:url value="/Dashboard?sortBy=name" />'"
+								onclick="location.href='<c:url value="?sortBy=name" />'"
 								title="<spring:message code="titleComputerName" />"><spring:message
 										code="computerName" /></a></th>
 							<th><a
-								onclick="location.href='<c:url value="/Dashboard?sortBy=introduced" />'"
+								onclick="location.href='<c:url value="?sortBy=introduced" />'"
 								title="<spring:message code="titleIntroduced" />"><spring:message
 										code="introduced" /></a></th>
 							<th><a
-								onclick="location.href='<c:url value="/Dashboard?sortBy=discontinued" />'"
+								onclick="location.href='<c:url value="?sortBy=discontinued" />'"
 								title="<spring:message code="titleDiscontinued" />"><spring:message
 										code="discontinued" /></a></th>
 							<th><a
-								onclick="location.href='<c:url value="/Dashboard?sortBy=company" />'"
+								onclick="location.href='<c:url value="?sortBy=company" />'"
 								title="<spring:message code="titleCompany" />"><spring:message
 										code="company" /></a></th>
 
@@ -104,7 +92,7 @@
 								<td class="editMode"><input type="checkbox" name="cb"
 									class="cb" value="${ordi.id}"></td>
 								<td><a
-									href="<c:url value="/EditComputer?computerId=${ordi.id}"/>"
+									href="<c:url value="/computers/editComputer?computerId=${ordi.id}"/>"
 									onclick="">${ordi.name}</a></td>
 								<td>${ordi.introduced}</td>
 								<td>${ordi.discontinued}</td>

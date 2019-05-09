@@ -9,7 +9,8 @@ public class ValidatorException extends Exception {
 	public ValidatorException(String message) {
 		this.exceptionMessage = message;
 	}
-
+	
+	@Override
 	public String getMessage() {
 		return exceptionMessage;
 	}

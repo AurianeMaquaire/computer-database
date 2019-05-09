@@ -10,6 +10,7 @@ public class DAOException extends Exception {
 		this.exceptionMessage = message;
 	}
 
+	@Override
 	public String getMessage() {
 		return exceptionMessage;
 	}

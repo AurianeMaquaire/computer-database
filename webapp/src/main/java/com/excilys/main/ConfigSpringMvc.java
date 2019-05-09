@@ -30,7 +30,7 @@ public class ConfigSpringMvc implements WebMvcConfigurer {
 	public ViewResolver viewResolver() {
 		InternalResourceViewResolver bean = new InternalResourceViewResolver();
 		bean.setViewClass(JstlView.class);
-		bean.setPrefix("static/views/");
+		bean.setPrefix("/static/views/");
 		bean.setSuffix(".jsp");
 		return bean;
 	}

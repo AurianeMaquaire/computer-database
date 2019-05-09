@@ -1,8 +1,9 @@
-<!DOCTYPE html>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
-
+<!DOCTYPE html>
 <html>
 <head>
 <title>Computer Database</title>
@@ -14,17 +15,8 @@
 <link href="static/css/main.css" rel="stylesheet" media="screen">
 </head>
 <body>
-	<header class="navbar navbar-inverse navbar-fixed-top">
-		<div class="container">
-			<a class="navbar-brand"
-				href="<c:url value="/Dashboard?currentPage=0"/>"> Application -
-				Computer Database </a> <input type="button"
-				onclick="location.href='<c:url value="/Dashboard?lang=en"/>'"
-				value="EN"> <input type="button"
-				onclick="location.href='<c:url value="/Dashboard?lang=fr"/>'"
-				value="FR">
-		</div>
-	</header>
+	
+	<%@include file="header.jsp" %>
 
 	<section id="main">
 		<div class="container">

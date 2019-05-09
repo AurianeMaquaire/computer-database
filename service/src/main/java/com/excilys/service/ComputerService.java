@@ -36,6 +36,15 @@ public class ComputerService {
 		}
 		return computerDTO;
 	}
+	
+	public Optional<ComputerDTO> findComputer(Long id) {
+		Optional<Computer> computer = computerDao.find(id);
+		Optional<ComputerDTO> computerDTO = Optional.empty();
+		if (computer.isPresent()) {
+			computerDTO = Optional.of(ComputerMapper.computerToComputerDTO(computer.get()));
+		}
+		return computerDTO;
+	}
 
 	public List<ComputerDTO> listeComputers() {
 		List<Computer> computers = computerDao.listAll();
