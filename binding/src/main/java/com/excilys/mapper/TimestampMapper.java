@@ -9,6 +9,8 @@ import java.time.format.DateTimeParseException;
 import java.util.Optional;
 
 public class TimestampMapper {
+	
+	private TimestampMapper() {}
 
 	public static Optional<Timestamp> stringToTimestamp(String timestampStr) {
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");

@@ -211,8 +211,8 @@ public class View {
 		Timestamp tsIntroduced = TimestampMapper.currentTimeToTimestamp();
 
 		System.out.println("Nom de la compagnie:");
-		String company_name = scanner.next();
-		Optional<Company> company = companyDao.find(company_name);
+		String companyName = scanner.next();
+		Optional<Company> company = companyDao.find(companyName);
 
 		if (company.isPresent()) {
 			Computer computer = new Computer(nomOrdi, tsIntroduced, null, company.get());
@@ -242,8 +242,6 @@ public class View {
 			computerDao.update(computer.get());
 
 			System.out.println("L'ordinateur " + idOrdi + " a bien été mit à jour");
-			computer = computerDao.find(idOrdi);
-			System.out.println(computer.get());
 		} else {
 			System.out.println("Cet ordinateur n'existe pas");
 		}

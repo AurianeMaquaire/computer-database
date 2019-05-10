@@ -7,6 +7,8 @@ import com.excilys.model.Computer;
 
 public class ComputerValidator {
 	
+	private ComputerValidator() {}
+	
 	/**
 	 * Vérifie si un ordinateur est correct
 	 * @param computer l'ordinateur

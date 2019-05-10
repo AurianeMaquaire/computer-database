@@ -9,14 +9,16 @@
 <title>Computer Database</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <!-- Bootstrap -->
-<link href="<c:url value="/static/css/bootstrap.min.css"/>" rel="stylesheet"
+<link href="<c:url value="/static/css/bootstrap.min.css"/>"
+	rel="stylesheet" media="screen">
+<link href="<c:url value="/static/css/font-awesome.css"/>"
+	rel="stylesheet" media="screen">
+<link href="<c:url value="/static/css/main.css"/>" rel="stylesheet"
 	media="screen">
-<link href="<c:url value="/static/css/font-awesome.css"/>" rel="stylesheet" media="screen">
-<link href="<c:url value="/static/css/main.css"/>" rel="stylesheet" media="screen">
 </head>
 <body>
-	
-	<%@include file="header.jsp" %>
+
+	<%@include file="header.jsp"%>
 
 	<section id="main">
 		<div class="container">
@@ -73,9 +75,9 @@
 							</div>
 						</fieldset>
 
-						<div class="exception">
-							<font color="red" size="+1"> <c:out value="${exception}" />
-							</font>
+						<div class="alert alert-danger">
+							<strong> <c:out value="${exception}" />
+							</strong>
 						</div>
 
 						<div class="actions pull-right">

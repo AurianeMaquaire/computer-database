@@ -34,7 +34,6 @@ public class ConnectionDAO {
 			HikariConfig hikariConfig = new HikariConfig(properties);
 			hikariDataSource = new HikariDataSource(hikariConfig);
 		} catch (IOException e) {
-			e.printStackTrace();
 			logger.error("Exception dans ConnectionDAO", e.getMessage());
 			throw new DAOException("Erreur dans le constructeur de ConnectionDAO");
 		}
@@ -45,7 +44,6 @@ public class ConnectionDAO {
 			try {
 				instance = new ConnectionDAO();
 			} catch (DAOException e) {
-				e.printStackTrace();
 				logger.error("Exception dans ConnectionDAO", e.getMessage());
 				throw new DAOException("Erreur dans la fonction getInstance() de ConnectionDAO");
 			}

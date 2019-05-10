@@ -28,7 +28,7 @@ public class CompanyService {
 	public List<CompanyDTO> listeCompagnies() {
 		logger.debug("Fonction listeCompagnies dans CompanyService");
 		List<Company> companies = companyDao.listAll();
-		List<CompanyDTO> companiesDTO = new ArrayList<CompanyDTO>();
+		List<CompanyDTO> companiesDTO = new ArrayList<>();
 		
 		for (Company c : companies) {
 			companiesDTO.add(CompanyMapper.companyToCompanyDTO(c));

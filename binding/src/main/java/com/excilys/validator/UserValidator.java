@@ -4,6 +4,8 @@ import com.excilys.exception.ValidatorException;
 import com.excilys.model.User;
 
 public class UserValidator {
+	
+	private UserValidator() {}
 
 	/**
 	 * Vérifie si un utilisateur est correct

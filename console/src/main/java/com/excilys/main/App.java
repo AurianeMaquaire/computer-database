@@ -25,7 +25,6 @@ public class App {
 		try {
 			new ControllerCli(context.getBean(ComputerDAO.class), context.getBean(CompanyDAO.class));
 		} catch (DAOException e) {
-			e.printStackTrace();
 			logger.error("Main crashed", e.getMessage());
 		}
 		

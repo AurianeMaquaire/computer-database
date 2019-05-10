@@ -60,8 +60,8 @@
 							<th class="editMode" style="width: 60px; height: 22px;"><input
 								type="checkbox" id="selectall" /> <span
 								style="vertical-align: top;"> - <a href="#"
-									id="deleteSelected" onclick="$.fn.deleteSelected();"> <i
-										class="fa fa-trash-o fa-lg"></i>
+									id="deleteSelected" onclick="$.fn.deleteSelected();"> <em
+										class="fa fa-trash-o fa-lg"></em>
 								</a>
 							</span></th>
 							<th><a

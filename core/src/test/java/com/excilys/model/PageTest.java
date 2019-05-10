@@ -19,7 +19,7 @@ public class PageTest<T> {
 	@Test
 	public void testCurrentPage() {
 		page.setCurrentPage(42);
-		assertEquals(page.getCurrentPage(), 0);
+		assertEquals(0, page.getCurrentPage());
 	}
 	
 }

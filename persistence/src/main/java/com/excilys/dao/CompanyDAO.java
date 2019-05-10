@@ -51,11 +51,9 @@ public class CompanyDAO {
 			Query<Company> query = session.createQuery(this.criteriaQuery);
 			return Optional.ofNullable(query.getSingleResult());
 			
-		} catch (NoResultException e) {
+		} catch (NoResultException | HibernateException e) {
 			return Optional.empty();
-		} catch (HibernateException e) {
-			return Optional.empty();
-		}
+		} 
 	}
 
 	public Optional<Company> find(String name) {
@@ -84,7 +82,7 @@ public class CompanyDAO {
 			return query.getResultList();
 			
 		} catch (HibernateException e) {
-			return new ArrayList<Company>();
+			return new ArrayList<>();
 		}
 	}
 
@@ -99,7 +97,7 @@ public class CompanyDAO {
 			return query.getResultList();
 			
 		} catch (HibernateException e) {
-			return new ArrayList<Company>();
+			return new ArrayList<>();
 		}
 	}
 

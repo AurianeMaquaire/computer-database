@@ -26,7 +26,7 @@ public class ComputerService {
 
 	public Optional<ComputerDTO> findComputer(String id) {
 		Long computerId = 0L;
-		if (id != null || id != "") {
+		if (! "".equals(id)) {
 			computerId = Long.parseLong(id);
 		}
 		Optional<Computer> computer = computerDao.find(computerId);
@@ -48,7 +48,7 @@ public class ComputerService {
 
 	public List<ComputerDTO> listeComputers() {
 		List<Computer> computers = computerDao.listAll();
-		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> computersDTO = new ArrayList<>();
 
 		for (Computer computer : computers) {
 			computersDTO.add(ComputerMapper.computerToComputerDTO(computer));
@@ -68,7 +68,7 @@ public class ComputerService {
 
 	public void deleteComputer(String id) {
 		Long idComputer = 0L;
-		if (id != null && id != "") {
+		if (! "".equals(id)) {
 			idComputer = Long.parseLong(id);
 		}
 
@@ -80,7 +80,7 @@ public class ComputerService {
 
 	public List<ComputerDTO> searchComputers(String search) {
 		List<Computer> computers = computerDao.find(search);
-		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> computersDTO = new ArrayList<>();
 		for (Computer computer : computers) {
 			ComputerDTO computerDto = ComputerMapper.computerToComputerDTO(computer);
 			computersDTO.add(computerDto);
@@ -90,7 +90,7 @@ public class ComputerService {
 
 	public List<ComputerDTO> orderComputers(String sortBy) {
 		List<Computer> computers = computerDao.sort(sortBy);
-		List<ComputerDTO> computersDTO = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> computersDTO = new ArrayList<>();
 		for (Computer computer : computers) {
 			ComputerDTO computerDto = ComputerMapper.computerToComputerDTO(computer);
 			computersDTO.add(computerDto);

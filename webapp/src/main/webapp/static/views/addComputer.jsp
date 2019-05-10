@@ -68,9 +68,8 @@
 							</div>
 						</fieldset>
 
-						<div class="exception">
-							<font color="red" size="+1"> <c:out value="${exception}" />
-							</font>
+						<div class="alert alert-danger">
+							<strong><c:out value="${exception}" /></strong>
 						</div>
 
 						<div class="actions pull-right">

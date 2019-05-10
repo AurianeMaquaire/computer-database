@@ -13,6 +13,8 @@ import com.excilys.model.ComputerBuilder;
 
 @Component
 public class ComputerMapper {
+	
+	private ComputerMapper() {}
 
 	public static ComputerDTO computerToComputerDTO(Computer computer) {
 		long id = computer.getId();

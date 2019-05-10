@@ -62,6 +62,7 @@ public class ConfigSpringMvc implements WebMvcConfigurer {
 		registry.addInterceptor(localeChangeInterceptor());
 	}
 
+	@Override
 	public void addResourceHandlers(final ResourceHandlerRegistry registry) {
 		registry.addResourceHandler("/ressources/**").addResourceLocations("/ressources/");
 	}

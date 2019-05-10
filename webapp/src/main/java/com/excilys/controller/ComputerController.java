@@ -1,6 +1,5 @@
 package com.excilys.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
@@ -50,7 +49,7 @@ public class ComputerController {
 		List<ComputerDTO> listComputers = computerService.listeComputers();
 
 		if (page == null) {
-			page = new Page<ComputerDTO>(listComputers);
+			page = new Page<>(listComputers);
 		}
 
 		page.setData(listComputers);
@@ -68,13 +67,13 @@ public class ComputerController {
 			page.setCurrentPage(0);
 		}
 
-		List<ComputerDTO> computers = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> computers;
 		if (search != null && search != "") {
 			computers = computerService.searchComputers(search);
 			page.setData(computers);
 		}
 
-		List<ComputerDTO> computersSorted = new ArrayList<ComputerDTO>();
+		List<ComputerDTO> computersSorted;
 		if (sortBy != null && sortBy != "") {
 			computersSorted = computerService.orderComputers(sortBy);
 			page.setData(computersSorted);

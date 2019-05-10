@@ -26,8 +26,7 @@
 				<br />
 				<!-- stacktrace -->
 				<div class="exception">
-					<font color="red" size="+1"> <c:out value="${exception}" />
-					</font>
+					<strong><c:out value="${exception}" /></strong>
 				</div>
 			</div>
 		</div>

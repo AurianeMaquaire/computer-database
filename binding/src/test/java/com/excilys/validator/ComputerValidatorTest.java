@@ -39,7 +39,7 @@ public class ComputerValidatorTest {
 		try {
 			ComputerValidator.verify(computer);
 		} catch (ValidatorException e) {
-			assertEquals(e.getMessage(), "exceptionName");
+			assertEquals("exceptionName", e.getMessage());
 		}
 	}
 	
@@ -50,7 +50,7 @@ public class ComputerValidatorTest {
 		try {
 			ComputerValidator.verify(computer);
 		} catch (ValidatorException e) {
-			assertEquals(e.getMessage(), "exceptionDiscontinued");
+			assertEquals("exceptionDiscontinued", e.getMessage());
 		}
 	}
 	
@@ -62,7 +62,7 @@ public class ComputerValidatorTest {
 		try {
 			ComputerValidator.verify(computer);
 		} catch (ValidatorException e) {
-			assertEquals(e.getMessage(), "exceptionIntroduced");
+			assertEquals("exceptionIntroduced", e.getMessage());
 		}
 	}
 	

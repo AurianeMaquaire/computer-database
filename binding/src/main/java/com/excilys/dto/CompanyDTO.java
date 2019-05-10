@@ -6,13 +6,6 @@ public class CompanyDTO {
 	private String name;
 	
 	/**
-	 * Constructeur sans argument
-	 */
-	public CompanyDTO() {
-		super();
-	}
-	
-	/**
 	 * Constructeur avec deux arguments
 	 * @param id l'identifiant de la compagnie
 	 * @param name le nom de la compagnie

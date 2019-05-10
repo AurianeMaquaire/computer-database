@@ -7,6 +7,8 @@ import com.excilys.model.Company;
 
 @Component 
 public class CompanyMapper {
+	
+	private CompanyMapper() {}
 
 	public static CompanyDTO companyToCompanyDTO(Company company) {
 		long id = company.getId();

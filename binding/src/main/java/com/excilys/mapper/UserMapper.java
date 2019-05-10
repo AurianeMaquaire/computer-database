@@ -7,6 +7,8 @@ import com.excilys.model.User;
 
 @Component
 public class UserMapper {
+	
+	private UserMapper() {}
 
 	public static UserDTO userToUserDTO(User user) {
 		long id = user.getId();
