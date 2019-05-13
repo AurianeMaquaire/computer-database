@@ -75,7 +75,7 @@
 							</div>
 						</fieldset>
 
-						<div class="alert alert-danger">
+						<div class="exception">
 							<strong> <c:out value="${exception}" />
 							</strong>
 						</div>
